@@ -1,12 +1,4 @@
-.wrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 24rem;
-    padding: 2rem;
-}
-
 .create-button {
     margin-top: 2rem;
+    width: 100%;
 }

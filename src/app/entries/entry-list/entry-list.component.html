@@ -1,15 +1,13 @@
-<div class="wrapper">
-    <mat-list>
-        <mat-list-item *ngFor="let entry of entries">
-            {{ entry }}
-        </mat-list-item>
-    </mat-list>
-    <button
-        class="create-button"
-        mat-flat-button
-        color="accent"
-        routerLink="/entries/create"
-        >
-        Create New Entry
-    </button>
-</div>
+<mat-list>
+    <mat-list-item *ngFor="let entry of entries">
+        {{ entry }}
+    </mat-list-item>
+</mat-list>
+<button
+    class="create-button"
+    mat-flat-button
+    color="accent"
+    routerLink="/entries/create"
+    >
+    Create New Entry
+</button>
