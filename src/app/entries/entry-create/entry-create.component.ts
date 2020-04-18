@@ -10,7 +10,9 @@ import { FormControl } from '@angular/forms';
 })
 export class EntryCreateComponent {
 
-  entryForm = new FormControl('');
+  narrative = new FormControl('');
+  location = new FormControl('');
+  date = new FormControl('');
 
   constructor(
     private entryService: EntryService,
@@ -18,7 +20,11 @@ export class EntryCreateComponent {
   ) { }
 
   createEntry() {
-    this.entryService.createEntry(this.entryForm.value)
+    this.entryService.createEntry({
+      narrative: this.narrative.value,
+      location: this.location.value,
+      date: this.date.value,
+    })
       .subscribe(() => this.router.navigate(['/entries']));
   }
 

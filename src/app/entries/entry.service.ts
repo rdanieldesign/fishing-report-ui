@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { IEntry, IEntryMap, INewEntry } from './interfaces/entry.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,15 @@ export class EntryService {
     private httpClient: HttpClient
   ) { }
 
-  getAllEntries(): Observable<string[]> {
-    return this.httpClient.get<string[]>('http://localhost:8000/api/entries');
+  getAllEntries(): Observable<IEntry[]> {
+    return this.httpClient.get<IEntryMap>('/api/all-entries')
+      .pipe(map((entryMap: IEntryMap): IEntry[] => {
+        return Object.keys(entryMap).map((key: string) => ({ id: key, ...entryMap[key] }))
+      }));
   }
 
-  createEntry(newEntry: string): Observable<string> {
-    return this.httpClient.post<string>('http://localhost:8000/api/entries', newEntry);
+  createEntry(newEntry: INewEntry): Observable<string> {
+    return this.httpClient.post<string>('/api/new-entry', newEntry);
   }
+
 }

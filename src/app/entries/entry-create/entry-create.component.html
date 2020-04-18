@@ -1,18 +1,17 @@
 <form class="create-form">
-    <mat-form-field>
-        <mat-label>New Entry</mat-label>
-        <input
-            matInput
-            placeholder="Add Entry Here"
-            [formControl]="entryForm"
-        />
-    </mat-form-field>
-    <button
-        class="create-button"
-        type="button"
-        mat-flat-button color="accent"
-        (click)="createEntry()"
-        >
-      Submit
-    </button>
+  <mat-form-field>
+    <mat-label>Narrative</mat-label>
+    <input matInput placeholder="Add Narrative Here" [formControl]="narrative" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Location</mat-label>
+    <input matInput placeholder="Add Location Here" [formControl]="location" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input matInput placeholder="Add Date Here" [formControl]="date" />
+  </mat-form-field>
+  <button class="create-button" type="button" mat-flat-button color="accent" (click)="createEntry()">
+    Submit
+  </button>
 </form>
