@@ -1,6 +1,3 @@
-# Run via
-# docker build -f Dockerfile-prod -t dev-bros-ui:{version} .
-
 # base image
 FROM node:12.16.2 as build
 
