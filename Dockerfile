@@ -1,3 +1,6 @@
+# Run via
+# docker build -f Dockerfile-prod -t dev-bros-ui:{version} .
+
 # base image
 FROM node:12.16.2 as build
 
@@ -16,7 +19,7 @@ RUN npm install -g @angular/cli@9.1.1
 COPY . /app
 
 # generate build
-RUN ng build --output-path=dist
+RUN npm run build:container
 
 ############
 ### prod ###
@@ -27,6 +30,7 @@ FROM nginx:1.16.0-alpine
 
 # copy artifact build from the 'build environment'
 COPY --from=build /app/dist /usr/share/nginx/html
+COPY ./.nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # expose port 80
 EXPOSE 80
