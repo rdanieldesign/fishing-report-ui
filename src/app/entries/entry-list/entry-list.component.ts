@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EntryService } from '../entry.service';
+import { concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entry-list',
@@ -16,6 +17,16 @@ export class EntryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.entrylistservice.getAllEntries()
+      .subscribe((entries) => {
+        this.entries = entries;
+      })
+  }
+
+  deleteEntry(id: string) {
+    this.entrylistservice.deleteEntry(id)
+      .pipe(
+        concatMap(() => this.entrylistservice.getAllEntries())
+      )
       .subscribe((entries) => {
         this.entries = entries;
       })

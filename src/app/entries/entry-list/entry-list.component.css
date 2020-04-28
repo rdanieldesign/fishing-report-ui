@@ -5,4 +5,14 @@
 
 .content {
     margin: 1rem 0;
+    flex: 1 1 auto;
+}
+
+.body {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.delete {
+    align-self: center;
 }
