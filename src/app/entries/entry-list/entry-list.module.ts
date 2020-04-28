@@ -5,6 +5,7 @@ import { EntryListRoutingModule } from './entry-list-routing.module';
 import { EntryListComponent } from './entry-list.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [EntryListComponent],
@@ -13,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
     EntryListRoutingModule,
     MatListModule,
     MatButtonModule,
+    MatIconModule,
   ]
 })
 export class EntryListModule { }

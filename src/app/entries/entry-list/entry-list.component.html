@@ -1,12 +1,22 @@
 <section *ngFor="let entry of entries">
-    <div class="content">
-        <p class="mat-body">{{ entry.narrative || entry }}</p>
-        <div class="mat-small">
-            Location: {{ entry.location }}
+    <div class="body">
+        <div class="content">
+            <p class="mat-body">{{ entry.narrative || entry }}</p>
+            <div class="mat-small">
+                Location: {{ entry.location }}
+            </div>
+            <div class="mat-small">
+                Date: {{ entry.date }}
+            </div>
         </div>
-        <div class="mat-small">
-            Date: {{ entry.date }}
-        </div>
+        <button
+            class="delete"
+            mat-icon-button
+            color="warn"
+            (click)="deleteEntry(entry.id)"
+            >
+            <mat-icon>highlight_off</mat-icon>
+        </button>
     </div>
     <mat-divider></mat-divider>
 </section>

@@ -25,4 +25,8 @@ export class EntryService {
     return this.httpClient.post<string>(`${environment.apiDomain}/api/new-entry`, newEntry);
   }
 
+  deleteEntry(entryId: string): Observable<null> {
+    return this.httpClient.delete<null>(`${environment.apiDomain}/api/entry/${entryId}`)
+  }
+
 }
