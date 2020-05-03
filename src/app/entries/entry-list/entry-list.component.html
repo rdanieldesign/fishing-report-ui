@@ -6,36 +6,41 @@
 </section>
 <ng-template #entryView>
     <section class="container">
-        <section
-            *ngFor="let entry of entries"
-            class="post"
-            >
-            <div class="body">
-                <div class="content">
-                    <a
-                        class="narrative mat-body"
-                        [routerLink]="[entry.id]"
+        <ng-container *ngIf="entries?.length; else noEntries">
+            <section
+                *ngFor="let entry of entries"
+                class="post"
+                >
+                <div class="body">
+                    <div class="content">
+                        <a
+                            class="narrative mat-body"
+                            [routerLink]="[entry.id]"
+                            >
+                            {{ entry.narrative || entry }}
+                        </a>
+                        <div class="mat-small">
+                            Location: {{ entry.location }}
+                        </div>
+                        <div class="mat-small">
+                            Date: {{ entry.date }}
+                        </div>
+                    </div>
+                    <button
+                        class="delete"
+                        mat-icon-button
+                        color="warn"
+                        (click)="deleteEntry(entry.id)"
                         >
-                        {{ entry.narrative || entry }}
-                    </a>
-                    <div class="mat-small">
-                        Location: {{ entry.location }}
-                    </div>
-                    <div class="mat-small">
-                        Date: {{ entry.date }}
-                    </div>
+                        <mat-icon>highlight_off</mat-icon>
+                    </button>
                 </div>
-                <button
-                    class="delete"
-                    mat-icon-button
-                    color="warn"
-                    (click)="deleteEntry(entry.id)"
-                    >
-                    <mat-icon>highlight_off</mat-icon>
-                </button>
-            </div>
-            <mat-divider></mat-divider>
-        </section>
+                <mat-divider></mat-divider>
+            </section>
+        </ng-container>
+        <ng-template #noEntries>
+            <span class="no-entries mat-caption">No Entries Available</span>
+        </ng-template>
     </section>
     <button
         class="create-button"

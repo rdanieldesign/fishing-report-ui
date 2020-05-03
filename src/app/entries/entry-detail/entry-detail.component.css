@@ -13,3 +13,8 @@
     color: white;
     flex: 0 0 auto;
 }
+
+.loading {
+    justify-content: center;
+    align-items: center;
+}

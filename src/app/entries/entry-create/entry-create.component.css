@@ -10,3 +10,11 @@
 .cancel-button {
     margin-top: auto;
 }
+
+.scroll-area {
+    overflow-y: auto;
+}
+
+.field {
+    width: 100%;
+}

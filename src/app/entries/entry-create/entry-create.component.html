@@ -1,16 +1,18 @@
 <form class="create-form flex-full-height">
-  <mat-form-field>
-    <mat-label>Narrative</mat-label>
-    <input matInput placeholder="Add Narrative Here" [formControl]="narrative" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Location</mat-label>
-    <input matInput placeholder="Add Location Here" [formControl]="location" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Date</mat-label>
-    <input matInput placeholder="Add Date Here" [formControl]="date" />
-  </mat-form-field>
+  <div class=scroll-area>
+    <mat-form-field class="field">
+      <mat-label>Narrative</mat-label>
+      <textarea matInput placeholder="Add Narrative Here" [formControl]="narrative"></textarea>
+    </mat-form-field>
+    <mat-form-field class="field">
+      <mat-label>Location</mat-label>
+      <input matInput placeholder="Add Location Here" [formControl]="location" />
+    </mat-form-field>
+    <mat-form-field class="field">
+      <mat-label>Date</mat-label>
+      <input matInput placeholder="Add Date Here" [formControl]="date" />
+    </mat-form-field>
+  </div>
   <button class="cancel-button" type="button" mat-stroked-button [routerLink]="['/']">
     Cancel
   </button>
