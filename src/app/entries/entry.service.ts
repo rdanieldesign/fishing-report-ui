@@ -21,6 +21,10 @@ export class EntryService {
       }));
   }
 
+  getEntry(entryId: string): Observable<IEntry> {
+    return this.httpClient.get<IEntry>(`${environment.apiDomain}/api/entry/${entryId}`)
+  }
+
   createEntry(newEntry: INewEntry): Observable<string> {
     return this.httpClient.post<string>(`${environment.apiDomain}/api/new-entry`, newEntry);
   }

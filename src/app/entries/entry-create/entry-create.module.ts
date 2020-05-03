@@ -3,11 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { EntryCreateRoutingModule } from './entry-create-routing.module';
 import { EntryCreateComponent } from './entry-create.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [EntryCreateComponent],
@@ -15,10 +13,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     EntryCreateRoutingModule,
-    MatInputModule,
-    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
   ]
 })
 export class EntryCreateModule { }

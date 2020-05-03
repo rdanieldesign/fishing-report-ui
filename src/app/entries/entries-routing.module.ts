@@ -16,6 +16,10 @@ const routes: Routes = [
         path: 'create',
         loadChildren: () => import('./entry-create/entry-create.module').then(m => m.EntryCreateModule)
       },
+      {
+        path: ':entryId',
+        loadChildren: () => import('./entry-detail/entry-detail.module').then(m => m.EntryDetailModule)
+      },
     ]
   },
 ];

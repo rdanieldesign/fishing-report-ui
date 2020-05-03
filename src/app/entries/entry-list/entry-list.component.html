@@ -1,30 +1,48 @@
-<section *ngFor="let entry of entries">
-    <div class="body">
-        <div class="content">
-            <p class="mat-body">{{ entry.narrative || entry }}</p>
-            <div class="mat-small">
-                Location: {{ entry.location }}
-            </div>
-            <div class="mat-small">
-                Date: {{ entry.date }}
-            </div>
-        </div>
-        <button
-            class="delete"
-            mat-icon-button
-            color="warn"
-            (click)="deleteEntry(entry.id)"
-            >
-            <mat-icon>highlight_off</mat-icon>
-        </button>
-    </div>
-    <mat-divider></mat-divider>
-</section>
-<button
-    class="create-button"
-    mat-flat-button
-    color="accent"
-    routerLink="/entries/create"
+<section
+    *ngIf="loading; else entryView"
+    class="loading"
     >
-    Create New Entry
-</button>
+    <mat-spinner></mat-spinner>
+</section>
+<ng-template #entryView>
+    <section class="container">
+        <section
+            *ngFor="let entry of entries"
+            class="post"
+            >
+            <div class="body">
+                <div class="content">
+                    <a
+                        class="narrative mat-body"
+                        [routerLink]="[entry.id]"
+                        >
+                        {{ entry.narrative || entry }}
+                    </a>
+                    <div class="mat-small">
+                        Location: {{ entry.location }}
+                    </div>
+                    <div class="mat-small">
+                        Date: {{ entry.date }}
+                    </div>
+                </div>
+                <button
+                    class="delete"
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteEntry(entry.id)"
+                    >
+                    <mat-icon>highlight_off</mat-icon>
+                </button>
+            </div>
+            <mat-divider></mat-divider>
+        </section>
+    </section>
+    <button
+        class="create-button"
+        mat-flat-button
+        color="accent"
+        routerLink="/entries/create"
+        >
+        Create New Entry
+    </button>
+</ng-template>

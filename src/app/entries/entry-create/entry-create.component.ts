@@ -6,7 +6,8 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-entry-create',
   templateUrl: './entry-create.component.html',
-  styleUrls: ['./entry-create.component.css']
+  styleUrls: ['./entry-create.component.css'],
+  host: { class: 'flex-full-height centered-container' },
 })
 export class EntryCreateComponent {
 

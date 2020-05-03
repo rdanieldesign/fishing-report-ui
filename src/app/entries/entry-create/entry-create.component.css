@@ -2,3 +2,11 @@
     display: flex;
     flex-flow: column nowrap;
 }
+
+.create-button {
+    margin-top: 1rem;
+}
+
+.cancel-button {
+    margin-top: auto;
+}
