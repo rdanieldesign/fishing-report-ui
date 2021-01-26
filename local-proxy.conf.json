@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://0.0.0.0:8000/api",
+    "target": "https://www.fishing-report.site/api",
     "secure": false,
     "changeOrigin": true
   }
