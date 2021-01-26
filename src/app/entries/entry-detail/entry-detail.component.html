@@ -5,13 +5,16 @@
     <div class="centered-container flex-full-height">
         <section class="content flex-full-height">
             <p class="narrative mat-body">
-            {{ entry.narrative || entry }}
+            {{ entry.notes || entry.date }}
             </p>
             <div class="mat-small">
-            Location: {{ entry.location }}
+                Location: {{ entry.locationId }}
             </div>
             <div class="mat-small">
-            Date: {{ entry.date }}
+                Date: {{ entry.date }}
+            </div>
+            <div class="mat-small">
+                Catch Count: {{ entry.catchCount }}
             </div>
         </section>
         <button class="create-button" type="button" mat-flat-button color="warn" (click)="deleteEntry()">
