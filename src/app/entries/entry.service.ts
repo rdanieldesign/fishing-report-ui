@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { IEntry, IEntryMap, INewEntry } from './interfaces/entry.interface';
+import { IEntry, INewEntry } from './interfaces/entry.interface';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -15,22 +14,19 @@ export class EntryService {
   ) { }
 
   getAllEntries(): Observable<IEntry[]> {
-    return this.httpClient.get<IEntryMap>(`${environment.apiDomain}/api/all-entries`)
-      .pipe(map((entryMap: IEntryMap): IEntry[] => {
-        return Object.keys(entryMap).map((key: string) => ({ id: key, ...entryMap[key] }))
-      }));
+    return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports`);
   }
 
   getEntry(entryId: string): Observable<IEntry> {
-    return this.httpClient.get<IEntry>(`${environment.apiDomain}/api/entry/${entryId}`)
+    return this.httpClient.get<IEntry>(`${environment.apiDomain}/api/reports/${entryId}`)
   }
 
   createEntry(newEntry: INewEntry): Observable<string> {
-    return this.httpClient.post<string>(`${environment.apiDomain}/api/new-entry`, newEntry);
+    return this.httpClient.post<string>(`${environment.apiDomain}/api/reports`, newEntry);
   }
 
   deleteEntry(entryId: string): Observable<null> {
-    return this.httpClient.delete<null>(`${environment.apiDomain}/api/entry/${entryId}`)
+    return this.httpClient.delete<null>(`${environment.apiDomain}/api/reports/${entryId}`)
   }
 
 }

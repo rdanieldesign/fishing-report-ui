@@ -1,13 +1,10 @@
 export interface INewEntry {
     date: string;
-    location: string;
-    narrative: string;
+    locationId: number;
+    notes: string;
+    catchCount: number;
 }
 
 export interface IEntry extends INewEntry {
     id: string;
-}
-
-export interface IEntryMap {
-    [key: string]: IEntry;
 }
