@@ -14,7 +14,7 @@ export class EntryService {
   ) { }
 
   getAllEntries(): Observable<IEntry[]> {
-    return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports`);
+    return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports?details=true`);
   }
 
   getEntry(entryId: string): Observable<IEntry> {

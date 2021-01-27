@@ -17,13 +17,13 @@
                             class="narrative mat-body"
                             [routerLink]="[entry.id]"
                             >
-                            {{ entry.notes || entry.date }}
+                            {{ entry.notes || (entry.date | date) }}
                         </a>
                         <div class="mat-small">
-                            Location: {{ entry.locationId }}
+                            Location: {{ entry.locationName }}
                         </div>
                         <div class="mat-small">
-                            Date: {{ entry.date }}
+                            Date: {{ entry.date | date }}
                         </div>
                         <div class="mat-small">
                             Catch Count: {{ entry.catchCount }}
