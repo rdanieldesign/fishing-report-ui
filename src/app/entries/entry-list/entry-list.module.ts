@@ -5,6 +5,7 @@ import { EntryListRoutingModule } from './entry-list-routing.module';
 import { EntryListComponent } from './entry-list.component';
 import { MatListModule } from '@angular/material/list';
 import { SharedModule } from '../../shared/shared.module';
+import { ConfirmModalModule } from 'src/app/confirm-modal/confirm-modal.module';
 
 @NgModule({
   declarations: [EntryListComponent],
@@ -13,6 +14,7 @@ import { SharedModule } from '../../shared/shared.module';
     EntryListRoutingModule,
     MatListModule,
     SharedModule,
+    ConfirmModalModule,
   ]
 })
 export class EntryListModule { }
