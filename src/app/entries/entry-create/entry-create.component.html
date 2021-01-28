@@ -1,40 +1,69 @@
-
-<section
-    *ngIf="loading; else createView"
-    class="loading"
-    >
-    <mat-spinner></mat-spinner>
+<section *ngIf="loading; else createView" class="loading">
+  <mat-spinner></mat-spinner>
 </section>
 <ng-template #createView>
-  <form class="create-form flex-full-height">
-    <div class=scroll-area>
+  <form class="create-form flex-full-height" [formGroup]="entryForm">
+    <div class="scroll-area">
       <mat-form-field class="field">
         <mat-label>Notes</mat-label>
-        <textarea matInput placeholder="Add Narrative Here" [formControl]="notes"></textarea>
+        <textarea
+          required
+          matInput
+          class="notes"
+          placeholder="Add Narrative Here"
+          formControlName="notes"
+        ></textarea>
       </mat-form-field>
       <mat-form-field class="field">
         <mat-label>Location</mat-label>
-        <mat-select [formControl]="location">
-          <mat-option *ngFor="let location of locationOptions" [value]="location.id">
+        <mat-select required formControlName="locationId">
+          <mat-option
+            *ngFor="let location of locationOptions"
+            [value]="location.id"
+          >
             {{ location.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field class="field">
         <mat-label>Date</mat-label>
-        <input matInput [matDatepicker]="picker" [formControl]="date">
+        <input
+          required
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+        />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <mat-form-field class="field">
         <mat-label>Catch Count</mat-label>
-        <input matInput type="number" placeholder="How many fish did you catch?" [formControl]="catchCount"/>
+        <input
+          required
+          matInput
+          type="number"
+          placeholder="How many fish did you catch?"
+          formControlName="catchCount"
+          min="0"
+        />
       </mat-form-field>
     </div>
-    <button class="cancel-button" type="button" mat-stroked-button [routerLink]="['/']">
+    <button
+      class="cancel-button"
+      type="button"
+      mat-stroked-button
+      [routerLink]="['/']"
+    >
       Cancel
     </button>
-    <button class="create-button" type="button" mat-flat-button color="accent" (click)="createEntry()">
+    <button
+      class="create-button"
+      type="button"
+      mat-flat-button
+      color="accent"
+      [disabled]="!entryForm.valid"
+      (click)="createEntry()"
+    >
       Submit
     </button>
   </form>

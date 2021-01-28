@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EntryService } from '../entry.service';
 import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { LocationAPIService } from '../../locations/services/location-api.service';
 import { ILocation } from 'src/app/locations/interfaces/location.interface';
+import { INewEntry } from '../interfaces/entry.interface';
 
 @Component({
   selector: 'app-entry-create',
@@ -15,10 +16,12 @@ import { ILocation } from 'src/app/locations/interfaces/location.interface';
 export class EntryCreateComponent implements OnInit {
 
   loading = true;
-  notes = new FormControl('');
-  location = new FormControl('');
-  date = new FormControl('');
-  catchCount = new FormControl(null);
+  entryForm = new FormGroup({
+    notes: new FormControl('', [Validators.required]),
+    locationId: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
+    catchCount: new FormControl(null, [Validators.required]),
+  })
   locationOptions: ILocation[];
 
   constructor(
@@ -36,11 +39,12 @@ export class EntryCreateComponent implements OnInit {
   }
 
   createEntry() {
+    const formValue: INewEntry = this.entryForm.value;
     this.entryService.createEntry({
-      notes: this.notes.value,
-      locationId: this.location.value,
-      date: moment.utc(this.date.value).format("YYYY-MM-DD HH:mm:ss"),
-      catchCount: this.catchCount.value,
+      notes: formValue.notes,
+      locationId: formValue.locationId,
+      date: moment.utc(formValue.date).format("YYYY-MM-DD HH:mm:ss"),
+      catchCount: formValue.catchCount,
     })
       .subscribe(() => this.router.navigate(['/entries']));
   }

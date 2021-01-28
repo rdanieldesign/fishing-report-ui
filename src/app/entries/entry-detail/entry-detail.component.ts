@@ -30,6 +30,10 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.entryService.getEntry(this.activeRoute.snapshot.params.entryId)
       .subscribe((entry: IEntry) => {
+        if (!entry) {
+          this.router.navigate(['/']);
+          return;
+        }
         this.entry = entry;
         this.loading = false;
       });
