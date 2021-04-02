@@ -1,0 +1,37 @@
+<section *ngIf="loading; else loginTemplate" class="loading">
+  <mat-spinner></mat-spinner>
+</section>
+<ng-template #loginTemplate>
+  <form class="login-form flex-full-height" [formGroup]="loginForm">
+    <div class="scroll-area">
+      <mat-form-field class="field">
+        <mat-label>Email</mat-label>
+        <input
+          required
+          matInput
+          type="text"
+          formControlName="email"
+        />
+      </mat-form-field>
+      <mat-form-field class="field">
+        <mat-label>Password</mat-label>
+        <input
+          required
+          matInput
+          type="password"
+          formControlName="password"
+        />
+      </mat-form-field>
+    </div>
+    <button
+      class="login-button"
+      type="button"
+      mat-flat-button
+      color="accent"
+      [disabled]="!loginForm.valid"
+      (click)="login()"
+    >
+      Log In
+    </button>
+  </form>
+</ng-template>

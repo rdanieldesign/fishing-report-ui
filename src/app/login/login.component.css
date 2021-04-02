@@ -1,0 +1,23 @@
+.login-form {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.login-button {
+  margin-top: 1rem;
+}
+
+.scroll-area {
+  overflow-y: auto;
+}
+
+.field {
+  width: 100%;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+}

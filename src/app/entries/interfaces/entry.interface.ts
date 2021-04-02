@@ -8,4 +8,5 @@ export interface INewEntry {
 export interface IEntry extends INewEntry {
     id: string;
     locationName: string;
+    authorId: number;
 }

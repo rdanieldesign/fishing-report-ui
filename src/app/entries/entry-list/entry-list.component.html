@@ -30,6 +30,7 @@
                         </div>
                     </div>
                     <button
+                        *ngIf="(currentUserId$ | async) === entry.authorId"
                         class="delete"
                         mat-icon-button
                         color="warn"

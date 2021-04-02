@@ -17,13 +17,20 @@
                 Catch Count: {{ entry.catchCount }}
             </div>
         </section>
-        <button class="create-button" type="button" mat-flat-button color="warn" (click)="deleteEntry()">
+        <button
+            *ngIf="(currentUserId$ | async) === entry.authorId"
+            class="create-button"
+            type="button"
+            mat-flat-button
+            color="warn"
+            (click)="deleteEntry()"
+            >
           Delete Entry
         </button>
     </div>
     <footer
         class="back-footer"
-        [routerLink]="['/']" 
+        [routerLink]="['/entries']" 
         >
         <mat-icon>keyboard_arrow_left</mat-icon>
         <span>Entries</span>

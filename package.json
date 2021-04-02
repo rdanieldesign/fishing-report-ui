@@ -9,7 +9,8 @@
     "build:prod": "ng build --configuration=production --output-path=dist",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "deploy": "scp -r dist/* rdanieldesign@212.1.214.83:/var/www/fishing-report.site/html"
   },
   "private": true,
   "dependencies": {
