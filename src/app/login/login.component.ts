@@ -27,7 +27,6 @@ export class LoginComponent implements OnDestroy {
   ) { }
 
   login() {
-    debugger;
     this.loginService.login(this.loginForm.value)
       .pipe(
         tap(() => {

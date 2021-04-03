@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [],
@@ -13,12 +14,14 @@ import { MatInputModule } from '@angular/material/input';
     MatIconModule,
     MatProgressSpinnerModule,
     MatInputModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
     MatInputModule,
+    MatSnackBarModule,
   ],
 })
 export class SharedModule { }

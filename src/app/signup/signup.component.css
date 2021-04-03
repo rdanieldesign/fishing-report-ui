@@ -1,9 +1,9 @@
-.login-form {
+.signup-form {
   display: flex;
   flex-flow: column nowrap;
 }
 
-.login-button {
+.signup-button {
   margin-top: 1rem;
 }
 
@@ -20,8 +20,4 @@
   align-items: center;
   justify-content: center;
   flex: 1 1 auto;
-}
-
-.signup {
-  margin-top: 1rem;
 }
