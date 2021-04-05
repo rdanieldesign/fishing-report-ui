@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { LoginService } from './login.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -22,12 +22,12 @@ export class LoginComponent implements OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    private readonly loginService: LoginService,
+    private readonly authService: AuthService,
     private readonly router: Router,
   ) { }
 
   login() {
-    this.loginService.login(this.loginForm.value)
+    this.authService.login(this.loginForm.value)
       .pipe(
         tap(() => {
           this.loading = true;

@@ -1,0 +1,18 @@
+<mat-toolbar
+    class="header"
+    color="primary"
+    >
+    <span> Fishing Reports </span>
+    <div
+        *ngIf="(currentUserName$ | async) as currentUserName"
+        class="user"
+        >
+        <span> {{ currentUserName }} </span>
+        <a
+            class="link"
+            (click)="logout()"
+            >
+            {{ currentUserName ? "Log Out" : "Log In" }}
+        </a>
+    </div>
+</mat-toolbar>

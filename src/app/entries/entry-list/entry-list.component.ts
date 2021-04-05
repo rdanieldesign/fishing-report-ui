@@ -3,7 +3,7 @@ import { EntryService } from '../entry.service';
 import { concatMap, filter, map, take, takeUntil, tap } from 'rxjs/operators';
 import { ConfirmModalComponent } from 'src/app/confirm-modal/confirm-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UserService } from 'src/app/user/services/user.service';
 import { IUser } from 'src/app/user/interfaces/user.interface';
 
@@ -17,8 +17,10 @@ export class EntryListComponent implements OnInit, OnDestroy {
 
   entries = [];
   loading = true;
-  currentUserId$: Observable<number> = this.userService.currentUser$
-    .pipe(map((user: IUser): number => user.id));
+  currentUserId$: Observable<number | null> = this.userService.currentUser$
+    .pipe(
+      map((user: IUser | null): number | null => user ? user.id : null)
+    );
 
   private destroy$ = new Subject();
 

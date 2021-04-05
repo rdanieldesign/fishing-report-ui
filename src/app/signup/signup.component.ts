@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
-import { SignupService } from './signup.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -24,12 +24,12 @@ export class SignupComponent implements OnDestroy {
   private destroy$ = new Subject();
 
   constructor(
-    private readonly signupService: SignupService,
+    private readonly authService: AuthService,
     private readonly router: Router,
   ) { }
 
   signup() {
-    this.signupService.signup(this.signupForm.value)
+    this.authService.signup(this.signupForm.value)
       .pipe(
         tap(() => {
           this.loading = true;

@@ -19,8 +19,10 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
 
   entry: IEntry;
   loading = true;
-  currentUserId$: Observable<number> = this.userService.currentUser$
-    .pipe(map((user: IUser): number => user.id));
+  currentUserId$: Observable<number | null> = this.userService.currentUser$
+    .pipe(
+      map((user: IUser | null): number => user ? user.id : null)
+    );
 
   private destroy$ = new Subject();
 
