@@ -33,9 +33,18 @@
     >
       Log In
     </button>
+    <button
+      class="login-button"
+      type="button"
+      mat-stroked-button
+      color="primary"
+      (click)="continue()"
+    >
+      Continue without logging in
+    </button>
     <span class="signup">
       or
-      <a [routerLink]="['/signup']">create an account</a>
+      <a [routerLink]="['/signup']">Create an account</a>
     </span>
   </form>
 </ng-template>

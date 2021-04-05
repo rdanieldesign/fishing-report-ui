@@ -47,6 +47,10 @@ export class LoginComponent implements OnDestroy {
       });
   }
 
+  continue() {
+    this.router.navigate(['/entries']);
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
   }

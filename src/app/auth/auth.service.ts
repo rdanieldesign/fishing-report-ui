@@ -23,7 +23,7 @@ export class AuthService {
   ) {
     let token: string | null;
     try {
-      token = localStorage.getItem(this.authStorageKey);
+      token = JSON.parse(localStorage.getItem(this.authStorageKey));
     } catch (err) {
       token = null;
     }
@@ -64,7 +64,7 @@ export class AuthService {
 
   private setTokenValue(token: string | null) {
     this._authToken$.next(token);
-    localStorage.setItem(this.authStorageKey, token);
+    localStorage.setItem(this.authStorageKey, JSON.stringify(token));
   }
   
 }
