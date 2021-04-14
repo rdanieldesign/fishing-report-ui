@@ -47,6 +47,7 @@
         </ng-template>
     </section>
     <button
+        *ngIf="currentUserId$ | async"
         class="create-button"
         mat-flat-button
         color="accent"
