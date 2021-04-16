@@ -1,2 +1,13 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<app-header (toggleSideNav)="toggleSideNav()"></app-header>
+<mat-sidenav-container class="container">
+  <mat-sidenav
+    mode="over"
+    position="end"
+    [opened]="openSideNav"
+    >
+      <app-side-nav (toggleSideNav)="toggleSideNav()"></app-side-nav>
+  </mat-sidenav>
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

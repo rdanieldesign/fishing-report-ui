@@ -9,10 +9,12 @@ import { AuthInterceptor } from './shared/interceptors/auth.interceptor';
 import { HeaderModule } from './header/header.module';
 import { SharedModule } from './shared/shared.module';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { SideNavModule } from './side-nav/side-nav.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,6 +23,8 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     HttpClientModule,
     HeaderModule,
     SharedModule,
+    MatSidenavModule,
+    SideNavModule,
   ],
   providers: [
     {

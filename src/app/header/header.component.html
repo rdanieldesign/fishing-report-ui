@@ -5,11 +5,12 @@
     <span> Fishing Reports </span>
     <div class="user">
         <span> {{ currentUserName$ | async }} </span>
-        <a
-            class="link"
-            (click)="logout()"
+        <button
+            mat-icon-button
+            position="end"
+            (click)="toggleNav()"
             >
-            {{ (currentUserName$ | async) ? "Log Out" : "Log In" }}
-        </a>
+            <mat-icon>menu</mat-icon>
+        </button>
     </div>
 </mat-toolbar>

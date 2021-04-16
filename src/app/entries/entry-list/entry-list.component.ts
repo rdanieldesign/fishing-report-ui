@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { UserService } from 'src/app/user/services/user.service';
 import { IUser } from 'src/app/user/interfaces/user.interface';
+import { Route } from '@angular/compiler/src/core';
+import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'app-entry-list',
@@ -28,10 +30,11 @@ export class EntryListComponent implements OnInit, OnDestroy {
     private readonly entrylistservice: EntryService,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
+    private readonly route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    this.entrylistservice.getAllEntries()
+    this.entrylistservice.getAllEntries(this.route.snapshot.data.type)
       .subscribe((entries) => {
         this.entries = entries;
         this.loading = false;
@@ -52,7 +55,7 @@ export class EntryListComponent implements OnInit, OnDestroy {
           this.loading = true;
         }),
         concatMap(() => this.entrylistservice.deleteEntry(id)),
-        concatMap(() => this.entrylistservice.getAllEntries()),
+        concatMap(() => this.entrylistservice.getAllEntries(this.route.snapshot.data.type)),
         takeUntil(this.destroy$)
       )
       .subscribe((entries) => {

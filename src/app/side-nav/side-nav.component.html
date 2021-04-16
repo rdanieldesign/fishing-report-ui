@@ -1,0 +1,29 @@
+<ng-container *ngIf="currentUserName$ | async">
+    <div class="nav-item">
+        <a
+            class="link"
+            [routerLink]="['/my-entries']" 
+            >
+            My Reports
+        </a>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="nav-item">
+        <a
+            class="link"
+            [routerLink]="['/all-entries']" 
+            >
+            All Reports
+        </a>
+    </div>
+    <mat-divider></mat-divider>
+</ng-container>
+<div class="nav-item">
+    <a
+        class="link"
+        (click)="logout()"
+        >
+        {{ (currentUserName$ | async) ? "Log Out" : "Log In" }}
+    </a>
+</div>
+<mat-divider></mat-divider>

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IEntry, INewEntry } from './interfaces/entry.interface';
 import { environment } from '../../environments/environment';
+import { EntryTypes } from './entry.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,12 @@ export class EntryService {
     private httpClient: HttpClient
   ) { }
 
-  getAllEntries(): Observable<IEntry[]> {
-    return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports?details=true`);
+  getAllEntries(listType: EntryTypes): Observable<IEntry[]> {
+    if (listType === EntryTypes.All) {
+      return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports?details=true`);
+    } else {
+      return this.httpClient.get<IEntry[]>(`${environment.apiDomain}/api/reports/my-reports?details=true`);
+    }
   }
 
   getEntry(entryId: string): Observable<IEntry> {
