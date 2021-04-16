@@ -36,7 +36,7 @@ export class LoginComponent implements OnDestroy {
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/entries']);
+          this.router.navigate(['/all-entries']);
         },
         error: () => {
           this.loginForm.reset();
@@ -48,7 +48,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   continue() {
-    this.router.navigate(['/entries']);
+    this.router.navigate(['/all-entries']);
   }
 
   ngOnDestroy() {

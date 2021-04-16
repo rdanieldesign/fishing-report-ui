@@ -32,13 +32,14 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
+    private readonly route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.entryService.getEntry(this.activeRoute.snapshot.params.entryId)
       .subscribe((entry: IEntry) => {
         if (!entry) {
-          this.router.navigate(['/entries']);
+          this.router.navigate(['../'], { relativeTo: this.route });
           return;
         }
         this.entry = entry;
@@ -60,7 +61,7 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
-        this.router.navigate(['/entries']);
+        this.router.navigate(['../'], { relativeTo: this.route });
       });
   }
 

@@ -38,7 +38,7 @@ export class SignupComponent implements OnDestroy {
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/entries']);
+          this.router.navigate(['/all-entries']);
         },
         error: () => {
           this.signupForm.reset();

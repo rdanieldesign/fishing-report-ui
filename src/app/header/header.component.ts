@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 import { IUser } from '../user/interfaces/user.interface';
 import { UserService } from '../user/services/user.service';
 
@@ -12,6 +11,8 @@ import { UserService } from '../user/services/user.service';
 })
 export class HeaderComponent {
 
+  @Output() toggleSideNav = new EventEmitter();
+
   currentUserName$: Observable<string> = this.userService.currentUser$
     .pipe(
       map((user: IUser | null): string => user ? user.name : null)
@@ -19,11 +20,10 @@ export class HeaderComponent {
 
   constructor(
     private readonly userService: UserService,
-    private readonly authService: AuthService,
   ) { }
 
-  logout() {
-    this.authService.logout();
+  toggleNav() {
+    this.toggleSideNav.emit();
   }
 
 }

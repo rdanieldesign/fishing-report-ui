@@ -1,58 +1,59 @@
-<section
-    *ngIf="loading; else entryView"
-    class="loading"
-    >
-    <mat-spinner></mat-spinner>
+<mat-accordion class="filter-container">
+  <mat-expansion-panel (opened)="filtersOpened()" (closed)="filtersClosed()">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Filters </mat-panel-title>
+      <mat-panel-description *ngIf="!filtersOpen">
+        {{ filters | filterAsText }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-filter
+      class="filter"
+      [appliedFilters]="filters"
+      (apply)="applyFilter($event)"
+      (clearAll)="clearAllFilters()"
+    ></app-filter>
+  </mat-expansion-panel>
+</mat-accordion>
+<section *ngIf="loading; else entryView" class="loading">
+  <mat-spinner></mat-spinner>
 </section>
 <ng-template #entryView>
-    <section class="container">
-        <ng-container *ngIf="entries?.length; else noEntries">
-            <section
-                *ngFor="let entry of entries"
-                class="post"
-                >
-                <div class="body">
-                    <div class="content">
-                        <a
-                            class="narrative mat-body"
-                            [routerLink]="[entry.id]"
-                            >
-                            {{ entry.notes || (entry.date | date) }}
-                        </a>
-                        <div class="mat-small">
-                            Location: {{ entry.locationName }}
-                        </div>
-                        <div class="mat-small">
-                            Date: {{ entry.date | date }}
-                        </div>
-                        <div class="mat-small">
-                            Catch Count: {{ entry.catchCount }}
-                        </div>
-                    </div>
-                    <button
-                        *ngIf="(currentUserId$ | async) === entry.authorId"
-                        class="delete"
-                        mat-icon-button
-                        color="warn"
-                        (click)="deleteEntry(entry.id)"
-                        >
-                        <mat-icon>highlight_off</mat-icon>
-                    </button>
-                </div>
-                <mat-divider></mat-divider>
-            </section>
-        </ng-container>
-        <ng-template #noEntries>
-            <span class="no-entries mat-caption">No Entries Available</span>
-        </ng-template>
-    </section>
-    <button
-        *ngIf="currentUserId$ | async"
-        class="create-button"
-        mat-flat-button
-        color="accent"
-        routerLink="/entries/create"
-        >
-        Create New Entry
-    </button>
+  <section class="container">
+    <ng-container *ngIf="entries?.length; else noEntries">
+      <section *ngFor="let entry of entries" class="post">
+        <div class="body">
+          <div class="content">
+            <a class="narrative mat-body" [routerLink]="[entry.id]">
+              {{ entry.notes || (entry.date | date) }}
+            </a>
+            <div class="mat-small">Location: {{ entry.locationName }}</div>
+            <div class="mat-small">Date: {{ entry.date | date }}</div>
+            <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
+          </div>
+          <button
+            *ngIf="(currentUserId$ | async) === entry.authorId"
+            class="delete"
+            mat-icon-button
+            color="warn"
+            (click)="deleteEntry(entry.id)"
+          >
+            <mat-icon>highlight_off</mat-icon>
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </section>
+    </ng-container>
+    <ng-template #noEntries>
+      <span class="no-entries mat-caption">No Entries Available</span>
+    </ng-template>
+  </section>
+  <button
+    *ngIf="currentUserId$ | async"
+    class="create-button"
+    mat-flat-button
+    color="accent"
+    [routerLink]="['create']"
+  >
+    Create New Entry
+  </button>
 </ng-template>

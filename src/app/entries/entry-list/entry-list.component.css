@@ -1,55 +1,60 @@
 :host {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .post {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .create-button {
-    margin-top: 2rem;
-    width: 100%;
+  margin-top: 2rem;
+  width: 100%;
 }
 
 .content {
-    flex: 1 1 auto;
-    width: 100%;
-    overflow: hidden;
+  flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
 }
 
 .narrative {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .body {
-    display: flex;
-    flex-flow: row nowrap;
-    margin-bottom: 1rem;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 1rem;
 }
 
 .delete {
-    align-self: center;
+  align-self: center;
 }
 
 .loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
 }
 
 .container {
-    overflow-y: auto;
-    flex: 1 1 auto;
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 .no-entries {
-    color: grey;
-    display: flex;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
+  color: grey;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.filter,
+.filter-container {
+  margin-bottom: 2rem;
 }

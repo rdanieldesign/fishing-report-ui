@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EntryService } from '../entry.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { LocationAPIService } from '../../locations/services/location-api.service';
@@ -28,6 +28,7 @@ export class EntryCreateComponent implements OnInit {
     private entryService: EntryService,
     private locationAPIService: LocationAPIService,
     private router: Router,
+    private readonly route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -46,7 +47,7 @@ export class EntryCreateComponent implements OnInit {
       date: moment.utc(formValue.date).format("YYYY-MM-DD HH:mm:ss"),
       catchCount: formValue.catchCount,
     })
-      .subscribe(() => this.router.navigate(['/entries']));
+      .subscribe(() => this.router.navigate(['../'], { relativeTo: this.route }));
   }
 
 }

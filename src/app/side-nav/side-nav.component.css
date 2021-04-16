@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    flex-flow: column nowrap;
+    min-width: 14rem;
+}
+
+.link {
+  cursor: pointer;
+}
+
+.nav-item {
+    padding: .5rem 1rem;
+}

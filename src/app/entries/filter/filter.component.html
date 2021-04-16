@@ -1,0 +1,84 @@
+<form>
+  <mat-form-field class="field">
+    <mat-label>Field</mat-label>
+    <input
+      type="text"
+      aria-label="Field"
+      matInput
+      [formControl]="fieldControl"
+      [matAutocomplete]="fieldAuto"
+      [readonly]="fieldIsDisabled$ | async"
+    />
+    <mat-autocomplete
+      autoActiveFirstOption
+      #fieldAuto="matAutocomplete"
+      [displayWith]="displayFn"
+    >
+      <mat-option
+        *ngFor="let option of filteredFieldOptions$ | async"
+        [value]="option"
+      >
+        {{ option.label }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <mat-form-field class="field">
+    <mat-label>Value</mat-label>
+    <input
+      type="text"
+      aria-label="Value"
+      matInput
+      [formControl]="valueControl"
+      [matAutocomplete]="valueAuto"
+      [readonly]="valueIsDisabled$ | async"
+    />
+    <mat-autocomplete
+      autoActiveFirstOption
+      #valueAuto="matAutocomplete"
+      [displayWith]="displayFn"
+    >
+      <mat-option
+        *ngFor="let option of filteredValueOptions$ | async"
+        [value]="option"
+      >
+        {{ option.label }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button
+    mat-flat-button
+    color="accent"
+    class="add"
+    type="button"
+    (click)="addFilter()"
+  >
+    Add Filter
+  </button>
+</form>
+<mat-chip-list class="chips">
+  <mat-chip
+    *ngFor="let filter of filters$ | async; let i = index"
+    (removed)="removeFilter(i)"
+  >
+    {{ filter | filterAsText }}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+</mat-chip-list>
+<button
+  mat-flat-button
+  color="accent"
+  class="apply"
+  type="button"
+  (click)="applyFilter()"
+>
+  Apply Filters
+</button>
+<button
+  mat-stroked-button
+  color="accent"
+  class="apply"
+  type="button"
+  (click)="clearAllFilters()"
+>
+  Clear Filters
+</button>
