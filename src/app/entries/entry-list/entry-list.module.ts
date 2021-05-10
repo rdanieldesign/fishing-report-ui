@@ -6,6 +6,9 @@ import { EntryListComponent } from './entry-list.component';
 import { MatListModule } from '@angular/material/list';
 import { SharedModule } from '../../shared/shared.module';
 import { ConfirmModalModule } from 'src/app/confirm-modal/confirm-modal.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FilterModule } from '../filter/filter.module';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [EntryListComponent],
@@ -15,6 +18,9 @@ import { ConfirmModalModule } from 'src/app/confirm-modal/confirm-modal.module';
     MatListModule,
     SharedModule,
     ConfirmModalModule,
-  ]
+    MatToolbarModule,
+    FilterModule,
+    MatExpansionModule,
+  ],
 })
-export class EntryListModule { }
+export class EntryListModule {}

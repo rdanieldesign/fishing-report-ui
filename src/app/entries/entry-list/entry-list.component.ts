@@ -6,8 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subject } from 'rxjs';
 import { UserService } from 'src/app/user/services/user.service';
 import { IUser } from 'src/app/user/interfaces/user.interface';
-import { Route } from '@angular/compiler/src/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { IFilter } from '../filter/filter.interface';
+import { IStringMap } from 'src/app/shared/interfaces/generic.interface';
+import { FilterFieldParams } from '../filter/filter.constant';
+import { IEntry } from '../interfaces/entry.interface';
 
 @Component({
   selector: 'app-entry-list',
@@ -16,13 +19,15 @@ import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
   host: { class: 'flex-full-height centered-container' },
 })
 export class EntryListComponent implements OnInit, OnDestroy {
-
-  entries = [];
+  entries: IEntry[] = [];
+  filters: IFilter[] = [];
   loading = true;
-  currentUserId$: Observable<number | null> = this.userService.currentUser$
-    .pipe(
-      map((user: IUser | null): number | null => user ? user.id : null)
-    );
+  currentUserId$: Observable<
+    number | null
+  > = this.userService.currentUser$.pipe(
+    map((user: IUser | null): number | null => (user ? user.id : null))
+  );
+  filtersOpen = false;
 
   private destroy$ = new Subject();
 
@@ -30,15 +35,11 @@ export class EntryListComponent implements OnInit, OnDestroy {
     private readonly entrylistservice: EntryService,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-  ) { }
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.entrylistservice.getAllEntries(this.route.snapshot.data.type)
-      .subscribe((entries) => {
-        this.entries = entries;
-        this.loading = false;
-      });
+    this.setEntries();
   }
 
   ngOnDestroy() {
@@ -55,12 +56,10 @@ export class EntryListComponent implements OnInit, OnDestroy {
           this.loading = true;
         }),
         concatMap(() => this.entrylistservice.deleteEntry(id)),
-        concatMap(() => this.entrylistservice.getAllEntries(this.route.snapshot.data.type)),
         takeUntil(this.destroy$)
       )
-      .subscribe((entries) => {
-        this.entries = entries;
-        this.loading = false;
+      .subscribe(() => {
+        this.setEntries();
       });
   }
 
@@ -68,7 +67,44 @@ export class EntryListComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       data: { message: 'Are you sure you want to delete this report?' },
     });
-    return dialogRef.afterClosed()
+    return dialogRef.afterClosed();
   }
 
+  applyFilter(filters: IFilter[]) {
+    this.setEntries(filters);
+  }
+
+  clearAllFilters() {
+    this.setEntries();
+  }
+
+  filtersOpened() {
+    this.filtersOpen = true;
+  }
+
+  filtersClosed() {
+    this.filtersOpen = false;
+  }
+
+  private setEntries(filters: IFilter[] = []) {
+    this.loading = true;
+    this.filters = filters;
+    const params: IStringMap =
+      filters && filters.length
+        ? filters.reduce((obj, filter) => {
+            return {
+              ...obj,
+              [FilterFieldParams[
+                filter.field.value
+              ]]: filter.value.value.toString(),
+            };
+          }, {})
+        : [];
+    this.entrylistservice
+      .getAllEntries(this.route.snapshot.data.type, params)
+      .subscribe((entries) => {
+        this.entries = entries;
+        this.loading = false;
+      });
+  }
 }

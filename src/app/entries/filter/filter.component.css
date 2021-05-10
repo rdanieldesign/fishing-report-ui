@@ -1,0 +1,22 @@
+.apply,
+.add,
+.chips {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.field {
+  width: 100%;
+}
+
+.chip {
+  width: 100%;
+}
+
+.chip-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}
