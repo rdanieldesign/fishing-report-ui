@@ -58,3 +58,14 @@
 .filter-container {
   margin-bottom: 2rem;
 }
+
+.filter-description {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.hide-overflow {
+  text-overflow: ellipsis;
+}

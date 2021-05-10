@@ -7,22 +7,20 @@ import { environment } from '../../../environments/environment';
 import { IUser } from '../interfaces/user.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   private readonly _currentUser$ = new BehaviorSubject<IUser | null>(null);
-  currentUser$ = this.authService.authToken$
-    .pipe(
-      switchMap((authToken: string) => {
-        return authToken ? this.getCurrentUser() : this.clearCurrentUser();
-      })
-    );
+  currentUser$ = this.authService.authToken$.pipe(
+    switchMap((authToken: string) => {
+      return authToken ? this.getCurrentUser() : this.clearCurrentUser();
+    })
+  );
 
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly authService: AuthService,
-  ) { }
+    private readonly authService: AuthService
+  ) {}
 
   getCurrentUser() {
     if (this._currentUser$.value) {
@@ -37,11 +35,16 @@ export class UserService {
     return this._currentUser$.asObservable();
   }
 
+  getUsers(): Observable<IUser[]> {
+    return this.httpClient.get<IUser[]>(`${environment.apiDomain}/api/users`);
+  }
+
   private fetchCurrentUser(): Observable<IUser> {
-    return this.httpClient.get<IUser>(`${environment.apiDomain}/api/users/current`)
+    return this.httpClient
+      .get<IUser>(`${environment.apiDomain}/api/users/current`)
       .pipe(
         tap((user: IUser) => this._currentUser$.next(user)),
-        shareReplay(1),
+        shareReplay(1)
       );
   }
 }

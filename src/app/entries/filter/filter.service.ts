@@ -10,10 +10,11 @@ import {
   startWith,
   switchMap,
   takeUntil,
-  tap,
 } from 'rxjs/operators';
 import { ILocation } from 'src/app/locations/interfaces/location.interface';
 import { LocationAPIService } from 'src/app/locations/services/location-api.service';
+import { IUser } from 'src/app/user/interfaces/user.interface';
+import { UserService } from 'src/app/user/services/user.service';
 import { FilterFields } from './filter.enum';
 import { IFilter, IFilterOption } from './filter.interface';
 
@@ -30,6 +31,7 @@ export class FilterService {
   private readonly valueOptions$ = this.getValueOptions();
   private readonly fieldOptions$ = this.getFieldOptions();
   private readonly locationOptions$ = this.getLocationOptions();
+  private readonly userOptions$ = this.getUserOptions();
   private readonly valueSearch$ = this.getControlSearch('value');
   private readonly fieldSearch$ = this.getControlSearch('field');
   private readonly filteredFieldOptions$ = this.getFilteredOptions(
@@ -43,7 +45,10 @@ export class FilterService {
   private readonly filters$ = new BehaviorSubject<IFilter[]>([]);
   private readonly formReset$ = new Subject();
 
-  constructor(private readonly locationAPIService: LocationAPIService) {}
+  constructor(
+    private readonly locationAPIService: LocationAPIService,
+    private readonly userService: UserService
+  ) {}
 
   getFieldControl() {
     return this.filterForm.get('field');
@@ -178,6 +183,10 @@ export class FilterService {
         label: 'Location',
         value: FilterFields.Location,
       },
+      {
+        label: 'Author',
+        value: FilterFields.Author,
+      },
     ]);
   }
 
@@ -192,7 +201,9 @@ export class FilterService {
             case FilterFields.Location: {
               return this.locationOptions$;
             }
-            case FilterFields.Author:
+            case FilterFields.Author: {
+              return this.userOptions$;
+            }
             default: {
               return of([]);
             }
@@ -208,6 +219,18 @@ export class FilterService {
         return locations.map((location) => ({
           label: location.name,
           value: location.id,
+        }));
+      }),
+      shareReplay(1)
+    );
+  }
+
+  private getUserOptions() {
+    return this.userService.getUsers().pipe(
+      map((users: IUser[]): IFilterOption[] => {
+        return users.map((user) => ({
+          label: user.name,
+          value: user.id,
         }));
       }),
       shareReplay(1)

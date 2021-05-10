@@ -57,10 +57,13 @@
 </form>
 <mat-chip-list class="chips">
   <mat-chip
+    class="chip"
     *ngFor="let filter of filters$ | async; let i = index"
     (removed)="removeFilter(i)"
   >
-    {{ filter | filterAsText }}
+    <div class="chip-text">
+      {{ filter | filterAsText }}
+    </div>
     <mat-icon matChipRemove>cancel</mat-icon>
   </mat-chip>
 </mat-chip-list>

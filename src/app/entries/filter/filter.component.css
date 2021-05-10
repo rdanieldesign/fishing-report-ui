@@ -9,3 +9,14 @@
 .field {
   width: 100%;
 }
+
+.chip {
+  width: 100%;
+}
+
+.chip-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+}

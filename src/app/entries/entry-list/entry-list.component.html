@@ -2,7 +2,7 @@
   <mat-expansion-panel (opened)="filtersOpened()" (closed)="filtersClosed()">
     <mat-expansion-panel-header>
       <mat-panel-title> Filters </mat-panel-title>
-      <mat-panel-description *ngIf="!filtersOpen">
+      <mat-panel-description class="filter-description" *ngIf="!filtersOpen">
         {{ filters | filterAsText }}
       </mat-panel-description>
     </mat-expansion-panel-header>
