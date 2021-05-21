@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="filterForm">
   <mat-form-field class="field">
     <mat-label>Field</mat-label>
     <input
@@ -50,6 +50,7 @@
     color="accent"
     class="add"
     type="button"
+    [disabled]="filterForm.invalid"
     (click)="addFilter()"
   >
     Add Filter

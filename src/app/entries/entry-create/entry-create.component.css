@@ -1,31 +1,8 @@
-.create-form {
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.create-button {
-    margin-top: 1rem;
-}
-
-.cancel-button {
-    margin-top: auto;
-}
-
-.scroll-area {
-    overflow-y: auto;
-}
-
-.field {
-    width: 100%;
-}
-
 .notes {
   min-height: 6rem;
 }
 
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1 1 auto;
+.new-location {
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
 }

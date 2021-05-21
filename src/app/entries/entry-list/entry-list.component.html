@@ -1,3 +1,13 @@
+<h1>{{ pageHeader }}</h1>
+<button
+  *ngIf="currentUserId$ | async"
+  class="create-button"
+  mat-flat-button
+  color="accent"
+  [routerLink]="['create']"
+>
+  Create New Entry
+</button>
 <mat-accordion class="filter-container">
   <mat-expansion-panel (opened)="filtersOpened()" (closed)="filtersClosed()">
     <mat-expansion-panel-header>
@@ -47,13 +57,4 @@
       <span class="no-entries mat-caption">No Entries Available</span>
     </ng-template>
   </section>
-  <button
-    *ngIf="currentUserId$ | async"
-    class="create-button"
-    mat-flat-button
-    color="accent"
-    [routerLink]="['create']"
-  >
-    Create New Entry
-  </button>
 </ng-template>

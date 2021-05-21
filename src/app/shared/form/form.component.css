@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.submit-button {
+  margin-top: 1rem;
+}
+
+.cancel-button {
+  margin-top: auto;
+}
+
+.scroll-area {
+  overflow-y: auto;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+}

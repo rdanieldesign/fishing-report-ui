@@ -7,7 +7,7 @@
 }
 
 .create-button {
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   width: 100%;
 }
 
@@ -42,7 +42,6 @@
 }
 
 .container {
-  overflow-y: auto;
   flex: 1 1 auto;
 }
 

@@ -24,4 +24,4 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

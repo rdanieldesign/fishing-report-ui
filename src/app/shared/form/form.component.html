@@ -1,0 +1,28 @@
+<section *ngIf="loading; else formView" class="loading">
+  <mat-spinner></mat-spinner>
+</section>
+<ng-template #formView>
+  <form class="form flex-full-height">
+    <div class="scroll-area">
+      <ng-content></ng-content>
+    </div>
+    <button
+      class="cancel-button"
+      type="button"
+      mat-stroked-button
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="submit-button"
+      type="button"
+      mat-flat-button
+      color="accent"
+      [disabled]="submitDisabled"
+      (click)="submit()"
+    >
+      Submit
+    </button>
+  </form>
+</ng-template>

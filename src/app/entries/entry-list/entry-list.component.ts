@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EntryService } from '../entry.service';
 import { concatMap, filter, map, take, takeUntil, tap } from 'rxjs/operators';
 import { ConfirmModalComponent } from 'src/app/confirm-modal/confirm-modal.component';
@@ -11,6 +11,8 @@ import { IFilter } from '../filter/filter.interface';
 import { IStringMap } from 'src/app/shared/interfaces/generic.interface';
 import { FilterFieldParams } from '../filter/filter.constant';
 import { IEntry } from '../interfaces/entry.interface';
+import { EntryListPageHeaders } from './constants/entry-list.constant';
+import { MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-entry-list',
@@ -19,6 +21,8 @@ import { IEntry } from '../interfaces/entry.interface';
   host: { class: 'flex-full-height centered-container' },
 })
 export class EntryListComponent implements OnInit, OnDestroy {
+  @ViewChild(MatExpansionPanel) filterPanel: MatExpansionPanel;
+
   entries: IEntry[] = [];
   filters: IFilter[] = [];
   loading = true;
@@ -28,6 +32,7 @@ export class EntryListComponent implements OnInit, OnDestroy {
     map((user: IUser | null): number | null => (user ? user.id : null))
   );
   filtersOpen = false;
+  pageHeader = EntryListPageHeaders[this.route.snapshot.data.type];
 
   private destroy$ = new Subject();
 
@@ -72,10 +77,12 @@ export class EntryListComponent implements OnInit, OnDestroy {
 
   applyFilter(filters: IFilter[]) {
     this.setEntries(filters);
+    this.filterPanel.close();
   }
 
   clearAllFilters() {
     this.setEntries();
+    this.filterPanel.close();
   }
 
   filtersOpened() {

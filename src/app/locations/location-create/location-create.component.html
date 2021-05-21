@@ -1,0 +1,27 @@
+<app-form
+  [formGroup]="locationForm"
+  [loading]="loading"
+  [submitDisabled]="!locationForm.valid"
+  (onSubmitClick)="createLocation()"
+  (onCancelClick)="cancel()"
+>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input
+      required
+      matInput
+      placeholder="What's the name of the location?"
+      formControlName="name"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Google Maps Link</mat-label>
+    <textarea
+      required
+      matInput
+      class="link"
+      placeholder="Add a Google Maps link"
+      formControlName="googleMapsLink"
+    ></textarea>
+  </mat-form-field>
+</app-form>

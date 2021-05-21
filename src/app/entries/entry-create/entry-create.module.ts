@@ -9,6 +9,8 @@ import { SharedModule } from '../../shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { FormModule } from 'src/app/shared/form/form.module';
+import { LocationCreateModule } from 'src/app/locations/location-create/location-create.module';
 
 @NgModule({
   declarations: [EntryCreateComponent],
@@ -22,6 +24,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSelectModule,
     ReactiveFormsModule,
     SharedModule,
-  ]
+    FormModule,
+    LocationCreateModule,
+  ],
 })
-export class EntryCreateModule { }
+export class EntryCreateModule {}

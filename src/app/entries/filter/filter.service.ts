@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
 import {
   delay,
@@ -23,8 +23,8 @@ import { IFilter, IFilterOption } from './filter.interface';
 })
 export class FilterService {
   filterForm = new FormGroup({
-    field: new FormControl(),
-    value: new FormControl(),
+    field: new FormControl(null, [Validators.required]),
+    value: new FormControl(null, [Validators.required]),
   });
 
   private readonly destroy$ = new Subject();
@@ -49,6 +49,10 @@ export class FilterService {
     private readonly locationAPIService: LocationAPIService,
     private readonly userService: UserService
   ) {}
+
+  getFilterForm() {
+    return this.filterForm;
+  }
 
   getFieldControl() {
     return this.filterForm.get('field');

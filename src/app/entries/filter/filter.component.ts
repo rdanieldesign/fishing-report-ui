@@ -22,6 +22,8 @@ export class FilterComponent implements OnInit, OnDestroy, OnChanges {
   @Output() apply = new EventEmitter<IFilter[]>();
   @Output() clearAll = new EventEmitter<void>();
 
+  filterForm = this.filterService.getFilterForm();
+
   filteredFieldOptions$ = this.filterService.getFilteredFieldOptions();
   fieldControl = this.filterService.getFieldControl();
   fieldIsDisabled$ = this.filterService.getFieldIsDisabled();
