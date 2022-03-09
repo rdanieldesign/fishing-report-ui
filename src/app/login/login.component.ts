@@ -12,7 +12,6 @@ import { AuthService } from '../auth/auth.service';
   host: { class: 'flex-full-height centered-container' },
 })
 export class LoginComponent implements OnDestroy {
-
   loading = false;
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required]),
@@ -23,16 +22,17 @@ export class LoginComponent implements OnDestroy {
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router,
-  ) { }
+    private readonly router: Router
+  ) {}
 
   login() {
-    this.authService.login(this.loginForm.value)
+    this.authService
+      .login(this.loginForm.value)
       .pipe(
         tap(() => {
           this.loading = true;
         }),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: () => {
@@ -43,16 +43,11 @@ export class LoginComponent implements OnDestroy {
         },
         complete: () => {
           this.loading = false;
-        }
+        },
       });
-  }
-
-  continue() {
-    this.router.navigate(['/all-entries']);
   }
 
   ngOnDestroy() {
     this.destroy$.next();
   }
-
 }

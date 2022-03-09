@@ -1,0 +1,14 @@
+<h1>Add a Friend</h1>
+<ul role="list">
+  <li *ngFor="let item of friendOptions" class="friend">
+    {{ item.name }}
+    <button
+      mat-icon-button
+      color="primary"
+      (click)="requestFriendship(item.id)"
+    >
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+    <mat-divider></mat-divider>
+  </li>
+</ul>

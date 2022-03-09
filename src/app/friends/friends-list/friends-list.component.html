@@ -1,0 +1,86 @@
+<h1>Friends</h1>
+<button
+  class="add-button"
+  mat-flat-button
+  color="accent"
+  [routerLink]="['../add']"
+>
+  Add New Friend
+</button>
+<mat-tab-group>
+  <mat-tab label="Requests">
+    <ng-container
+      *ngTemplateOutlet="
+        friendItem;
+        context: {
+          list: requests,
+          loading: loading,
+          canDecline: true,
+          canApprove: true
+        }
+      "
+    ></ng-container>
+  </mat-tab>
+  <mat-tab label="Friends"
+    ><ng-container
+      *ngTemplateOutlet="
+        friendItem;
+        context: {
+          list: friends,
+          loading: loading,
+          canDecline: true,
+          canApprove: false
+        }
+      "
+    ></ng-container
+  ></mat-tab>
+  <mat-tab label="Pending"
+    ><ng-container
+      *ngTemplateOutlet="
+        friendItem;
+        context: {
+          list: pending,
+          loading: loading,
+          canDecline: false,
+          canApprove: false
+        }
+      "
+    ></ng-container
+  ></mat-tab>
+</mat-tab-group>
+
+<ng-template
+  #friendItem
+  let-list="list"
+  let-loading="loading"
+  let-canDecline="canDecline"
+  let-canApprove="canApprove"
+>
+  <section *ngIf="loading; else friendsListView" class="loading">
+    <mat-spinner></mat-spinner>
+  </section>
+  <ng-template #friendsListView>
+    <ul role="list">
+      <li *ngFor="let item of list" class="friend">
+        {{ item.friendName }}
+        <button
+          *ngIf="canApprove"
+          mat-icon-button
+          color="primary"
+          (click)="confirmFriendship(item.friendId)"
+        >
+          <mat-icon>check_circle_outline</mat-icon>
+        </button>
+        <button
+          *ngIf="canDecline"
+          mat-icon-button
+          color="warn"
+          (click)="deleteFriendship(item.friendId)"
+        >
+          <mat-icon>highlight_off</mat-icon>
+        </button>
+        <mat-divider></mat-divider>
+      </li>
+    </ul>
+  </ng-template>
+</ng-template>

@@ -1,0 +1,44 @@
+:host {
+  overflow: hidden;
+}
+
+.friend {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.add-button {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.content {
+  flex: 1 1 auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.body {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+}
+
+.container {
+  flex: 1 1 auto;
+}
+
+.no-entries {
+  color: grey;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}

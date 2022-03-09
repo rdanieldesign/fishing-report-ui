@@ -6,21 +6,11 @@
     <div class="scroll-area">
       <mat-form-field class="field">
         <mat-label>Email</mat-label>
-        <input
-          required
-          matInput
-          type="text"
-          formControlName="email"
-        />
+        <input required matInput type="text" formControlName="email" />
       </mat-form-field>
       <mat-form-field class="field">
         <mat-label>Password</mat-label>
-        <input
-          required
-          matInput
-          type="password"
-          formControlName="password"
-        />
+        <input required matInput type="password" formControlName="password" />
       </mat-form-field>
     </div>
     <button
@@ -32,15 +22,6 @@
       (click)="login()"
     >
       Log In
-    </button>
-    <button
-      class="login-button"
-      type="button"
-      mat-stroked-button
-      color="primary"
-      (click)="continue()"
-    >
-      Continue without logging in
     </button>
     <span class="signup">
       or
