@@ -1,20 +1,9 @@
 .content {
-    overflow-y: auto;
-    margin-bottom: 2rem;
-}
-
-.back-footer {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
-    height: 4rem;
-    background-color: black;
-    color: white;
-    flex: 0 0 auto;
+  overflow-y: auto;
+  margin-bottom: 2rem;
 }
 
 .loading {
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  align-items: center;
 }

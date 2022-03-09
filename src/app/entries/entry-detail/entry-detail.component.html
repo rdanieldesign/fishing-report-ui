@@ -2,37 +2,28 @@
   <mat-spinner></mat-spinner>
 </section>
 <ng-template #entryView>
-    <div class="centered-container flex-full-height">
-        <section class="content flex-full-height">
-            <p class="narrative mat-body">
-            {{ entry.notes || "No notes available" }}
-            </p>
-            <div class="mat-small">
-                Location: {{ entry.locationName }}
-            </div>
-            <div class="mat-small">
-                Date: {{ entry.date | date }}
-            </div>
-            <div class="mat-small">
-                Catch Count: {{ entry.catchCount }}
-            </div>
-        </section>
-        <button
-            *ngIf="(currentUserId$ | async) === entry.authorId"
-            class="create-button"
-            type="button"
-            mat-flat-button
-            color="warn"
-            (click)="deleteEntry()"
-            >
-          Delete Entry
-        </button>
-    </div>
-    <footer
-        class="back-footer"
-        [routerLink]="['../']" 
-        >
-        <mat-icon>keyboard_arrow_left</mat-icon>
-        <span>Entries</span>
-    </footer>
+  <div class="centered-container flex-full-height">
+    <section class="content flex-full-height">
+      <p class="narrative mat-body">
+        {{ entry.notes || "No notes available" }}
+      </p>
+      <div class="mat-small">Location: {{ entry.locationName }}</div>
+      <div class="mat-small">Date: {{ entry.date | date }}</div>
+      <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
+    </section>
+    <button
+      *ngIf="(currentUserId$ | async) === entry.authorId"
+      class="create-button"
+      type="button"
+      mat-flat-button
+      color="warn"
+      (click)="deleteEntry()"
+    >
+      Delete Entry
+    </button>
+  </div>
+  <app-footer-breadcrumb
+    text="Entries"
+    [link]="['../']"
+  ></app-footer-breadcrumb>
 </ng-template>

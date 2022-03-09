@@ -1,0 +1,10 @@
+.footer-breadcrumb {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+  background-color: black;
+  color: white;
+  flex: 0 0 auto;
+}

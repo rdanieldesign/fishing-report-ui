@@ -8,7 +8,7 @@ import { FriendApiService } from '../services/friend-api.service';
   selector: 'app-friends-add',
   templateUrl: './friends-add.component.html',
   styleUrls: ['./friends-add.component.css'],
-  host: { class: 'flex-full-height centered-container' },
+  host: { class: 'flex-full-height' },
 })
 export class FriendsAddComponent implements OnInit {
   loading = true;

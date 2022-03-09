@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FriendsAddComponent } from './friends-add/friends-add.component';
+import { FooterBreadcrumbModule } from '../shared/footer-breadcrumb/footer-breadcrumb.module';
 
 @NgModule({
   declarations: [FriendsListComponent, FriendsAddComponent],
@@ -18,6 +19,7 @@ import { FriendsAddComponent } from './friends-add/friends-add.component';
     MatDividerModule,
     MatTabsModule,
     MatAutocompleteModule,
+    FooterBreadcrumbModule,
   ],
 })
 export class FriendsModule {}
