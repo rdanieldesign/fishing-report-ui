@@ -30,6 +30,12 @@ export class UserService {
     }
   }
 
+  getUserById(userId: number): Observable<IUser> {
+    return this.httpClient.get<IUser>(
+      `${environment.apiDomain}/api/users/${userId}`
+    );
+  }
+
   clearCurrentUser(): Observable<IUser | null> {
     this._currentUser$.next(null);
     return this._currentUser$.asObservable();

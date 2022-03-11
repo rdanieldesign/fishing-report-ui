@@ -1,6 +1,6 @@
-<h1>{{ pageHeader }}</h1>
+<h1>{{ pageHeader | async }}</h1>
 <button
-  *ngIf="currentUserId$ | async"
+  *ngIf="showCreateButton | async"
   class="create-button"
   mat-flat-button
   color="accent"
@@ -8,7 +8,7 @@
 >
   Create New Entry
 </button>
-<mat-accordion class="filter-container">
+<mat-accordion *ngIf="showFilters | async" class="filter-container">
   <mat-expansion-panel (opened)="filtersOpened()" (closed)="filtersClosed()">
     <mat-expansion-panel-header>
       <mat-panel-title> Filters </mat-panel-title>
@@ -36,7 +36,12 @@
             <a class="narrative mat-body" [routerLink]="[entry.id]">
               {{ entry.notes || (entry.date | date) }}
             </a>
-            <div class="mat-small">Author: {{ entry.authorName }}</div>
+            <div class="mat-small">
+              Author:
+              <a routerLink="/entries/{{ entry.authorId }}" class="mat-small">{{
+                entry.authorName
+              }}</a>
+            </div>
             <div class="mat-small">Location: {{ entry.locationName }}</div>
             <div class="mat-small">Date: {{ entry.date | date }}</div>
             <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>

@@ -11,8 +11,8 @@ import { IFilter } from '../filter/filter.interface';
 import { IStringMap } from 'src/app/shared/interfaces/generic.interface';
 import { FilterFieldParams } from '../filter/filter.constant';
 import { IEntry } from '../interfaces/entry.interface';
-import { EntryListPageHeaders } from './constants/entry-list.constant';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { EntryListViewService } from './entry-list-view.service';
 
 @Component({
   selector: 'app-entry-list',
@@ -26,13 +26,15 @@ export class EntryListComponent implements OnInit, OnDestroy {
   entries: IEntry[] = [];
   filters: IFilter[] = [];
   loading = true;
-  currentUserId$: Observable<
-    number | null
-  > = this.userService.currentUser$.pipe(
-    map((user: IUser | null): number | null => (user ? user.id : null))
-  );
+  currentUserId$: Observable<number | null> =
+    this.userService.currentUser$.pipe(
+      map((user: IUser | null): number | null => (user ? user.id : null))
+    );
   filtersOpen = false;
-  pageHeader = EntryListPageHeaders[this.route.snapshot.data.type];
+  pageHeader: Observable<string> = this.entryListViewService.getPageHeader();
+  showCreateButton: Observable<boolean> =
+    this.entryListViewService.getShowCreateButton();
+  showFilters: Observable<boolean> = this.entryListViewService.getShowFilters();
 
   private destroy$ = new Subject();
 
@@ -40,7 +42,8 @@ export class EntryListComponent implements OnInit, OnDestroy {
     private readonly entrylistservice: EntryService,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly entryListViewService: EntryListViewService
   ) {}
 
   ngOnInit(): void {
@@ -101,17 +104,14 @@ export class EntryListComponent implements OnInit, OnDestroy {
         ? filters.reduce((obj, filter) => {
             return {
               ...obj,
-              [FilterFieldParams[
-                filter.field.value
-              ]]: filter.value.value.toString(),
+              [FilterFieldParams[filter.field.value]]:
+                filter.value.value.toString(),
             };
           }, {})
         : [];
-    this.entrylistservice
-      .getAllEntries(this.route.snapshot.data.type, params)
-      .subscribe((entries) => {
-        this.entries = entries;
-        this.loading = false;
-      });
+    this.entryListViewService.getEntryList(params).subscribe((entries) => {
+      this.entries = entries;
+      this.loading = false;
+    });
   }
 }
