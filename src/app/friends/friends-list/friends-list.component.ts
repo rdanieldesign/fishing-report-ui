@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { concatMap, filter, take, takeUntil, tap } from 'rxjs/operators';
+import { ConfirmModalComponent } from 'src/app/confirm-modal/confirm-modal.component';
 import { IFriendshipDetails } from '../interfaces/friends.interfaces';
 import { FriendApiService } from '../services/friend-api.service';
 
@@ -17,19 +19,34 @@ export class FriendsListComponent implements OnInit {
   loading = true;
   private readonly destroy = new Subject();
 
-  constructor(private readonly friendApiService: FriendApiService) {}
+  constructor(
+    private readonly friendApiService: FriendApiService,
+    private readonly dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.reloadFriendLists();
   }
 
-  deleteFriendship(friendId: number) {
-    this.friendApiService
-      .deleteFriendship(friendId)
-      .pipe(takeUntil(this.destroy))
+  deleteFriendship(friendId: number, shouldConfirm = false) {
+    this.confirmDelete(shouldConfirm)
+      .pipe(
+        take(1),
+        filter(Boolean),
+        concatMap(() => this.friendApiService.deleteFriendship(friendId)),
+        takeUntil(this.destroy)
+      )
       .subscribe(() => {
         this.reloadFriendLists();
       });
+  }
+
+  confirmDelete(shouldConfirm = false): Observable<boolean> {
+    if (!shouldConfirm) return of(true);
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {
+      data: { message: 'Are you sure you want to remove this friend?' },
+    });
+    return dialogRef.afterClosed();
   }
 
   confirmFriendship(friendId: number) {

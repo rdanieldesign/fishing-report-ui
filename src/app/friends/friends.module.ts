@@ -9,6 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FriendsAddComponent } from './friends-add/friends-add.component';
 import { FooterBreadcrumbModule } from '../shared/footer-breadcrumb/footer-breadcrumb.module';
+import { ConfirmModalModule } from '../confirm-modal/confirm-modal.module';
 
 @NgModule({
   declarations: [FriendsListComponent, FriendsAddComponent],
@@ -20,6 +21,7 @@ import { FooterBreadcrumbModule } from '../shared/footer-breadcrumb/footer-bread
     MatTabsModule,
     MatAutocompleteModule,
     FooterBreadcrumbModule,
+    ConfirmModalModule,
   ],
 })
 export class FriendsModule {}

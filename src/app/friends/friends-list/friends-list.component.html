@@ -16,7 +16,9 @@
           list: requests,
           loading: loading,
           canDecline: true,
-          canApprove: true
+          canApprove: true,
+          canSeeEntries: false,
+          shouldConfirmDelete: false
         }
       "
     ></ng-container>
@@ -29,7 +31,9 @@
           list: friends,
           loading: loading,
           canDecline: true,
-          canApprove: false
+          canApprove: false,
+          canSeeEntries: true,
+          shouldConfirmDelete: true
         }
       "
     ></ng-container
@@ -42,7 +46,9 @@
           list: pending,
           loading: loading,
           canDecline: false,
-          canApprove: false
+          canApprove: false,
+          canSeeEntries: false,
+          shouldConfirmDelete: false
         }
       "
     ></ng-container
@@ -55,6 +61,8 @@
   let-loading="loading"
   let-canDecline="canDecline"
   let-canApprove="canApprove"
+  let-canSeeEntries="canSeeEntries"
+  let-shouldConfirmDelete="shouldConfirmDelete"
 >
   <section *ngIf="loading; else friendsListView" class="loading">
     <mat-spinner></mat-spinner>
@@ -62,7 +70,13 @@
   <ng-template #friendsListView>
     <ul role="list">
       <li *ngFor="let item of list" class="friend">
-        {{ item.friendName }}
+        <a
+          *ngIf="canSeeEntries; else staticName"
+          routerLink="/entries/{{ item.friendId }}"
+          class="mat-small"
+          >{{ item.friendName }}</a
+        >
+        <ng-template #staticName>{{ item.friendName }}</ng-template>
         <button
           *ngIf="canApprove"
           mat-icon-button
@@ -75,7 +89,7 @@
           *ngIf="canDecline"
           mat-icon-button
           color="warn"
-          (click)="deleteFriendship(item.friendId)"
+          (click)="deleteFriendship(item.friendId, shouldConfirmDelete)"
         >
           <mat-icon>highlight_off</mat-icon>
         </button>

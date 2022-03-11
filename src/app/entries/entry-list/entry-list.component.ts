@@ -42,7 +42,6 @@ export class EntryListComponent implements OnInit, OnDestroy {
     private readonly entrylistservice: EntryService,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
-    private readonly route: ActivatedRoute,
     private readonly entryListViewService: EntryListViewService
   ) {}
 
