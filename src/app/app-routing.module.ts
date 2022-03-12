@@ -18,7 +18,7 @@ const routes: Routes = [
       import('./signup/signup.module').then((m) => m.SignupModule),
   },
   {
-    path: 'all-entries',
+    path: 'entries',
     loadChildren: () =>
       import('./entries/entries.module').then((m) => m.EntriesModule),
   },
@@ -28,8 +28,15 @@ const routes: Routes = [
       import('./my-entries/my-entries.module').then((m) => m.MyEntriesModule),
   },
   {
-    path: 'entries/:userId',
+    path: 'users/:userId/entries',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'locations/:locationId/entries',
+    loadChildren: () =>
+      import('./locations/location-entries/location-entries.module').then(
+        (m) => m.LocationEntriesModule
+      ),
   },
   {
     path: 'friends',

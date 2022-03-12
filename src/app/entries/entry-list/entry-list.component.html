@@ -38,11 +38,16 @@
             </a>
             <div class="mat-small">
               Author:
-              <a routerLink="/entries/{{ entry.authorId }}" class="mat-small">{{
+              <a routerLink="/users/{{ entry.authorId }}/entries">{{
                 entry.authorName
               }}</a>
             </div>
-            <div class="mat-small">Location: {{ entry.locationName }}</div>
+            <div class="mat-small">
+              Location:
+              <a routerLink="/locations/{{ entry.locationId }}/entries">{{
+                entry.locationName
+              }}</a>
+            </div>
             <div class="mat-small">Date: {{ entry.date | date }}</div>
             <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
           </div>

@@ -16,6 +16,12 @@ export class LocationAPIService {
     );
   }
 
+  getLocationById(locationId: number): Observable<ILocation> {
+    return this.httpClient.get<ILocation>(
+      `${environment.apiDomain}/api/locations/${locationId}`
+    );
+  }
+
   createLocation(newLocation: INewLocation): Observable<number> {
     return this.httpClient.post<number>(
       `${environment.apiDomain}/api/locations`,

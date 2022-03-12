@@ -7,7 +7,18 @@
       <p class="narrative mat-body">
         {{ entry.notes || "No notes available" }}
       </p>
-      <div class="mat-small">Location: {{ entry.locationName }}</div>
+      <div class="mat-small">
+        Author:
+        <a routerLink="/users/{{ entry.authorId }}/entries" class="mat-small">{{
+          entry.authorName
+        }}</a>
+      </div>
+      <div class="mat-small">
+        Location:
+        <a routerLink="/locations/{{ entry.locationId }}/entries">{{
+          entry.locationName
+        }}</a>
+      </div>
       <div class="mat-small">Date: {{ entry.date | date }}</div>
       <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
     </section>

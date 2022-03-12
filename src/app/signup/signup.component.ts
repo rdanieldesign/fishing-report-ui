@@ -1,5 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
@@ -12,40 +18,43 @@ import { AuthService } from '../auth/auth.service';
   host: { class: 'flex-full-height centered-container' },
 })
 export class SignupComponent implements OnDestroy {
-
   loading = false;
-  signupForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
-    passwordAgain: new FormControl('', [Validators.required]),
-  }, { validators: this.validatePasswords });
+  signupForm = new FormGroup(
+    {
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required]),
+      passwordAgain: new FormControl('', [Validators.required]),
+    },
+    { validators: this.validatePasswords }
+  );
 
   private destroy$ = new Subject();
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router,
-  ) { }
+    private readonly router: Router
+  ) {}
 
   signup() {
-    this.authService.signup(this.signupForm.value)
+    this.authService
+      .signup(this.signupForm.value)
       .pipe(
         tap(() => {
           this.loading = true;
         }),
-        takeUntil(this.destroy$),
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/all-entries']);
+          this.router.navigate(['/entries']);
         },
         error: () => {
           this.signupForm.reset();
         },
         complete: () => {
           this.loading = false;
-        }
+        },
       });
   }
 
@@ -58,5 +67,4 @@ export class SignupComponent implements OnDestroy {
     const passwordAgain = control.get('passwordAgain').value;
     return password === passwordAgain ? null : { passwordsDontMatch: true };
   }
-
 }

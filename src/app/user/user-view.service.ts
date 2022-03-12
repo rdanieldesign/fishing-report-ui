@@ -18,16 +18,14 @@ export class UserViewService implements EntryListViewAbstractService {
   ) {}
 
   getPageHeader(): Observable<string> {
-    const paths: string[] = location.href.split('/');
-    const userId: string = paths[paths.length - 1];
+    const userId: string = this.getUserIdFromPath();
     return this.userService
       .getUserById(parseInt(userId))
       .pipe(map((user: IUser) => user.name));
   }
 
   getEntryList(paramObj: IStringMap): Observable<IEntry[]> {
-    const paths: string[] = location.href.split('/');
-    const authorId: string = paths[paths.length - 1];
+    const authorId: string = this.getUserIdFromPath();
     const userFilterParam = { ...paramObj, authorId };
     return this.entryService.getAllEntries(userFilterParam);
   }
@@ -38,5 +36,10 @@ export class UserViewService implements EntryListViewAbstractService {
 
   getShowFilters(): Observable<boolean> {
     return of(false);
+  }
+
+  private getUserIdFromPath() {
+    const paths: string[] = location.href.split('/');
+    return paths[paths.length - 2];
   }
 }
