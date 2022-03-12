@@ -8,7 +8,14 @@
   </div>
   <mat-divider></mat-divider>
   <div class="nav-item">
-    <a class="link" [routerLink]="['/friends']"> Friends </a>
+    <app-notification-icon
+      [hasNotifications]="hasNotifications | async"
+      left="3rem"
+      top=".3rem"
+      ><a class="link" [routerLink]="['/friends']">
+        Friends</a
+      ></app-notification-icon
+    >
   </div>
   <mat-divider></mat-divider>
 </ng-container>

@@ -1,0 +1,10 @@
+<span class="container">
+  <ng-content></ng-content>
+  <mat-icon
+    *ngIf="hasNotifications"
+    class="icon"
+    color="accent"
+    [ngStyle]="{ left: left, top: top }"
+    >lens</mat-icon
+  >
+</span>

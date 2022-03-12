@@ -1,0 +1,10 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.icon {
+  font-size: 0.8rem;
+  position: absolute;
+  pointer-events: none;
+}

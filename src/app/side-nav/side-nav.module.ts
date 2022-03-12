@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SideNavComponent } from './side-nav.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
-
-
+import { NotificationIconModule } from '../notifications/notification-icon/notification-icon.module';
 
 @NgModule({
   declarations: [SideNavComponent],
@@ -12,7 +11,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     MatDividerModule,
     RouterModule,
+    NotificationIconModule,
   ],
-  exports: [SideNavComponent]
+  exports: [SideNavComponent],
 })
-export class SideNavModule { }
+export class SideNavModule {}

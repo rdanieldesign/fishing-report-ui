@@ -1,16 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IUser } from 'src/app/user/interfaces/user.interface';
 import { environment } from 'src/environments/environment';
 import { FriendStatus } from '../enums/friend-enum';
 import { IFriendshipDetails } from '../interfaces/friends.interfaces';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FriendApiService {
   constructor(private readonly httpClient: HttpClient) {}
+
+  private _friendRequestCount = new BehaviorSubject<number>(0);
+  readonly friendRequestCount = this._friendRequestCount.asObservable();
 
   getAllFriends(): Observable<IFriendshipDetails[]> {
     return this.httpClient.get<IFriendshipDetails[]>(
@@ -19,9 +23,15 @@ export class FriendApiService {
   }
 
   getFriendRequests(): Observable<IFriendshipDetails[]> {
-    return this.httpClient.get<IFriendshipDetails[]>(
-      `${environment.apiDomain}/api/friends/requests`
-    );
+    return this.httpClient
+      .get<IFriendshipDetails[]>(
+        `${environment.apiDomain}/api/friends/requests`
+      )
+      .pipe(
+        tap((requests) => {
+          this._friendRequestCount.next(requests.length);
+        })
+      );
   }
 
   getPendingFriendRequests(): Observable<IFriendshipDetails[]> {

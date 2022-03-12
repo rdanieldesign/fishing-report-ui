@@ -4,6 +4,7 @@ import { HeaderComponent } from './header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
+import { NotificationIconModule } from '../notifications/notification-icon/notification-icon.module';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -12,7 +13,8 @@ import { SharedModule } from '../shared/shared.module';
     MatToolbarModule,
     RouterModule,
     SharedModule,
+    NotificationIconModule,
   ],
-  exports: [HeaderComponent]
+  exports: [HeaderComponent],
 })
-export class HeaderModule { }
+export class HeaderModule {}

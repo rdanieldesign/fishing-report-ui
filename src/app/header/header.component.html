@@ -1,16 +1,11 @@
-<mat-toolbar
-    class="header"
-    color="primary"
-    >
-    <span> Fishing Reports </span>
-    <div class="user">
-        <span> {{ currentUserName$ | async }} </span>
-        <button
-            mat-icon-button
-            position="end"
-            (click)="toggleNav()"
-            >
-            <mat-icon>menu</mat-icon>
-        </button>
-    </div>
+<mat-toolbar class="header" color="primary">
+  <span> Fishing Reports </span>
+  <div class="user">
+    <span> {{ currentUserName$ | async }} </span>
+    <app-notification-icon [hasNotifications]="hasNotifications | async">
+      <button mat-icon-button position="end" (click)="toggleNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </app-notification-icon>
+  </div>
 </mat-toolbar>
