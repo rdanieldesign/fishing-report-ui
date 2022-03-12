@@ -7,7 +7,6 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'fishing-ui';
   openSideNav = false;
 
   constructor(private readonly router: Router) {}
@@ -21,6 +20,6 @@ export class AppComponent {
   }
 
   toggleSideNav() {
-    this.openSideNav = !this.openSideNav; 
+    this.openSideNav = !this.openSideNav;
   }
 }

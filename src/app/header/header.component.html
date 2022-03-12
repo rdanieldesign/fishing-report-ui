@@ -1,7 +1,13 @@
 <mat-toolbar class="header" color="primary">
-  <span> Fishing Reports </span>
+  <a class="headline" [routerLink]="['/all-entries']"> Fishing Reports </a>
   <div class="user">
-    <span> {{ currentUserName$ | async }} </span>
+    <a
+      class="headline"
+      [routerLink]="['/my-entries']"
+      routerLinkActive="router-link-active"
+    >
+      {{ currentUserName$ | async }}
+    </a>
     <app-notification-icon [hasNotifications]="hasNotifications | async">
       <button mat-icon-button position="end" (click)="toggleNav()">
         <mat-icon>menu</mat-icon>
