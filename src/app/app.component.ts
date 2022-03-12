@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
+import { AuthService } from './auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +11,23 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent {
   openSideNav = false;
 
-  constructor(private readonly router: Router) {}
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd && this.openSideNav) {
-        this.openSideNav = false;
+    combineLatest([this.authService.authToken$, this.router.events]).subscribe(
+      ([token, routerEvent]) => {
+        if (!token) {
+          this.openSideNav = false;
+          return;
+        }
+        if (routerEvent instanceof NavigationEnd && this.openSideNav) {
+          this.openSideNav = false;
+        }
       }
-    });
+    );
   }
 
   toggleSideNav() {

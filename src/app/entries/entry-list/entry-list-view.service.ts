@@ -12,7 +12,7 @@ export class EntryListViewService implements EntryListViewAbstractService {
   constructor(private readonly entryService: EntryService) {}
 
   getPageHeader() {
-    return of('All Entries');
+    return of('All Reports');
   }
 
   getEntryList(paramObj: IStringMap): Observable<IEntry[]> {

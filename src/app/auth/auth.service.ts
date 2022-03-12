@@ -8,10 +8,9 @@ import { environment } from '../../environments/environment';
 import { ICredentials, INewUser } from './auth.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   authToken$: Observable<string | null>;
   private readonly authStorageKey = 'authToken';
   private readonly _authToken$: BehaviorSubject<string | null>;
@@ -19,7 +18,7 @@ export class AuthService {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar,
+    private readonly snackBar: MatSnackBar
   ) {
     let token: string | null;
     try {
@@ -32,7 +31,8 @@ export class AuthService {
   }
 
   login(credentials: ICredentials): Observable<string> {
-    return this.httpClient.post<string>(`${environment.apiDomain}/api/auth/login`, credentials)
+    return this.httpClient
+      .post<string>(`${environment.apiDomain}/api/auth/login`, credentials)
       .pipe(
         tap((token: string) => {
           this.setTokenValue(token);
@@ -40,7 +40,7 @@ export class AuthService {
         catchError((err: HttpErrorResponse) => {
           this.snackBar.open(err.error);
           return throwError(err);
-        }),
+        })
       );
   }
 
@@ -50,11 +50,12 @@ export class AuthService {
   }
 
   signup(newUser: INewUser): Observable<string> {
-    return this.httpClient.post<string>(`${environment.apiDomain}/api/auth/signup`, newUser)
+    return this.httpClient
+      .post<string>(`${environment.apiDomain}/api/auth/signup`, newUser)
       .pipe(
         tap((token: string) => {
           this.setTokenValue(token);
-        }),
+        })
       );
   }
 
@@ -66,5 +67,4 @@ export class AuthService {
     this._authToken$.next(token);
     localStorage.setItem(this.authStorageKey, JSON.stringify(token));
   }
-  
 }

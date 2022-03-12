@@ -1,14 +1,18 @@
 <mat-toolbar class="header" color="primary">
-  <a class="headline" [routerLink]="['/all-entries']"> Fishing Reports </a>
+  <a
+    class="headline"
+    [routerLink]="(loggedIn | async) ? ['/all-entries'] : ['/login']"
+  >
+    Fishing Reports
+  </a>
   <div class="user">
-    <a
-      class="headline"
-      [routerLink]="['/my-entries']"
-      routerLinkActive="router-link-active"
-    >
+    <a *ngIf="loggedIn | async" class="headline" [routerLink]="['/my-entries']">
       {{ currentUserName$ | async }}
     </a>
-    <app-notification-icon [hasNotifications]="hasNotifications | async">
+    <app-notification-icon
+      *ngIf="loggedIn | async"
+      [hasNotifications]="hasNotifications | async"
+    >
       <button mat-icon-button position="end" (click)="toggleNav()">
         <mat-icon>menu</mat-icon>
       </button>

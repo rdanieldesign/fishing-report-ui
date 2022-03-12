@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FriendApiService } from '../friends/services/friend-api.service';
+import { AuthService } from '../auth/auth.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { IUser } from '../user/interfaces/user.interface';
 import { UserService } from '../user/services/user.service';
@@ -21,9 +21,16 @@ export class HeaderComponent {
   hasNotifications: Observable<boolean> =
     this.notificationsService.hasNotifications;
 
+  loggedIn = this.authService.authToken$.pipe(
+    map((token) => {
+      return Boolean(token);
+    })
+  );
+
   constructor(
     private readonly userService: UserService,
-    private readonly notificationsService: NotificationsService
+    private readonly notificationsService: NotificationsService,
+    private readonly authService: AuthService
   ) {}
 
   toggleNav() {
