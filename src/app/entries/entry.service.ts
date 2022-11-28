@@ -39,7 +39,7 @@ export class EntryService {
     );
   }
 
-  createEntry(newEntry: INewEntry): Observable<string> {
+  createEntry(newEntry: FormData): Observable<string> {
     return this.httpClient.post<string>(
       `${environment.apiDomain}/api/reports`,
       newEntry

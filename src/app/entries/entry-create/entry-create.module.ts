@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { FormModule } from 'src/app/shared/form/form.module';
 import { LocationCreateModule } from 'src/app/locations/location-create/location-create.module';
+import { FileUploadModule } from 'src/app/shared/file-upload/file-upload.module';
 
 @NgModule({
   declarations: [EntryCreateComponent],
@@ -26,6 +27,7 @@ import { LocationCreateModule } from 'src/app/locations/location-create/location
     SharedModule,
     FormModule,
     LocationCreateModule,
+    FileUploadModule,
   ],
 })
 export class EntryCreateModule {}

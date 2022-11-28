@@ -21,6 +21,9 @@
       </div>
       <div class="mat-small">Date: {{ entry.date | date }}</div>
       <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
+      <ng-container *ngIf="entry.imageURLs">
+        <img *ngFor="let imageUrl of entry.imageURLs" [src]="imageUrl" />
+      </ng-container>
     </section>
     <button
       *ngIf="(currentUserId$ | async) === entry.authorId"

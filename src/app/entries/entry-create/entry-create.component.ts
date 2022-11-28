@@ -23,6 +23,7 @@ export class EntryCreateComponent implements OnInit {
     locationId: new FormControl('', [Validators.required]),
     date: new FormControl('', [Validators.required]),
     catchCount: new FormControl(null, [Validators.required]),
+    images: new FormControl(null),
   });
   locationOptions: ILocation[];
 
@@ -40,13 +41,23 @@ export class EntryCreateComponent implements OnInit {
 
   createEntry() {
     const formValue: INewEntry = this.entryForm.value;
+    const formData = new FormData();
+    Object.keys(formValue).forEach((key: string) => {
+      if (key === 'date') {
+        formData.append(
+          key,
+          moment.utc(formValue[key]).format('YYYY-MM-DD HH:mm:ss')
+        );
+      } else if (key === 'images') {
+        for (let i = 0; i < formValue.images.length; i++) {
+          formData.append('images', formValue.images.item(i));
+        }
+      } else {
+        formData.append(key, formValue[key]);
+      }
+    });
     this.entryService
-      .createEntry({
-        notes: formValue.notes,
-        locationId: formValue.locationId,
-        date: moment.utc(formValue.date).format('YYYY-MM-DD HH:mm:ss'),
-        catchCount: formValue.catchCount,
-      })
+      .createEntry(formData)
       .subscribe(() =>
         this.router.navigate(['../'], { relativeTo: this.route })
       );

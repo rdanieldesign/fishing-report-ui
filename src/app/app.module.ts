@@ -13,9 +13,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { SideNavModule } from './side-nav/side-nav.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -30,10 +28,10 @@ import { SideNavModule } from './side-nav/side-nav.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
     },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 }}
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2000 } },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

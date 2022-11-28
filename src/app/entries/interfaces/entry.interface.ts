@@ -3,6 +3,7 @@ export interface INewEntry {
   locationId: number;
   notes: string;
   catchCount: number;
+  images: FileList;
 }
 
 export interface IEntry extends INewEntry {
@@ -11,4 +12,5 @@ export interface IEntry extends INewEntry {
   authorId: number;
   authorName: string;
   locationId: number;
+  imageURLs: string[];
 }
