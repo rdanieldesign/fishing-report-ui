@@ -7,3 +7,27 @@
   justify-content: center;
   align-items: center;
 }
+
+.actions {
+  display: flex;
+}
+
+.actions button {
+  flex: 1 1 auto;
+}
+
+.actions button:first-child {
+  margin-right: 0.5rem;
+}
+
+.actions button:last-child {
+  margin-left: 0.5rem;
+}
+
+.info {
+  margin-bottom: 1rem;
+}
+
+.image {
+  margin-bottom: 1rem;
+}

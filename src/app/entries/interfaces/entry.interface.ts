@@ -6,11 +6,16 @@ export interface INewEntry {
   images: FileList;
 }
 
-export interface IEntry extends INewEntry {
+export interface IEntry extends Omit<INewEntry, 'images'> {
   id: string;
   locationName: string;
   authorId: number;
   authorName: string;
   locationId: number;
-  imageURLs: string[];
+  images: IReportImage[];
+}
+
+export interface IReportImage {
+  imageURL: string;
+  imageId: string;
 }

@@ -25,3 +25,16 @@ span {
 .spinner {
   margin: 10px;
 }
+
+.image-item {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.delete {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background-color: white;
+  border-radius: 0;
+}

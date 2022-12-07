@@ -5,9 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ImgSrcPipe } from './img-src.pipe';
 
 @NgModule({
-  declarations: [FileUploadComponent],
+  declarations: [FileUploadComponent, ImgSrcPipe],
   imports: [
     CommonModule,
     MatFormFieldModule,

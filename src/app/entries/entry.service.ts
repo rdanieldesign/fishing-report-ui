@@ -46,6 +46,13 @@ export class EntryService {
     );
   }
 
+  editEntry(entryId: string, newEntry: FormData): Observable<string> {
+    return this.httpClient.put<string>(
+      `${environment.apiDomain}/api/reports/${entryId}`,
+      newEntry
+    );
+  }
+
   deleteEntry(entryId: string): Observable<null> {
     return this.httpClient.delete<null>(
       `${environment.apiDomain}/api/reports/${entryId}`

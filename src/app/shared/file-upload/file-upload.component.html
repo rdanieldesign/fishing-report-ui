@@ -1,13 +1,16 @@
-<input
-  class="cdk-visually-hidden"
-  id="input-file-id"
-  multiple
-  type="file"
-  (change)="onFileChange($event.target.files)"
-  (click)="onAddClick()"
-  (focusin)="onFocusIn($event)"
-  (focusout)="onFocusOut($event)"
-/>
+<ul *ngIf="value?.length">
+  <li class="image-item" *ngFor="let file of value; let i = index">
+    <img [src]="file | imgSrc | async" />
+    <button
+      class="delete"
+      mat-icon-button
+      color="warn"
+      (click)="deleteImage(i)"
+    >
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+  </li>
+</ul>
 <label class="input-label" for="input-file-id">
   <div>
     <button
@@ -23,6 +26,13 @@
     </ng-template>
   </div>
 </label>
-<ul *ngIf="value?.length">
-  <li *ngFor="let file of value">{{ file.name }}</li>
-</ul>
+<input
+  class="cdk-visually-hidden"
+  id="input-file-id"
+  multiple
+  type="file"
+  (change)="onFileChange($event.target.files)"
+  (click)="onAddClick()"
+  (focusin)="onFocusIn($event)"
+  (focusout)="onFocusOut($event)"
+/>

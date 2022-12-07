@@ -7,34 +7,53 @@
       <p class="narrative mat-body">
         {{ entry.notes || "No notes available" }}
       </p>
-      <div class="mat-small">
-        Author:
-        <a routerLink="/users/{{ entry.authorId }}/entries" class="mat-small">{{
-          entry.authorName
-        }}</a>
-      </div>
-      <div class="mat-small">
-        Location:
-        <a routerLink="/locations/{{ entry.locationId }}/entries">{{
-          entry.locationName
-        }}</a>
-      </div>
-      <div class="mat-small">Date: {{ entry.date | date }}</div>
-      <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
-      <ng-container *ngIf="entry.imageURLs">
-        <img *ngFor="let imageUrl of entry.imageURLs" [src]="imageUrl" />
+      <section class="info">
+        <div class="mat-small">
+          Author:
+          <a
+            routerLink="/users/{{ entry.authorId }}/entries"
+            class="mat-small"
+            >{{ entry.authorName }}</a
+          >
+        </div>
+        <div class="mat-small">
+          Location:
+          <a routerLink="/locations/{{ entry.locationId }}/entries">{{
+            entry.locationName
+          }}</a>
+        </div>
+        <div class="mat-small">Date: {{ entry.date | date }}</div>
+        <div class="mat-small">Catch Count: {{ entry.catchCount }}</div>
+      </section>
+      <ng-container *ngIf="entry.images?.length">
+        <img
+          class="image"
+          *ngFor="let image of entry.images"
+          [src]="image.imageURL"
+        />
       </ng-container>
     </section>
-    <button
+    <section
       *ngIf="(currentUserId$ | async) === entry.authorId"
-      class="create-button"
-      type="button"
-      mat-flat-button
-      color="warn"
-      (click)="deleteEntry()"
+      class="actions"
     >
-      Delete Entry
-    </button>
+      <button
+        type="button"
+        mat-stroked-button
+        color="primary"
+        (click)="editEntry()"
+      >
+        Edit Entry
+      </button>
+      <button
+        type="button"
+        mat-flat-button
+        color="warn"
+        (click)="deleteEntry()"
+      >
+        Delete Entry
+      </button>
+    </section>
   </div>
   <app-footer-breadcrumb
     text="Reports"

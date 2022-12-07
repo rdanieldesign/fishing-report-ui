@@ -16,12 +16,11 @@ import { IUser } from 'src/app/user/interfaces/user.interface';
   host: { class: 'flex-full-height' },
 })
 export class EntryDetailComponent implements OnInit, OnDestroy {
-
   entry: IEntry;
   loading = true;
-  currentUserId$: Observable<number | null> = this.userService.currentUser$
-    .pipe(
-      map((user: IUser | null): number => user ? user.id : null)
+  currentUserId$: Observable<number | null> =
+    this.userService.currentUser$.pipe(
+      map((user: IUser | null): number => (user ? user.id : null))
     );
 
   private destroy$ = new Subject();
@@ -32,11 +31,12 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly dialog: MatDialog,
     private readonly userService: UserService,
-    private readonly route: ActivatedRoute,
-  ) { }
+    private readonly route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.entryService.getEntry(this.activeRoute.snapshot.params.entryId)
+    this.entryService
+      .getEntry(this.activeRoute.snapshot.params.entryId)
       .subscribe((entry: IEntry) => {
         if (!entry) {
           this.router.navigate(['../'], { relativeTo: this.route });
@@ -57,7 +57,11 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         filter(Boolean),
-        concatMap(() => this.entryService.deleteEntry(this.activeRoute.snapshot.params.entryId)),
+        concatMap(() =>
+          this.entryService.deleteEntry(
+            this.activeRoute.snapshot.params.entryId
+          )
+        ),
         takeUntil(this.destroy$)
       )
       .subscribe(() => {
@@ -69,7 +73,12 @@ export class EntryDetailComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ConfirmModalComponent, {
       data: { message: 'Are you sure you want to delete this report?' },
     });
-    return dialogRef.afterClosed()
+    return dialogRef.afterClosed();
   }
 
+  editEntry() {
+    this.router.navigate([`./edit`], {
+      relativeTo: this.route,
+    });
+  }
 }

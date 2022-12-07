@@ -16,6 +16,7 @@ import {
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { IFileUpload } from './file-upload.interface';
 
 @Component({
   selector: 'app-file-upload',
@@ -26,7 +27,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
   ],
 })
 export class FileUploadComponent
-  implements OnInit, ControlValueAccessor, MatFormFieldControl<FileList>
+  implements OnInit, ControlValueAccessor, MatFormFieldControl<IFileUpload[]>
 {
   @HostBinding() id = `file-upload-component-${FileUploadComponent.nextId++}`;
 
@@ -64,12 +65,12 @@ export class FileUploadComponent
     return false;
   }
   controlType = 'file-upload';
-  value: FileList;
+  value: IFileUpload[] = [];
   stateChanges = new Subject<void>();
   focused = false;
   touched = false;
   get empty() {
-    return !this.value;
+    return !this.value?.length;
   }
   get shouldLabelFloat() {
     return this.focused || !this.empty;
@@ -93,18 +94,20 @@ export class FileUploadComponent
   }
 
   onFileChange(e: FileList) {
-    console.log(e);
-    this.value = e;
+    if (!this.value) {
+      this.value = [];
+    }
+    for (let i = 0; i < e.length; i++) {
+      this.value.push({ newFile: e.item(i) });
+    }
     this.loading.next(false);
     this.stateChanges.next();
     this.onChange(this.value);
   }
 
-  onChange = (file: FileList) => {};
+  onChange = (files: IFileUpload[]) => {};
 
-  onTouched = () => {
-    console.log('touched');
-  };
+  onTouched = () => {};
 
   onAddClick() {
     this.loading.next(true);
@@ -129,7 +132,7 @@ export class FileUploadComponent
     }
   }
 
-  writeValue(files: FileList) {
+  writeValue(files: IFileUpload[]) {
     this.value = files;
     this.stateChanges.next();
   }
@@ -143,7 +146,6 @@ export class FileUploadComponent
   }
 
   markAsTouched() {
-    console.log('mark touched');
     if (!this.touched) {
       this.onTouched();
       this.touched = true;
@@ -159,5 +161,11 @@ export class FileUploadComponent
 
   onContainerClick(event: MouseEvent) {
     this.focused = true;
+  }
+
+  deleteImage(imageIndex: number) {
+    this.value.splice(imageIndex, 1);
+    this.stateChanges.next();
+    this.onChange(this.value);
   }
 }

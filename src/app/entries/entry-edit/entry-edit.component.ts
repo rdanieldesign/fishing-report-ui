@@ -5,38 +5,49 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { LocationAPIService } from '../../locations/services/location-api.service';
 import { ILocation } from 'src/app/locations/interfaces/location.interface';
-import { INewEntry } from '../interfaces/entry.interface';
+import { IEntry, INewEntry } from '../interfaces/entry.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationCreateModalComponent } from 'src/app/locations/location-create/modal/modal.component';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-entry-create',
-  templateUrl: './entry-create.component.html',
-  styleUrls: ['./entry-create.component.css'],
+  selector: 'app-entry-edit',
+  templateUrl: './entry-edit.component.html',
+  styleUrls: ['./entry-edit.component.css'],
   host: { class: 'flex-full-height centered-container' },
 })
-export class EntryCreateComponent implements OnInit {
+export class EntryEditComponent implements OnInit {
   loading = true;
-  entryForm = new FormGroup({
-    notes: new FormControl('', [Validators.required]),
-    locationId: new FormControl('', [Validators.required]),
-    date: new FormControl('', [Validators.required]),
-    catchCount: new FormControl(null, [Validators.required]),
-    images: new FormControl(null),
-  });
+  entryForm: FormGroup;
   locationOptions: ILocation[];
+  entry: IEntry;
 
   constructor(
     private entryService: EntryService,
     private locationAPIService: LocationAPIService,
     private router: Router,
     private readonly route: ActivatedRoute,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly activeRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.fetchLocations();
+    this.loading = true;
+    forkJoin([
+      this.fetchLocations(),
+      this.entryService.getEntry(this.activeRoute.snapshot.params.entryId),
+    ]).subscribe(([_, entry]) => {
+      this.entry = entry;
+      this.entryForm = new FormGroup({
+        notes: new FormControl(entry.notes, [Validators.required]),
+        locationId: new FormControl(entry.locationId, [Validators.required]),
+        date: new FormControl(entry.date, [Validators.required]),
+        catchCount: new FormControl(entry.catchCount, [Validators.required]),
+        images: new FormControl(entry.images),
+      });
+      this.loading = false;
+    });
   }
 
   createEntry() {
@@ -48,11 +59,15 @@ export class EntryCreateComponent implements OnInit {
           key,
           moment.utc(formValue[key]).format('YYYY-MM-DD HH:mm:ss')
         );
-      } else if (key === 'images' && formValue.images?.length) {
+      } else if (key === 'images') {
         let imageNames = [];
         formValue.images.forEach((image) => {
-          formData.append('images', image.newFile);
-          imageNames.push(image.newFile.name);
+          if (image.newFile) {
+            formData.append('images', image.newFile);
+            imageNames.push(image.newFile.name);
+          } else {
+            imageNames.push(image.imageId);
+          }
         });
         formData.append('imageIds', JSON.stringify(imageNames));
       } else {
@@ -60,9 +75,9 @@ export class EntryCreateComponent implements OnInit {
       }
     });
     this.entryService
-      .createEntry(formData)
-      .subscribe((reportId) =>
-        this.router.navigate([`../${reportId}`], { relativeTo: this.route })
+      .editEntry(this.entry.id, formData)
+      .subscribe(() =>
+        this.router.navigate(['../'], { relativeTo: this.route })
       );
   }
 
@@ -82,11 +97,11 @@ export class EntryCreateComponent implements OnInit {
       });
   }
 
-  private fetchLocations() {
-    this.loading = true;
-    this.locationAPIService.getAllLocations().subscribe((locations) => {
-      this.locationOptions = locations;
-      this.loading = false;
-    });
+  private fetchLocations(): Observable<ILocation[]> {
+    return this.locationAPIService.getAllLocations().pipe(
+      tap((locations) => {
+        this.locationOptions = locations;
+      })
+    );
   }
 }

@@ -1,0 +1,55 @@
+<app-form
+  *ngIf="entryForm"
+  [formGroup]="entryForm"
+  [loading]="loading"
+  [submitDisabled]="!entryForm.valid"
+  (onSubmitClick)="createEntry()"
+  (onCancelClick)="cancel()"
+>
+  <mat-form-field>
+    <mat-label>Notes</mat-label>
+    <textarea
+      required
+      matInput
+      class="notes"
+      placeholder="Add Narrative Here"
+      formControlName="notes"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Location</mat-label>
+    <mat-select required formControlName="locationId">
+      <mat-option
+        *ngFor="let location of locationOptions"
+        [value]="location.id"
+      >
+        {{ location.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="new-location">
+    (or <a href (click)="addNewLocation($event)">add a new location</a>)
+  </div>
+  <mat-form-field>
+    <mat-label>Date</mat-label>
+    <input required matInput [matDatepicker]="picker" formControlName="date" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Catch Count</mat-label>
+    <input
+      required
+      matInput
+      type="number"
+      placeholder="How many fish did you catch?"
+      formControlName="catchCount"
+      min="0"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Images</mat-label>
+    <app-file-upload formControlName="images" placeholder="images">
+    </app-file-upload>
+  </mat-form-field>
+</app-form>
