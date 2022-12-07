@@ -61,7 +61,7 @@ export class EntryEditComponent implements OnInit {
         );
       } else if (key === 'images') {
         let imageNames = [];
-        formValue.images.forEach((image) => {
+        formValue.images?.forEach((image) => {
           if (image.newFile) {
             formData.append('images', image.newFile);
             imageNames.push(image.newFile.name);
