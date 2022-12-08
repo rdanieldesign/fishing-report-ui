@@ -72,7 +72,7 @@
       <li *ngFor="let item of list" class="friend">
         <a
           *ngIf="canSeeEntries; else staticName"
-          routerLink="/entries/{{ item.friendId }}"
+          routerLink="/users/{{ item.friendId }}/entries"
           class="mat-small"
           >{{ item.friendName }}</a
         >
