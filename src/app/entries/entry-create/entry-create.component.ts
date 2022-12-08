@@ -8,7 +8,7 @@ import { ILocation } from 'src/app/locations/interfaces/location.interface';
 import { INewEntry } from '../interfaces/entry.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationCreateModalComponent } from 'src/app/locations/location-create/modal/modal.component';
-import { filter } from 'rxjs/operators';
+import { filter, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-entry-create',
@@ -40,6 +40,7 @@ export class EntryCreateComponent implements OnInit {
   }
 
   createEntry() {
+    this.loading = true;
     const formValue = this.entryForm.value;
     const formData = new FormData();
     Object.keys(formValue).forEach((key: string) => {
@@ -61,9 +62,14 @@ export class EntryCreateComponent implements OnInit {
     });
     this.entryService
       .createEntry(formData)
-      .subscribe((reportId) =>
-        this.router.navigate([`../${reportId}`], { relativeTo: this.route })
-      );
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe((reportId) => {
+        this.router.navigate([`../${reportId}`], { relativeTo: this.route });
+      });
   }
 
   cancel() {
