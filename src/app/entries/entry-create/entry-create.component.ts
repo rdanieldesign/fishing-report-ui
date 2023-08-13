@@ -26,6 +26,7 @@ export class EntryCreateComponent implements OnInit {
     images: new FormControl(null),
   });
   locationOptions: ILocation[];
+  storageKey = 'fishing-report-draft';
 
   constructor(
     private entryService: EntryService,
@@ -36,10 +37,19 @@ export class EntryCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    const draft = localStorage.getItem(this.storageKey);
+    if (draft) {
+      this.entryForm.setValue({ ...JSON.parse(draft), images: null });
+    }
     this.fetchLocations();
+    this.entryForm.valueChanges.subscribe((value) => {
+      delete value.images;
+      localStorage.setItem(this.storageKey, JSON.stringify(value));
+    });
   }
 
   createEntry() {
+    localStorage.removeItem(this.storageKey);
     this.loading = true;
     const formValue = this.entryForm.value;
     const formData = new FormData();
@@ -73,6 +83,7 @@ export class EntryCreateComponent implements OnInit {
   }
 
   cancel() {
+    localStorage.removeItem(this.storageKey);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
