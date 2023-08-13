@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormModule } from 'src/app/shared/form/form.module';
 import { LocationCreateModule } from 'src/app/locations/location-create/location-create.module';
 import { FileUploadModule } from 'src/app/shared/file-upload/file-upload.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [EntryCreateComponent],
@@ -28,6 +29,7 @@ import { FileUploadModule } from 'src/app/shared/file-upload/file-upload.module'
     FormModule,
     LocationCreateModule,
     FileUploadModule,
+    MatDialogModule,
   ],
 })
 export class EntryCreateModule {}
