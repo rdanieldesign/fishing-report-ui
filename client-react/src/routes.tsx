@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { SideNav } from './components/layout/SideNav';
@@ -12,17 +13,19 @@ import { FriendsAddPage } from './pages/FriendsAddPage';
 
 // Layout route: renders Header + SideNav shell, then the matched child via <Outlet>.
 // Login and Signup sit outside this so they render without the shell.
+// useState here lifts sidenav open/close state so Header and SideNav can share it
+// without prop drilling through unrelated route components.
 function AppLayout() {
+  const [navOpen, setNavOpen] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <div className="flex flex-1">
-        <SideNav />
-        <main className="flex-1 p-6 overflow-auto">
-          {/* <Outlet> renders the currently matched child route */}
-          <Outlet />
-        </main>
-      </div>
+      <Header onMenuClick={() => setNavOpen((o) => !o)} />
+      <SideNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+      <main className="flex-1 p-6 overflow-auto">
+        {/* <Outlet> renders the currently matched child route */}
+        <Outlet />
+      </main>
     </div>
   );
 }
