@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { SideNav } from './components/layout/SideNav';
+import { RequireAuth } from './components/auth/RequireAuth';
+import { RedirectIfAuth } from './components/auth/RedirectIfAuth';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
 import { EntryListPage } from './pages/EntryListPage';
@@ -36,28 +38,32 @@ export function AppRoutes() {
       {/* Root redirect */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Auth pages — no shell */}
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
+      {/* Auth pages — no shell, bounce to /entries if already logged in */}
+      <Route element={<RedirectIfAuth />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Route>
 
-      {/* App shell — all protected routes nested inside AppLayout */}
-      <Route element={<AppLayout />}>
-        {/* Entry routes */}
-        <Route path="/entries" element={<EntryListPage />} />
-        <Route path="/entries/create" element={<EntryCreatePage />} />
-        <Route path="/entries/:entryId" element={<EntryDetailPage />} />
-        {/* Edit is a child of detail in Angular: entries/:entryId/edit */}
-        <Route path="/entries/:entryId/edit" element={<EntryEditPage />} />
+      {/* App shell — all protected routes nested inside RequireAuth then AppLayout */}
+      <Route element={<RequireAuth />}>
+        <Route element={<AppLayout />}>
+          {/* Entry routes */}
+          <Route path="/entries" element={<EntryListPage />} />
+          <Route path="/entries/create" element={<EntryCreatePage />} />
+          <Route path="/entries/:entryId" element={<EntryDetailPage />} />
+          {/* Edit is a child of detail in Angular: entries/:entryId/edit */}
+          <Route path="/entries/:entryId/edit" element={<EntryEditPage />} />
 
-        {/* Polymorphic entry list variants — same component, different data source */}
-        <Route path="/my-entries" element={<EntryListPage />} />
-        <Route path="/users/:userId/entries" element={<EntryListPage />} />
-        <Route path="/locations/:locationId/entries" element={<EntryListPage />} />
+          {/* Polymorphic entry list variants — same component, different data source */}
+          <Route path="/my-entries" element={<EntryListPage />} />
+          <Route path="/users/:userId/entries" element={<EntryListPage />} />
+          <Route path="/locations/:locationId/entries" element={<EntryListPage />} />
 
-        {/* Friends routes */}
-        <Route path="/friends" element={<Navigate to="/friends/list" replace />} />
-        <Route path="/friends/list" element={<FriendsListPage />} />
-        <Route path="/friends/add" element={<FriendsAddPage />} />
+          {/* Friends routes */}
+          <Route path="/friends" element={<Navigate to="/friends/list" replace />} />
+          <Route path="/friends/list" element={<FriendsListPage />} />
+          <Route path="/friends/add" element={<FriendsAddPage />} />
+        </Route>
       </Route>
     </Routes>
   );
