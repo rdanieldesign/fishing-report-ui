@@ -112,26 +112,26 @@ Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 - [x] Placeholder `Header`, `SideNav`
 - [x] `npm run dev` starts with no errors; all routes render; Tailwind applies
 
-### Phase 2 — Shared Layer
-- [ ] `src/api/apiClient.ts` — Axios instance with auth + 401 interceptors
-- [ ] `src/api/authApi.ts`
-- [ ] `src/api/entryApi.ts`
-- [ ] `src/api/locationApi.ts`
-- [ ] `src/api/userApi.ts`
-- [ ] `src/api/friendApi.ts`
-- [ ] `src/stores/authStore.ts` — Zustand, token persisted to localStorage
-- [ ] `src/types/auth.types.ts`
-- [ ] `src/types/entry.types.ts`
-- [ ] `src/types/location.types.ts`
-- [ ] `src/types/user.types.ts`
-- [ ] `src/types/friend.types.ts`
-- [ ] `src/types/filter.types.ts`
-- [ ] `src/types/fileUpload.types.ts`
-- [ ] `src/types/generic.types.ts`
-- [ ] `src/hooks/useNotifications.ts`
-- [ ] `src/hooks/useImageSrc.ts`
-- [ ] `src/utils/filterUtils.ts`
-- [ ] TypeScript compiles with no errors across the shared layer
+### Phase 2 — Shared Layer ✅
+- [x] `src/api/apiClient.ts` — Axios instance with auth + 401 interceptors
+- [x] `src/api/authApi.ts`
+- [x] `src/api/entryApi.ts`
+- [x] `src/api/locationApi.ts`
+- [x] `src/api/userApi.ts`
+- [x] `src/api/friendApi.ts`
+- [x] `src/stores/authStore.ts` — Zustand, token persisted to localStorage
+- [x] `src/types/auth.types.ts`
+- [x] `src/types/entry.types.ts`
+- [x] `src/types/location.types.ts`
+- [x] `src/types/user.types.ts`
+- [x] `src/types/friend.types.ts`
+- [x] `src/types/filter.types.ts`
+- [x] `src/types/fileUpload.types.ts`
+- [x] `src/types/generic.types.ts`
+- [x] `src/hooks/useNotifications.ts`
+- [x] `src/hooks/useImageSrc.ts`
+- [x] `src/utils/filterUtils.ts`
+- [x] TypeScript compiles with no errors across the shared layer
 
 ### Phase 3 — Leaf Components
 - [ ] `components/layout/Header.tsx`
@@ -163,6 +163,8 @@ Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 - [ ] `components/auth/RedirectIfAuth.tsx` — redirects to `/entries` if already authenticated
 - [ ] Routes updated: login/signup wrapped in `RedirectIfAuth`; all app routes wrapped in `RequireAuth`
 - [ ] Axios 401 interceptor clears token + navigates to `/login`
+  - Currently uses `window.location.href = '/login'` in `src/api/apiClient.ts`
+  - Once `RequireAuth` is in place, replace with stored `navigate()` ref — clearing the token is enough, `RequireAuth` handles the redirect automatically
 - [ ] Unauthenticated access to any protected route redirects correctly
 - [ ] Logout clears token and redirects immediately
 
