@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores/authStore';
 
-export const apiClient = axios.create();
+export const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+});
 
 // Request interceptor: attach auth token header to every outgoing request.
 // useAuthStore.getState() is the Zustand escape hatch for reading state outside React.

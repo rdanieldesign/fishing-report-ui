@@ -2,17 +2,17 @@ import { apiClient } from './apiClient';
 import type { ILocation, INewLocation } from '../types/location.types';
 
 export async function getAllLocations(): Promise<ILocation[]> {
-  const response = await apiClient.get<ILocation[]>('/api/locations');
+  const response = await apiClient.get<ILocation[]>('/locations');
   return response.data;
 }
 
 export async function getLocationById(locationId: number): Promise<ILocation> {
-  const response = await apiClient.get<ILocation>(`/api/locations/${locationId}`);
+  const response = await apiClient.get<ILocation>(`/locations/${locationId}`);
   return response.data;
 }
 
 // Returns the new location's id
 export async function createLocation(newLocation: INewLocation): Promise<number> {
-  const response = await apiClient.post<number>('/api/locations', newLocation);
+  const response = await apiClient.post<number>('/locations', newLocation);
   return response.data;
 }
