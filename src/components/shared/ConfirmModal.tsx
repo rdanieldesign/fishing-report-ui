@@ -7,9 +7,8 @@ interface ConfirmModalProps {
   onCancel: () => void;
 }
 
-// Replaces Angular's MatDialog-based ConfirmModalComponent. Angular opened it
-// imperatively via dialog.open(); here the parent owns open/close state and
-// passes it as a prop — the Dialog handles focus-trap and ARIA automatically.
+// The parent owns open/close state and passes it as a prop;
+// the Dialog handles focus-trap and ARIA automatically.
 export function ConfirmModal({ isOpen, message, onConfirm, onCancel }: ConfirmModalProps) {
   return (
     <Dialog open={isOpen} onClose={onCancel} className="relative z-50">

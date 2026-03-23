@@ -23,8 +23,7 @@ export async function getFriendOptions(): Promise<IUser[]> {
   return response.data;
 }
 
-// Angular sent { userId, status } as the body for all friendship mutations —
-// preserve the exact payload shape so the backend contract is unchanged.
+// Send { userId, status } as the body — the exact payload shape required by the backend.
 export async function requestFriendship(friendId: number): Promise<number> {
   const response = await apiClient.post<number>('/api/friends', {
     userId: friendId,

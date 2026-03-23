@@ -14,7 +14,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const token = useAuthStore((state) => state.token);
   const { hasNotifications } = useNotifications();
 
-  // Only fetch current user when authenticated — mirrors Angular's currentUserName$ observable.
+  // Only fetch current user when authenticated.
   const { data: currentUser } = useQuery({
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,

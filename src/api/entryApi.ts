@@ -2,7 +2,7 @@ import { apiClient } from './apiClient';
 import type { IEntry } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 
-// Angular always sent details=true; preserve that behaviour
+// Always send details=true as required by the API
 export async function getAllEntries(params: IStringMap = {}): Promise<IEntry[]> {
   const response = await apiClient.get<IEntry[]>('/api/reports', {
     params: { details: 'true', ...params },

@@ -11,8 +11,7 @@ export function FriendsAddPage() {
     queryFn: getFriendOptions,
   });
 
-  // After a request is sent, refetch options so the sent user disappears from the list —
-  // mirrors Angular's switchMap(() => getFriendOptions()) pattern.
+  // After a request is sent, refetch options so the sent user disappears from the list.
   const mutation = useMutation({
     mutationFn: requestFriendship,
     onSuccess: () => {

@@ -14,14 +14,14 @@ import { ConfirmModal } from '../components/shared/ConfirmModal';
 import type { IFriendshipDetails } from '../types/friend.types';
 
 // All three friend query keys — invalidated together after any mutation so all
-// tabs refresh simultaneously, matching Angular's combineLatest + reloadFriendLists().
+// tabs refresh simultaneously.
 const FRIEND_QUERY_KEYS = [
   ['friends', 'all'],
   ['friends', 'requests'],
   ['friends', 'pending'],
 ] as const;
 
-// Tab config mirrors Angular's mat-tab-group template context variables
+// Tab config
 interface TabConfig {
   label: string;
   data: IFriendshipDetails[];
@@ -110,8 +110,7 @@ export function FriendsListPage() {
         </Link>
       </div>
 
-      {/* Headless UI Tab replaces Angular's mat-tab-group. Tab.Group manages
-          keyboard navigation and ARIA tablist/tabpanel roles automatically. */}
+      {/* Tab.Group manages keyboard navigation and ARIA tablist/tabpanel roles automatically. */}
       <Tab.Group>
         <Tab.List className="flex border-b border-gray-200">
           {tabs.map((tab) => (
@@ -141,7 +140,7 @@ export function FriendsListPage() {
                 <ul className="divide-y divide-gray-200">
                   {tab.data.map((item) => (
                     <li key={item.friendId} className="flex items-center justify-between py-3">
-                      {/* friendId is typed as string in the interface (from Angular source) */}
+                      {/* friendId is typed as string in the interface */}
                       {tab.canSeeEntries ? (
                         <Link
                           to={`/users/${item.friendId}/entries`}

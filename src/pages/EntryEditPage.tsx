@@ -24,7 +24,6 @@ function toUtcDateString(dateStr: string): string {
 
 // Edit FormData differs from create: existing images contribute only their imageId
 // to the imageIds array (not re-uploaded); new files are appended as 'images'.
-// This matches Angular's editEntry FormData builder exactly.
 function buildFormData(values: EntryFormValues): FormData {
   const fd = new FormData();
   fd.append('notes', values.notes);
@@ -53,7 +52,7 @@ export function EntryEditPage() {
   const queryClient = useQueryClient();
   const [locationModalOpen, setLocationModalOpen] = useState(false);
 
-  // Load locations and the existing entry in parallel — mirrors Angular's forkJoin
+  // Load locations and the existing entry in parallel
   const { data: locations = [] } = useQuery({
     queryKey: ['locations'],
     queryFn: getAllLocations,
@@ -66,7 +65,6 @@ export function EntryEditPage() {
   });
 
   // Form is only initialised once the entry is loaded; `entry` drives defaultValues.
-  // Angular built the FormGroup inside the forkJoin subscribe — same timing here.
   const {
     register,
     handleSubmit,

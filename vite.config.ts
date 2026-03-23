@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Proxies /api/* to the backend dev server — mirrors Angular's proxy.conf.json
+// Proxies /api/* to the backend dev server
 export default defineConfig({
   plugins: [react()],
   server: {

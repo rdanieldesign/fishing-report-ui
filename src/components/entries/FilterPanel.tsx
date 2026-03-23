@@ -12,15 +12,14 @@ interface FilterPanelProps {
   onClearAll: () => void;
 }
 
-// Static field options matching Angular's FilterService field$ observable
+// Static field options
 const FIELD_OPTIONS: IFilterOption[] = [
   { label: 'Location', value: FilterFields.Location },
   { label: 'Author', value: FilterFields.Author },
 ];
 
-// Shared Combobox dropdown used for both Field and Value selectors.
-// Headless UI Combobox replaces Angular Material Autocomplete; it handles
-// keyboard navigation, ARIA roles, and open/close state automatically.
+// Shared Combobox dropdown used for both Field and Value selectors;
+// handles keyboard navigation, ARIA roles, and open/close state automatically.
 function FilterCombobox({
   options,
   selected,
@@ -91,8 +90,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
     queryFn: getUsers,
   });
 
-  // Cascading value options based on selected field — mirrors Angular FilterService's
-  // valueChanges subscription that resets and repopulates the value control.
+  // Cascading value options based on selected field.
   const valueOptions: IFilterOption[] =
     selectedField?.value === FilterFields.Location
       ? locations.map((l) => ({ label: l.name, value: l.id }))
@@ -102,7 +100,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
 
   function handleFieldChange(field: IFilterOption | null) {
     setSelectedField(field);
-    // Reset value when field changes, matching Angular's field valueChanges subscription
+    // Reset value when field changes
     setSelectedValue(null);
   }
 
@@ -167,7 +165,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
         </button>
       </div>
 
-      {/* Active filter chips — each removable, matching Angular's mat-chip-list */}
+      {/* Active filter chips — each removable */}
       {appliedFilters.length > 0 && (
         <ul className="flex flex-wrap gap-2">
           {appliedFilters.map((f, i) => (

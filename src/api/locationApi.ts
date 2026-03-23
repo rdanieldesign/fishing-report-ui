@@ -11,7 +11,7 @@ export async function getLocationById(locationId: number): Promise<ILocation> {
   return response.data;
 }
 
-// Returns the new location's id (number), matching Angular's Observable<number>
+// Returns the new location's id
 export async function createLocation(newLocation: INewLocation): Promise<number> {
   const response = await apiClient.post<number>('/api/locations', newLocation);
   return response.data;

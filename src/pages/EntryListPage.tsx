@@ -15,8 +15,6 @@ import type { IFilter } from '../types/filter.types';
 import type { IStringMap } from '../types/generic.types';
 
 // This component serves four routes by detecting which URL pattern is active.
-// Angular used a polymorphic service injected per route; here URL-driven
-// conditional logic replaces the DI abstraction entirely (per CLAUDE.md).
 export function EntryListPage() {
   const token = useAuthStore((s) => s.token);
   const queryClient = useQueryClient();
@@ -79,7 +77,7 @@ export function EntryListPage() {
   const queryParams = { ...urlParams, ...filterParams };
 
   // Single entries query; queryKey includes queryParams so React Query refetches
-  // when filters or URL params change — replaces Angular's manual setEntries() calls.
+  // when filters or URL params change.
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ['entries', isMyEntries ? 'mine' : isUserView ? 'user' : isLocationView ? 'location' : 'all', queryParams],
     queryFn: () => isMyEntries ? getMyEntries(queryParams) : getAllEntries(queryParams),
@@ -141,7 +139,7 @@ export function EntryListPage() {
         </Link>
       )}
 
-      {/* Collapsible filter accordion — mirrors Angular's mat-expansion-panel */}
+      {/* Collapsible filter accordion */}
       {showFilters && (
         <div className="border border-gray-200 rounded">
           <button
@@ -150,7 +148,7 @@ export function EntryListPage() {
             className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             <span>Filters</span>
-            {/* Show applied filter summary when collapsed, matching Angular's mat-panel-description */}
+            {/* Show applied filter summary when collapsed */}
             {!filtersOpen && appliedFilters.length > 0 && (
               <span className="text-xs text-gray-500 font-normal">
                 {formatFiltersAsText(appliedFilters)}

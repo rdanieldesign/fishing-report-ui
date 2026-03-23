@@ -21,8 +21,6 @@ export function SignupPage() {
   } = useForm<SignupFormValues>();
 
   // watch('password') is used inside the validate function for the cross-field check.
-  // Angular used a FormGroup-level validator; RHF validates at the field level with
-  // access to sibling values via watch(), which achieves the same behaviour.
   const password = watch('password');
 
   const mutation = useMutation({

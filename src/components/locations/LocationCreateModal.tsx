@@ -8,7 +8,6 @@ interface LocationCreateModalProps {
   onLocationCreated: (locationId: number) => void;
 }
 
-// Headless UI Dialog replaces Angular's MatDialog service.
 // The parent controls open/close state and passes it as a prop; the Dialog
 // handles focus trapping, ARIA role="dialog", and backdrop click-to-close.
 export function LocationCreateModal({ isOpen, onClose, onLocationCreated }: LocationCreateModalProps) {
