@@ -1,7 +1,0 @@
-{
-  "/api": {
-    "target": "https://www.fishing-report.site",
-    "secure": false,
-    "changeOrigin": true
-  }
-}
