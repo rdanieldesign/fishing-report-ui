@@ -100,17 +100,17 @@ Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 
 ## Migration Phase Tracker
 
-### Phase 1 — Scaffolding
-- [ ] `client-react/` directory created with Vite + React + TypeScript
-- [ ] `package.json` with all required dependencies
-- [ ] `vite.config.ts` (with proxy to backend for dev)
-- [ ] `tailwind.config.ts` + `postcss.config.ts`
-- [ ] `tsconfig.json` (strict mode)
-- [ ] `src/main.tsx` + `src/App.tsx`
-- [ ] `src/routes.tsx` — all routes wired with placeholder pages
-- [ ] Placeholder `LoginPage`, `SignupPage`, `EntryListPage`, `EntryCreatePage`, `EntryEditPage`, `EntryDetailPage`, `FriendsListPage`, `FriendsAddPage`
-- [ ] Placeholder `Header`, `SideNav`
-- [ ] `npm run dev` starts with no errors; all routes render; Tailwind applies
+### Phase 1 — Scaffolding ✅
+- [x] `client-react/` directory created with Vite + React + TypeScript
+- [x] `package.json` with all required dependencies
+- [x] `vite.config.ts` (with proxy to backend for dev)
+- [x] `tailwind.config.ts` + `postcss.config.ts`
+- [x] `tsconfig.json` (strict mode)
+- [x] `src/main.tsx` + `src/App.tsx`
+- [x] `src/routes.tsx` — all routes wired with placeholder pages
+- [x] Placeholder `LoginPage`, `SignupPage`, `EntryListPage`, `EntryCreatePage`, `EntryEditPage`, `EntryDetailPage`, `FriendsListPage`, `FriendsAddPage`
+- [x] Placeholder `Header`, `SideNav`
+- [x] `npm run dev` starts with no errors; all routes render; Tailwind applies
 
 ### Phase 2 — Shared Layer
 - [ ] `src/api/apiClient.ts` — Axios instance with auth + 401 interceptors

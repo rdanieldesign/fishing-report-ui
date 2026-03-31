@@ -1,0 +1,4 @@
+/* Tailwind's preflight (CSS reset) + utility layers */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
