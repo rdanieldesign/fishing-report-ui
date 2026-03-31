@@ -149,33 +149,32 @@ Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 - [x] `components/shared/FileUpload.tsx`
 - [x] `components/shared/FooterBreadcrumb.tsx`
 - [x] `components/shared/NotificationBadge.tsx`
-- [ ] `components/shared/ConfirmModal.tsx` — deferred to Phase 4 (no Angular source found; build when first consumed)
+- [x] `components/shared/ConfirmModal.tsx` — built in Phase 4 (Headless UI Dialog, parent-owned open state)
 - [x] `components/entries/FilterPanel.tsx`
 - [x] `components/locations/LocationCreateForm.tsx`
 - [x] `components/locations/LocationCreateModal.tsx`
 - [x] TypeScript compiles with no errors (`tsc --noEmit` → exit 0)
 
-### Phase 4 — Container / Page Components
-- [ ] `pages/LoginPage.tsx` — form + mutation + redirect
-- [ ] `pages/SignupPage.tsx` — form + password validation + mutation
-- [ ] `pages/EntryListPage.tsx` — polymorphic list (all / mine / user / location)
-- [ ] `pages/EntryDetailPage.tsx` — query + author-gated actions
-- [ ] `pages/EntryCreatePage.tsx` — form + draft + location modal + mutation
-- [ ] `pages/EntryEditPage.tsx` — prefill from query + mutation
-- [ ] `pages/FriendsListPage.tsx` — three queries + tabs + mutations
-- [ ] `pages/FriendsAddPage.tsx` — query + mutation
-- [ ] `App.tsx` — Header + SideNav wired to auth store + notifications
-- [ ] App is fully functional end-to-end (no auth guard yet)
+### Phase 4 — Container / Page Components ✅
+- [x] `pages/LoginPage.tsx` — form + mutation + redirect
+- [x] `pages/SignupPage.tsx` — form + password validation + mutation
+- [x] `pages/EntryListPage.tsx` — polymorphic list (all / mine / user / location)
+- [x] `pages/EntryDetailPage.tsx` — query + author-gated actions
+- [x] `pages/EntryCreatePage.tsx` — form + draft + location modal + mutation
+- [x] `pages/EntryEditPage.tsx` — prefill from query + mutation
+- [x] `pages/FriendsListPage.tsx` — three queries + tabs + mutations
+- [x] `pages/FriendsAddPage.tsx` — query + mutation
+- [x] `App.tsx` — Header + SideNav already wired via AppLayout in routes.tsx (Phase 1); no changes needed
+- [x] App is fully functional end-to-end (no auth guard yet)
 
-### Phase 5 — Auth and Protected Routes
-- [ ] `components/auth/RequireAuth.tsx` — redirects to `/login` if no token
-- [ ] `components/auth/RedirectIfAuth.tsx` — redirects to `/entries` if already authenticated
-- [ ] Routes updated: login/signup wrapped in `RedirectIfAuth`; all app routes wrapped in `RequireAuth`
-- [ ] Axios 401 interceptor clears token + navigates to `/login`
-  - Currently uses `window.location.href = '/login'` in `src/api/apiClient.ts`
-  - Once `RequireAuth` is in place, replace with stored `navigate()` ref — clearing the token is enough, `RequireAuth` handles the redirect automatically
-- [ ] Unauthenticated access to any protected route redirects correctly
-- [ ] Logout clears token and redirects immediately
+### Phase 5 — Auth and Protected Routes ✅
+- [x] `components/auth/RequireAuth.tsx` — redirects to `/login` if no token
+- [x] `components/auth/RedirectIfAuth.tsx` — redirects to `/entries` if already authenticated
+- [x] Routes updated: login/signup wrapped in `RedirectIfAuth`; all app routes wrapped in `RequireAuth`
+- [x] Axios 401 interceptor clears token + navigates to `/login`
+  - `window.location.href` removed; `clearToken()` is sufficient — `RequireAuth` reacts to the Zustand store and redirects automatically
+- [x] Unauthenticated access to any protected route redirects correctly
+- [x] Logout clears token and redirects immediately (wired in `SideNav` since Phase 3)
 
 ---
 
