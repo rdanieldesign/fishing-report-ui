@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Combobox } from '@headlessui/react';
+import { ChevronDown } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getAllLocations } from '../../api/locationApi';
 import { getUsers } from '../../api/userApi';
@@ -45,11 +46,14 @@ function FilterCombobox({
     <Combobox value={selected} onChange={onSelect} disabled={disabled} nullable>
       <div className="relative">
         <Combobox.Input
-          className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="w-full border border-gray-300 rounded px-3 py-1.5 pr-7 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           displayValue={(o: IFilterOption | null) => o?.label ?? ''}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
         />
+        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2 disabled:cursor-not-allowed">
+          <ChevronDown className="w-4 h-4 text-gray-400" aria-hidden="true" />
+        </Combobox.Button>
         <Combobox.Options className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded shadow-lg max-h-48 overflow-auto text-sm">
           {filtered.length === 0 ? (
             <li className="px-3 py-2 text-gray-400">No options</li>

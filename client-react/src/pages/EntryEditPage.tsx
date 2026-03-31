@@ -82,7 +82,7 @@ export function EntryEditPage() {
           date: dayjs(entry.date).format('YYYY-MM-DD'),
           catchCount: entry.catchCount,
           // Map IReportImage[] → IFileUpload[] so FileUpload can render existing images
-          images: entry.images.map((img) => ({
+          images: entry.images?.map((img) => ({
             imageURL: img.imageURL,
             imageId: img.imageId,
           })),
@@ -95,7 +95,7 @@ export function EntryEditPage() {
           locationId: entry.locationId,
           date: dayjs(entry.date).format('YYYY-MM-DD'),
           catchCount: entry.catchCount,
-          images: entry.images.map((img) => ({
+          images: entry.images?.map((img) => ({
             imageURL: img.imageURL,
             imageId: img.imageId,
           })),
