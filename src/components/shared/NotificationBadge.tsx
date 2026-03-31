@@ -5,8 +5,8 @@ interface NotificationBadgeProps {
   children: ReactNode;
 }
 
-// Mirrors Angular's NotificationIconComponent: wraps children in a relative
-// container and absolutely-positions an orange dot when hasNotifications is true.
+// Wraps children in a relative container and absolutely-positions
+// an orange dot when hasNotifications is true.
 export function NotificationBadge({ hasNotifications, children }: NotificationBadgeProps) {
   return (
     <span className="relative inline-block">

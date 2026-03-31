@@ -19,15 +19,13 @@ interface EntryFormValues {
   images: IFileUpload[];
 }
 
-// Converts YYYY-MM-DD (from <input type="date">) to the format Angular used:
-// moment.utc(date).format('YYYY-MM-DD HH:mm:ss') — midnight UTC
+// Converts YYYY-MM-DD (from <input type="date">) to a midnight UTC datetime string.
 function toUtcDateString(dateStr: string): string {
   return `${dateStr} 00:00:00`;
 }
 
-// Builds the multipart FormData payload matching Angular's createEntry / editEntry shape.
-// New images: file appended as 'images', filename pushed to imageNames.
-// Angular also sent imageIds for create (new file names as IDs) — preserved here.
+// Builds the multipart FormData payload.
+// New images: file appended as 'images', filename pushed to imageNames (used as imageIds).
 function buildFormData(values: EntryFormValues): FormData {
   const fd = new FormData();
   fd.append('notes', values.notes);
@@ -57,7 +55,7 @@ export function EntryCreatePage() {
     queryFn: getAllLocations,
   });
 
-  // Restore draft from localStorage (images are excluded from draft — see Angular source)
+  // Restore draft from localStorage (images are excluded from draft)
   const savedDraft = (() => {
     try {
       return JSON.parse(localStorage.getItem(DRAFT_KEY) ?? 'null');
@@ -79,7 +77,7 @@ export function EntryCreatePage() {
       : { notes: '', locationId: '', date: '', catchCount: '', images: [] },
   });
 
-  // Persist non-image fields to localStorage on every change — mirrors Angular's valueChanges subscription
+  // Persist non-image fields to localStorage on every change
   const watchedValues = watch(['notes', 'locationId', 'date', 'catchCount']);
   useEffect(() => {
     const [notes, locationId, date, catchCount] = watchedValues;

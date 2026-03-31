@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { IFileUpload } from '../types/fileUpload.types';
 
-// Replaces Angular's ImgSrcPipe (which returned an Observable<string>).
 // Returns the resolved image URL: immediately for existing images,
 // asynchronously via FileReader for new File objects.
 export function useImageSrc(file: IFileUpload): string | null {

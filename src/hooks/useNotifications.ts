@@ -5,9 +5,8 @@ import { useAuthStore } from '../stores/authStore';
 export function useNotifications(): { hasNotifications: boolean } {
   const token = useAuthStore((state) => state.token);
 
-  // enabled: !!token mirrors Angular's behaviour — only fetch when authenticated.
-  // React Query refetches on window-focus by default, which improves on the
-  // Angular version that fetched only once per login session.
+  // enabled: !!token — only fetch when authenticated.
+  // React Query refetches on window-focus by default.
   const { data: requests } = useQuery({
     queryKey: ['friendRequests'],
     queryFn: getFriendRequests,

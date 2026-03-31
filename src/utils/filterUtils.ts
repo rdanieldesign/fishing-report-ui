@@ -1,8 +1,6 @@
 import type { IFilter } from '../types/filter.types';
 
-// Translates Angular's FilterAsTextPipe.transform(IFilter[]) into a plain function.
-// The pipe also accepted a single IFilter but in practice was always called with an array;
-// this function takes the array form only, which is cleaner and type-safe.
+// Formats an array of active filters into a comma-separated summary string.
 function getFilterLabel(filter: IFilter): string {
   if (!(filter.field && filter.value)) return '';
   return `${filter.field.label}: ${filter.value.label}`;

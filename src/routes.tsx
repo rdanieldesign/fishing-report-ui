@@ -51,7 +51,6 @@ export function AppRoutes() {
           <Route path="/entries" element={<EntryListPage />} />
           <Route path="/entries/create" element={<EntryCreatePage />} />
           <Route path="/entries/:entryId" element={<EntryDetailPage />} />
-          {/* Edit is a child of detail in Angular: entries/:entryId/edit */}
           <Route path="/entries/:entryId/edit" element={<EntryEditPage />} />
 
           {/* Polymorphic entry list variants — same component, different data source */}

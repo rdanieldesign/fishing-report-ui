@@ -22,7 +22,7 @@ export function EntryDetailPage() {
     enabled: !!entryId,
   });
 
-  // Current user to gate edit/delete buttons — mirrors Angular's currentUserId$ observable
+  // Current user to gate edit/delete buttons
   const { data: currentUser } = useQuery({
     queryKey: ['currentUser'],
     queryFn: getCurrentUser,
@@ -87,7 +87,7 @@ export function EntryDetailPage() {
           </div>
         )}
 
-        {/* Author-gated actions — mirrors Angular's *ngIf="(currentUserId$ | async) === entry.authorId" */}
+        {/* Author-gated actions */}
         {isAuthor && (
           <div className="flex gap-3 pt-2">
             <button

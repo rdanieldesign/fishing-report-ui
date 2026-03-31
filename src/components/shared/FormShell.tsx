@@ -15,10 +15,8 @@ function Spinner() {
   );
 }
 
-// Mirrors Angular's FormComponent: wraps form content in a flex-column container
-// with a scrollable body area and bottom-aligned Cancel / Submit buttons.
-// Angular auto-applied 100% width to every MatFormField via ContentChildren —
-// in React we let children manage their own widths; the shell just provides layout.
+// Wraps form content in a flex-column container with a scrollable body area
+// and bottom-aligned Cancel / Submit buttons.
 export function FormShell({ children, loading = false, submitDisabled = false, onSubmit, onCancel }: FormShellProps) {
   if (loading) {
     return (
@@ -35,7 +33,7 @@ export function FormShell({ children, loading = false, submitDisabled = false, o
         {children}
       </div>
 
-      {/* Bottom-aligned action buttons, matching Angular's margin-top: auto pattern */}
+      {/* Bottom-aligned action buttons */}
       <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
         <button
           type="button"

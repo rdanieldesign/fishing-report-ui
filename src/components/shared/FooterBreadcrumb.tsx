@@ -6,9 +6,7 @@ interface FooterBreadcrumbProps {
   to: string;
 }
 
-// Mirrors Angular's FooterBreadcrumbComponent: fixed black footer bar with a
-// left-arrow and link text. `to` replaces Angular's string[] routerLink array
-// since React Router's <Link> accepts a plain path string.
+// Fixed black footer bar with a left-arrow and link text.
 export function FooterBreadcrumb({ text, to }: FooterBreadcrumbProps) {
   return (
     <footer className="h-16 bg-black text-white flex items-center px-4 shrink-0">

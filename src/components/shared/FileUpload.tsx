@@ -35,7 +35,7 @@ function ImageItem({
         </div>
       )}
 
-      {/* Overlay delete button — positioned top-right of the image, matching Angular */}
+      {/* Overlay delete button — positioned top-right of the image */}
       <button
         type="button"
         onClick={onDelete}
@@ -48,9 +48,8 @@ function ImageItem({
   );
 }
 
-// FileUpload replaces Angular's ControlValueAccessor component.
-// Instead of ControlValueAccessor, this integrates with React Hook Form via
-// Controller: the parent passes field.value / field.onChange via the `field` prop.
+// Integrates with React Hook Form via Controller:
+// the parent passes field.value / field.onChange via the `field` prop.
 export function FileUpload({ field, disabled = false }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const files: IFileUpload[] = field.value ?? [];

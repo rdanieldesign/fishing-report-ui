@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This repo is a **React + TypeScript + Vite** frontend for the Fishing Report app. The Angular 12 app it replaced has been removed.
+This repo is a **React + TypeScript + Vite** frontend for the Fishing Report app.
 
 The backend lives in a **separate repo**. This repo is frontend-only. All API calls target a REST backend; the base URL is configured via environment/proxy.
 
