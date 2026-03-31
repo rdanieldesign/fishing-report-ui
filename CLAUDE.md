@@ -59,6 +59,15 @@ fishing-report-ui/
 | Accessible primitives (modals, tabs) | Headless UI |
 | Date formatting | Day.js |
 | Toast / snackbar | Sonner (or equivalent lightweight lib) |
+| Icons | lucide-react |
+
+---
+
+## Stack Modification Rule
+
+**Do not add, remove, or swap any dependency without explicit user approval.**
+
+If a new package would improve an implementation, stop and ask before installing or importing it. Once approved, add it to this table and proceed. Do not use workarounds (e.g. inline SVGs, hand-rolled utilities) to avoid raising the question — raise it and wait.
 
 ---
 
@@ -133,18 +142,18 @@ Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 - [x] `src/utils/filterUtils.ts`
 - [x] TypeScript compiles with no errors across the shared layer
 
-### Phase 3 — Leaf Components
-- [ ] `components/layout/Header.tsx`
-- [ ] `components/layout/SideNav.tsx`
-- [ ] `components/shared/FormShell.tsx`
-- [ ] `components/shared/FileUpload.tsx`
-- [ ] `components/shared/FooterBreadcrumb.tsx`
-- [ ] `components/shared/NotificationBadge.tsx`
-- [ ] `components/shared/ConfirmModal.tsx`
-- [ ] `components/entries/FilterPanel.tsx`
-- [ ] `components/locations/LocationCreateForm.tsx`
-- [ ] `components/locations/LocationCreateModal.tsx`
-- [ ] All components render correctly with Tailwind styling
+### Phase 3 — Leaf Components ✅
+- [x] `components/layout/Header.tsx`
+- [x] `components/layout/SideNav.tsx`
+- [x] `components/shared/FormShell.tsx`
+- [x] `components/shared/FileUpload.tsx`
+- [x] `components/shared/FooterBreadcrumb.tsx`
+- [x] `components/shared/NotificationBadge.tsx`
+- [ ] `components/shared/ConfirmModal.tsx` — deferred to Phase 4 (no Angular source found; build when first consumed)
+- [x] `components/entries/FilterPanel.tsx`
+- [x] `components/locations/LocationCreateForm.tsx`
+- [x] `components/locations/LocationCreateModal.tsx`
+- [x] TypeScript compiles with no errors (`tsc --noEmit` → exit 0)
 
 ### Phase 4 — Container / Page Components
 - [ ] `pages/LoginPage.tsx` — form + mutation + redirect
