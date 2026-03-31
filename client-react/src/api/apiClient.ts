@@ -13,19 +13,14 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Response interceptor: on 401 clear the stored token and redirect to login.
-// TODO (Phase 5): once RequireAuth is in place, the window.location redirect can be
-// replaced with a stored navigate() ref — RequireAuth will handle the redirect
-// automatically when it sees a null token.
+// Response interceptor: on 401, clear the token. RequireAuth watches the Zustand
+// store reactively and redirects to /login on the next render — no imperative
+// navigate() needed here.
 apiClient.interceptors.response.use(
   (response) => response,
   (error: unknown) => {
-    if (
-      axios.isAxiosError(error) &&
-      error.response?.status === 401
-    ) {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
       useAuthStore.getState().clearToken();
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
