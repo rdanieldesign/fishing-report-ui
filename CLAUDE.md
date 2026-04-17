@@ -8,48 +8,22 @@ The backend lives in a **separate repo**. This repo is frontend-only. All API ca
 
 ---
 
-## Current Directory Structure
-
-```
-fishing-report-ui/
-├── src/
-│   ├── api/                 # Axios API client + per-resource functions
-│   ├── stores/              # Zustand stores
-│   ├── types/               # TypeScript interfaces
-│   ├── hooks/               # Custom React hooks
-│   ├── utils/               # Pure utility functions
-│   ├── components/          # Reusable/leaf components
-│   │   ├── auth/            # RequireAuth, RedirectIfAuth route guards
-│   │   ├── layout/          # Header, SideNav
-│   │   ├── shared/          # FormShell, FileUpload, ConfirmModal, etc.
-│   │   ├── entries/         # FilterPanel
-│   │   └── locations/       # LocationCreateForm, LocationCreateModal
-│   └── pages/               # Route-level page components
-├── index.html
-├── vite.config.ts
-├── tailwind.config.ts
-├── tsconfig.json
-└── CLAUDE.md                # This file
-```
-
----
-
 ## Stack (React App — follow exactly)
 
-| Concern | Choice |
-|---|---|
-| Build tool | Vite |
-| Language | TypeScript (strict) |
-| Styling | Tailwind CSS |
-| Routing | React Router v6 |
-| Server state / data fetching | React Query (`@tanstack/react-query`) |
-| Client / shared state | Zustand |
-| Forms | React Hook Form |
-| HTTP client | Axios |
-| Accessible primitives (modals, tabs) | Headless UI |
-| Date formatting | Day.js |
-| Toast / snackbar | Sonner (or equivalent lightweight lib) |
-| Icons | lucide-react |
+| Concern                              | Choice                                 |
+| ------------------------------------ | -------------------------------------- |
+| Build tool                           | Vite                                   |
+| Language                             | TypeScript (strict)                    |
+| Styling                              | Tailwind CSS                           |
+| Routing                              | React Router v6                        |
+| Server state / data fetching         | React Query (`@tanstack/react-query`)  |
+| Client / shared state                | Zustand                                |
+| Forms                                | React Hook Form                        |
+| HTTP client                          | Axios                                  |
+| Accessible primitives (modals, tabs) | Headless UI                            |
+| Date formatting                      | Day.js                                 |
+| Toast / snackbar                     | Sonner (or equivalent lightweight lib) |
+| Icons                                | lucide-react                           |
 
 ---
 
@@ -69,37 +43,28 @@ The TypeScript interfaces in `src/types/` are the source of truth for all API co
 
 ### API Endpoints Reference
 
-| Resource | Method | URL |
-|---|---|---|
-| Auth | POST | `/api/auth/login` |
-| Auth | POST | `/api/auth/signup` |
-| Reports (all) | GET | `/api/reports` |
-| Reports (mine) | GET | `/api/reports/my-reports` |
-| Report | GET | `/api/reports/:id` |
-| Report | POST | `/api/reports` |
-| Report | PUT | `/api/reports/:id` |
-| Report | DELETE | `/api/reports/:id` |
-| Locations | GET | `/api/locations` |
-| Location | GET | `/api/locations/:id` |
-| Location | POST | `/api/locations` |
-| User (current) | GET | `/api/users/current` |
-| User | GET | `/api/users/:id` |
-| Users | GET | `/api/users` |
-| Friends | GET | `/api/friends` |
-| Friend requests | GET | `/api/friends/requests` |
-| Pending requests | GET | `/api/friends/pending` |
-| Friend options | GET | `/api/friends/options` |
-| Friendship | PUT | `/api/friends` |
-| Friendship | POST | `/api/friends` |
+| Resource         | Method | URL                       |
+| ---------------- | ------ | ------------------------- |
+| Auth             | POST   | `/api/auth/login`         |
+| Auth             | POST   | `/api/auth/signup`        |
+| Reports (all)    | GET    | `/api/reports`            |
+| Reports (mine)   | GET    | `/api/reports/my-reports` |
+| Report           | GET    | `/api/reports/:id`        |
+| Report           | POST   | `/api/reports`            |
+| Report           | PUT    | `/api/reports/:id`        |
+| Report           | DELETE | `/api/reports/:id`        |
+| Locations        | GET    | `/api/locations`          |
+| Location         | GET    | `/api/locations/:id`      |
+| Location         | POST   | `/api/locations`          |
+| User (current)   | GET    | `/api/users/current`      |
+| User             | GET    | `/api/users/:id`          |
+| Users            | GET    | `/api/users`              |
+| Friends          | GET    | `/api/friends`            |
+| Friend requests  | GET    | `/api/friends/requests`   |
+| Pending requests | GET    | `/api/friends/pending`    |
+| Friend options   | GET    | `/api/friends/options`    |
+| Friendship       | PUT    | `/api/friends`            |
+| Friendship       | POST   | `/api/friends`            |
 
 Auth header: `x-access-token: <token>` (set by Axios request interceptor)
 401 responses → clear token + redirect to `/login` (Axios response interceptor)
-
----
-
-## Notes
-
-- The `EntryListPage` is one component serving four routes; use `useParams` and `useMatch` to determine which data to fetch and which heading/buttons to show.
-- `FileUpload` handles both **new files** (File objects) and **existing images** (imageURL + imageId from the API) simultaneously, integrated with React Hook Form via `Controller`.
-- Draft saving in `EntryCreatePage`: React Hook Form `watch()` in a `useEffect` persists to `localStorage` key `fishing-report-draft`.
-- Report images are submitted as `FormData` (multipart). Leave the Axios `Content-Type` header unset — the browser sets it automatically with the boundary.
