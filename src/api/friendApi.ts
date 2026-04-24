@@ -4,28 +4,34 @@ import type { IFriendshipDetails } from '../types/friend.types';
 import type { IUser } from '../types/user.types';
 
 export async function getAllFriends(): Promise<IFriendshipDetails[]> {
-  const response = await apiClient.get<IFriendshipDetails[]>('/friends');
+  const response = await apiClient.get<IFriendshipDetails[]>('/api/friends');
   return response.data;
 }
 
 export async function getFriendRequests(): Promise<IFriendshipDetails[]> {
-  const response = await apiClient.get<IFriendshipDetails[]>('/friends/requests');
+  const response = await apiClient.get<IFriendshipDetails[]>(
+    '/api/friends/requests',
+  );
   return response.data;
 }
 
-export async function getPendingFriendRequests(): Promise<IFriendshipDetails[]> {
-  const response = await apiClient.get<IFriendshipDetails[]>('/friends/pending');
+export async function getPendingFriendRequests(): Promise<
+  IFriendshipDetails[]
+> {
+  const response = await apiClient.get<IFriendshipDetails[]>(
+    '/api/friends/pending',
+  );
   return response.data;
 }
 
 export async function getFriendOptions(): Promise<IUser[]> {
-  const response = await apiClient.get<IUser[]>('/friends/options');
+  const response = await apiClient.get<IUser[]>('/api/friends/options');
   return response.data;
 }
 
 // Send { userId, status } as the body — the exact payload shape required by the backend.
 export async function requestFriendship(friendId: number): Promise<number> {
-  const response = await apiClient.post<number>('/friends', {
+  const response = await apiClient.post<number>('/api/friends', {
     userId: friendId,
     status: FriendStatus.Requested,
   });
@@ -33,15 +39,17 @@ export async function requestFriendship(friendId: number): Promise<number> {
 }
 
 export async function confirmFriendship(friendId: number): Promise<number> {
-  const response = await apiClient.put<number>('/friends', {
+  const response = await apiClient.put<number>('/api/friends', {
     userId: friendId,
     status: FriendStatus.Confirmed,
   });
   return response.data;
 }
 
-export async function deleteFriendship(friendId: number): Promise<IFriendshipDetails[]> {
-  const response = await apiClient.put<IFriendshipDetails[]>('/friends', {
+export async function deleteFriendship(
+  friendId: number,
+): Promise<IFriendshipDetails[]> {
+  const response = await apiClient.put<IFriendshipDetails[]>('/api/friends', {
     userId: friendId,
     status: FriendStatus.Rejected,
   });
