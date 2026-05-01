@@ -1,7 +1,7 @@
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { createLocation } from '../../api/locationApi';
-import type { INewLocation } from '../../types/location.types';
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { createLocation } from "../../api/locationApi";
+import type { INewLocation } from "../../types/location.types";
 
 interface LocationCreateFormProps {
   /** Called with the new location's id after successful creation */
@@ -9,7 +9,10 @@ interface LocationCreateFormProps {
   onCancel: () => void;
 }
 
-export function LocationCreateForm({ onSuccess, onCancel }: LocationCreateFormProps) {
+export function LocationCreateForm({
+  onSuccess,
+  onCancel,
+}: LocationCreateFormProps) {
   const {
     register,
     handleSubmit,
@@ -33,7 +36,7 @@ export function LocationCreateForm({ onSuccess, onCancel }: LocationCreateFormPr
           Location Name
         </label>
         <input
-          {...register('name', { required: 'Name is required' })}
+          {...register("name", { required: "Name is required" })}
           type="text"
           className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="e.g. Lake Trout Pond"
@@ -48,18 +51,24 @@ export function LocationCreateForm({ onSuccess, onCancel }: LocationCreateFormPr
           Google Maps Link
         </label>
         <input
-          {...register('googleMapsLink', { required: 'Google Maps link is required' })}
+          {...register("googleMapsLink", {
+            required: "Google Maps link is required",
+          })}
           type="url"
           className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="https://maps.google.com/..."
         />
         {errors.googleMapsLink && (
-          <p className="text-xs text-red-600 mt-1">{errors.googleMapsLink.message}</p>
+          <p className="text-xs text-red-600 mt-1">
+            {errors.googleMapsLink.message}
+          </p>
         )}
       </div>
 
       {mutation.isError && (
-        <p className="text-xs text-red-600">Failed to create location. Please try again.</p>
+        <p className="text-xs text-red-600">
+          Failed to create location. Please try again.
+        </p>
       )}
 
       <div className="flex gap-3 pt-2">
@@ -73,9 +82,9 @@ export function LocationCreateForm({ onSuccess, onCancel }: LocationCreateFormPr
         <button
           type="submit"
           disabled={isSubmitting || mutation.isPending}
-          className="px-4 py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {mutation.isPending ? 'Creating…' : 'Create'}
+          {mutation.isPending ? "Creating…" : "Create"}
         </button>
       </div>
     </form>

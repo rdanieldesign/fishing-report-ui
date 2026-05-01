@@ -61,7 +61,7 @@ export function EntryDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <span className="inline-block w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <span className="inline-block w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export function EntryDetailPage() {
     <div className="flex flex-col min-h-full">
       <div className="flex-1 space-y-4 pb-4">
         {/* Narrative */}
-        <p className="text-base text-gray-800">
+        <p className="text-500 text-gray-800">
           {entry.notes || "No notes available"}
         </p>
 
@@ -84,7 +84,7 @@ export function EntryDetailPage() {
             Author:{" "}
             <Link
               to={`/users/${entry.authorId}/entries`}
-              className="text-blue-600 hover:underline"
+              className="text-primary-500 hover:underline"
             >
               {entry.authorName}
             </Link>
@@ -93,7 +93,7 @@ export function EntryDetailPage() {
             Location:{" "}
             <Link
               to={`/locations/${entry.locationId}/entries`}
-              className="text-blue-600 hover:underline"
+              className="text-primary-500 hover:underline"
             >
               {entry.locationName}
             </Link>
@@ -149,7 +149,7 @@ export function EntryDetailPage() {
             <button
               type="button"
               onClick={() => navigate(`/entries/${entryId}/edit`)}
-              className="px-4 py-2 text-sm border border-blue-600 text-blue-700 rounded hover:bg-blue-50"
+              className="px-4 py-2 text-sm border border-primary-500 text-primary-500 rounded hover:bg-blue-50"
             >
               Edit Entry
             </button>

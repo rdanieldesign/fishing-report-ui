@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Combobox } from '@headlessui/react';
-import { ChevronDown } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { getAllLocations } from '../../api/locationApi';
-import { getUsers } from '../../api/userApi';
-import { FilterFields } from '../../types/filter.types';
-import type { IFilter, IFilterOption } from '../../types/filter.types';
+import { useState } from "react";
+import { Combobox } from "@headlessui/react";
+import { ChevronDown } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllLocations } from "../../api/locationApi";
+import { getUsers } from "../../api/userApi";
+import { FilterFields } from "../../types/filter.types";
+import type { IFilter, IFilterOption } from "../../types/filter.types";
 
 interface FilterPanelProps {
   onApply: (filters: IFilter[]) => void;
@@ -14,8 +14,8 @@ interface FilterPanelProps {
 
 // Static field options
 const FIELD_OPTIONS: IFilterOption[] = [
-  { label: 'Location', value: FilterFields.Location },
-  { label: 'Author', value: FilterFields.Author },
+  { label: "Location", value: FilterFields.Location },
+  { label: "Author", value: FilterFields.Author },
 ];
 
 // Shared Combobox dropdown used for both Field and Value selectors;
@@ -33,12 +33,14 @@ function FilterCombobox({
   placeholder: string;
   disabled?: boolean;
 }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const filtered =
-    query === ''
+    query === ""
       ? options
-      : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()));
+      : options.filter((o) =>
+          o.label.toLowerCase().includes(query.toLowerCase()),
+        );
 
   return (
     // `nullable` allows clearing the selection via keyboard/backspace
@@ -46,7 +48,7 @@ function FilterCombobox({
       <div className="relative">
         <Combobox.Input
           className="w-full border border-gray-300 rounded px-3 py-1.5 pr-7 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-          displayValue={(o: IFilterOption | null) => o?.label ?? ''}
+          displayValue={(o: IFilterOption | null) => o?.label ?? ""}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
         />
@@ -62,7 +64,7 @@ function FilterCombobox({
                 key={o.value}
                 value={o}
                 className={({ active }) =>
-                  `px-3 py-2 cursor-pointer ${active ? 'bg-blue-600 text-white' : 'text-gray-700'}`
+                  `px-3 py-2 cursor-pointer ${active ? "bg-primary-500 text-white" : "text-gray-700"}`
                 }
               >
                 {o.label}
@@ -76,17 +78,21 @@ function FilterCombobox({
 }
 
 export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
-  const [selectedField, setSelectedField] = useState<IFilterOption | null>(null);
-  const [selectedValue, setSelectedValue] = useState<IFilterOption | null>(null);
+  const [selectedField, setSelectedField] = useState<IFilterOption | null>(
+    null,
+  );
+  const [selectedValue, setSelectedValue] = useState<IFilterOption | null>(
+    null,
+  );
   const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
 
   const { data: locations = [] } = useQuery({
-    queryKey: ['locations'],
+    queryKey: ["locations"],
     queryFn: getAllLocations,
   });
 
   const { data: users = [] } = useQuery({
-    queryKey: ['users'],
+    queryKey: ["users"],
     queryFn: getUsers,
   });
 
@@ -95,8 +101,8 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
     selectedField?.value === FilterFields.Location
       ? locations.map((l) => ({ label: l.name, value: l.id }))
       : selectedField?.value === FilterFields.Author
-      ? users.map((u) => ({ label: u.name, value: u.id }))
-      : [];
+        ? users.map((u) => ({ label: u.name, value: u.id }))
+        : [];
 
   function handleFieldChange(field: IFilterOption | null) {
     setSelectedField(field);
@@ -109,11 +115,16 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
 
     // Deduplication: skip if same field+value combination already exists
     const isDuplicate = appliedFilters.some(
-      (f) => f.field.value === selectedField.value && f.value.value === selectedValue.value
+      (f) =>
+        f.field.value === selectedField.value &&
+        f.value.value === selectedValue.value,
     );
     if (isDuplicate) return;
 
-    const updated = [...appliedFilters, { field: selectedField, value: selectedValue }];
+    const updated = [
+      ...appliedFilters,
+      { field: selectedField, value: selectedValue },
+    ];
     setAppliedFilters(updated);
     setSelectedField(null);
     setSelectedValue(null);
@@ -159,7 +170,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
           type="button"
           onClick={handleAdd}
           disabled={!selectedField || !selectedValue}
-          className="px-3 py-1.5 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="px-3 py-1.5 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Add
         </button>
@@ -171,9 +182,11 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
           {appliedFilters.map((f, i) => (
             <li
               key={i}
-              className="flex items-center gap-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+              className="flex items-center gap-1 bg-primary-100 text-primary-700 text-xs px-2 py-1 rounded-full"
             >
-              <span>{f.field.label}: {f.value.label}</span>
+              <span>
+                {f.field.label}: {f.value.label}
+              </span>
               <button
                 type="button"
                 onClick={() => handleRemove(i)}
@@ -192,7 +205,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
         <button
           type="button"
           onClick={handleApply}
-          className="px-3 py-1.5 text-sm bg-blue-700 text-white rounded hover:bg-blue-800"
+          className="px-3 py-1.5 text-sm bg-primary-500 text-white rounded hover:bg-primary-700"
         >
           Apply
         </button>

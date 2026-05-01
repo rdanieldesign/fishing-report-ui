@@ -76,7 +76,7 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={isSubmitting || mutation.isPending}
-            className="w-full py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mutation.isPending ? "Signing in…" : "Sign In"}
           </button>
@@ -84,7 +84,7 @@ export function LoginPage() {
 
         <p className="text-sm text-gray-600 text-center">
           No account?{" "}
-          <Link to="/signup" className="text-blue-700 hover:underline">
+          <Link to="/signup" className="text-primary-500 hover:underline">
             Sign up
           </Link>
         </p>

@@ -1,5 +1,5 @@
-import { Dialog } from '@headlessui/react';
-import { LocationCreateForm } from './LocationCreateForm';
+import { Dialog } from "@headlessui/react";
+import { LocationCreateForm } from "./LocationCreateForm";
 
 interface LocationCreateModalProps {
   isOpen: boolean;
@@ -10,7 +10,11 @@ interface LocationCreateModalProps {
 
 // The parent controls open/close state and passes it as a prop; the Dialog
 // handles focus trapping, ARIA role="dialog", and backdrop click-to-close.
-export function LocationCreateModal({ isOpen, onClose, onLocationCreated }: LocationCreateModalProps) {
+export function LocationCreateModal({
+  isOpen,
+  onClose,
+  onLocationCreated,
+}: LocationCreateModalProps) {
   function handleSuccess(locationId: number) {
     onLocationCreated(locationId);
     onClose();
@@ -24,7 +28,7 @@ export function LocationCreateModal({ isOpen, onClose, onLocationCreated }: Loca
       {/* Centered panel */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-          <Dialog.Title className="text-base font-semibold text-gray-900 mb-4">
+          <Dialog.Title className="text-500 font-semibold text-gray-900 mb-4">
             Create New Location
           </Dialog.Title>
 

@@ -1,8 +1,8 @@
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate, Link } from 'react-router-dom';
-import { signup } from '../api/authApi';
-import type { INewUser } from '../types/auth.types';
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
+import { signup } from "../api/authApi";
+import type { INewUser } from "../types/auth.types";
 
 // Extend the API type with a client-only field used for validation
 interface SignupFormValues extends INewUser {
@@ -21,11 +21,11 @@ export function SignupPage() {
   } = useForm<SignupFormValues>();
 
   // watch('password') is used inside the validate function for the cross-field check.
-  const password = watch('password');
+  const password = watch("password");
 
   const mutation = useMutation({
     mutationFn: (data: INewUser) => signup(data),
-    onSuccess: () => navigate('/entries'),
+    onSuccess: () => navigate("/entries"),
     onError: () => reset(),
   });
 
@@ -44,7 +44,7 @@ export function SignupPage() {
               Name
             </label>
             <input
-              {...register('name', { required: 'Name is required' })}
+              {...register("name", { required: "Name is required" })}
               type="text"
               autoComplete="name"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -59,16 +59,21 @@ export function SignupPage() {
               Email
             </label>
             <input
-              {...register('email', {
-                required: 'Email is required',
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email' },
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Enter a valid email",
+                },
               })}
               type="email"
               autoComplete="email"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.email && (
-              <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -77,13 +82,15 @@ export function SignupPage() {
               Password
             </label>
             <input
-              {...register('password', { required: 'Password is required' })}
+              {...register("password", { required: "Password is required" })}
               type="password"
               autoComplete="new-password"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.password && (
-              <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -92,35 +99,40 @@ export function SignupPage() {
               Confirm Password
             </label>
             <input
-              {...register('passwordAgain', {
-                required: 'Please confirm your password',
-                validate: (value) => value === password || 'Passwords do not match',
+              {...register("passwordAgain", {
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
               })}
               type="password"
               autoComplete="new-password"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.passwordAgain && (
-              <p className="text-xs text-red-600 mt-1">{errors.passwordAgain.message}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {errors.passwordAgain.message}
+              </p>
             )}
           </div>
 
           {mutation.isError && (
-            <p className="text-xs text-red-600">Signup failed. Please try again.</p>
+            <p className="text-xs text-red-600">
+              Signup failed. Please try again.
+            </p>
           )}
 
           <button
             type="submit"
             disabled={isSubmitting || mutation.isPending}
-            className="w-full py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {mutation.isPending ? 'Creating account…' : 'Create Account'}
+            {mutation.isPending ? "Creating account…" : "Create Account"}
           </button>
         </form>
 
         <p className="text-sm text-gray-600 text-center">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-700 hover:underline">
+          Already have an account?{" "}
+          <Link to="/login" className="text-primary-500 hover:underline">
             Sign in
           </Link>
         </p>

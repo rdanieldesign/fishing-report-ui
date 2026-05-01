@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Tab } from '@headlessui/react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { CheckCircle, XCircle } from 'lucide-react';
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Tab } from "@headlessui/react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { CheckCircle, XCircle } from "lucide-react";
 import {
   getAllFriends,
   getFriendRequests,
   getPendingFriendRequests,
   confirmFriendship,
   deleteFriendship,
-} from '../api/friendApi';
-import { ConfirmModal } from '../components/shared/ConfirmModal';
-import type { IFriendshipDetails } from '../types/friend.types';
+} from "../api/friendApi";
+import { ConfirmModal } from "../components/shared/ConfirmModal";
+import type { IFriendshipDetails } from "../types/friend.types";
 
 // All three friend query keys — invalidated together after any mutation so all
 // tabs refresh simultaneously.
 const FRIEND_QUERY_KEYS = [
-  ['friends', 'all'],
-  ['friends', 'requests'],
-  ['friends', 'pending'],
+  ["friends", "all"],
+  ["friends", "requests"],
+  ["friends", "pending"],
 ] as const;
 
 // Tab config
@@ -34,7 +34,7 @@ interface TabConfig {
 function Spinner() {
   return (
     <div className="flex justify-center py-8">
-      <span className="inline-block w-7 h-7 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+      <span className="inline-block w-7 h-7 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }
@@ -49,24 +49,26 @@ export function FriendsListPage() {
 
   // Three separate queries — each has its own stale/loading state
   const { data: friends = [], isLoading: friendsLoading } = useQuery({
-    queryKey: ['friends', 'all'],
+    queryKey: ["friends", "all"],
     queryFn: getAllFriends,
   });
 
   const { data: requests = [], isLoading: requestsLoading } = useQuery({
-    queryKey: ['friends', 'requests'],
+    queryKey: ["friends", "requests"],
     queryFn: getFriendRequests,
   });
 
   const { data: pending = [], isLoading: pendingLoading } = useQuery({
-    queryKey: ['friends', 'pending'],
+    queryKey: ["friends", "pending"],
     queryFn: getPendingFriendRequests,
   });
 
   const isLoading = friendsLoading || requestsLoading || pendingLoading;
 
   function invalidateAll() {
-    FRIEND_QUERY_KEYS.forEach((key) => queryClient.invalidateQueries({ queryKey: key }));
+    FRIEND_QUERY_KEYS.forEach((key) =>
+      queryClient.invalidateQueries({ queryKey: key }),
+    );
   }
 
   const confirmMutation = useMutation({
@@ -93,9 +95,30 @@ export function FriendsListPage() {
   }
 
   const tabs: TabConfig[] = [
-    { label: 'Requests', data: requests, canApprove: true, canDecline: true, canSeeEntries: false, shouldConfirmDelete: false },
-    { label: 'Friends', data: friends, canApprove: false, canDecline: true, canSeeEntries: true, shouldConfirmDelete: true },
-    { label: 'Pending', data: pending, canApprove: false, canDecline: false, canSeeEntries: false, shouldConfirmDelete: false },
+    {
+      label: "Requests",
+      data: requests,
+      canApprove: true,
+      canDecline: true,
+      canSeeEntries: false,
+      shouldConfirmDelete: false,
+    },
+    {
+      label: "Friends",
+      data: friends,
+      canApprove: false,
+      canDecline: true,
+      canSeeEntries: true,
+      shouldConfirmDelete: true,
+    },
+    {
+      label: "Pending",
+      data: pending,
+      canApprove: false,
+      canDecline: false,
+      canSeeEntries: false,
+      shouldConfirmDelete: false,
+    },
   ];
 
   return (
@@ -104,7 +127,7 @@ export function FriendsListPage() {
         <h1 className="text-2xl font-semibold text-gray-900">Friends</h1>
         <Link
           to="/friends/add"
-          className="px-4 py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800"
+          className="px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700"
         >
           Add New Friend
         </Link>
@@ -119,8 +142,8 @@ export function FriendsListPage() {
               className={({ selected }) =>
                 `px-4 py-2 text-sm font-medium focus:outline-none border-b-2 transition-colors ${
                   selected
-                    ? 'border-blue-600 text-blue-700'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-primary-500 text-primary-500"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`
               }
             >
@@ -135,29 +158,38 @@ export function FriendsListPage() {
               {isLoading ? (
                 <Spinner />
               ) : tab.data.length === 0 ? (
-                <p className="text-sm text-gray-400 py-4">No {tab.label.toLowerCase()} yet.</p>
+                <p className="text-sm text-gray-400 py-4">
+                  No {tab.label.toLowerCase()} yet.
+                </p>
               ) : (
                 <ul className="divide-y divide-gray-200">
                   {tab.data.map((item) => (
-                    <li key={item.friendId} className="flex items-center justify-between py-3">
+                    <li
+                      key={item.friendId}
+                      className="flex items-center justify-between py-3"
+                    >
                       {/* friendId is typed as string in the interface */}
                       {tab.canSeeEntries ? (
                         <Link
                           to={`/users/${item.friendId}/entries`}
-                          className="text-sm text-blue-600 hover:underline"
+                          className="text-sm text-primary-500 hover:underline"
                         >
                           {item.friendName}
                         </Link>
                       ) : (
-                        <span className="text-sm text-gray-800">{item.friendName}</span>
+                        <span className="text-sm text-gray-800">
+                          {item.friendName}
+                        </span>
                       )}
 
                       <div className="flex gap-2">
                         {tab.canApprove && (
                           <button
                             type="button"
-                            onClick={() => confirmMutation.mutate(Number(item.friendId))}
-                            className="text-blue-600 hover:text-blue-800"
+                            onClick={() =>
+                              confirmMutation.mutate(Number(item.friendId))
+                            }
+                            className="text-primary-500 hover:text-primary-700"
                             aria-label="Approve friend request"
                           >
                             <CheckCircle size={20} />
@@ -167,7 +199,10 @@ export function FriendsListPage() {
                           <button
                             type="button"
                             onClick={() =>
-                              handleDeleteClick(Number(item.friendId), tab.shouldConfirmDelete)
+                              handleDeleteClick(
+                                Number(item.friendId),
+                                tab.shouldConfirmDelete,
+                              )
                             }
                             className="text-red-500 hover:text-red-700"
                             aria-label="Remove friend"

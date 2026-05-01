@@ -1,4 +1,24 @@
-/* Tailwind's preflight (CSS reset) + utility layers */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+:root {
+  --orange-100: #ffdcbf;
+  --orange-300: #e07925;
+  --orange-500: #c5671b;
+  --orange-700: #a65a1b;
+
+  --gray-900: #372827;
+
+  --primary-100: var(--orange-100);
+  --primary: var(--orange-500);
+  --primary-700: var(--orange-700);
+  --primary-300: var(--orange-300);
+}
+
+@theme {
+  --color-primary-100: var(--primary-100);
+  --color-primary-500: var(--primary);
+  --color-primary-700: var(--primary-700);
+  --color-primary-300: var(--primary-300);
+
+  --color-gray-900: var(--gray-900);
+}

@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { Bell, Menu } from 'lucide-react';
-import { useAuthStore } from '../../stores/authStore';
-import { useNotifications } from '../../hooks/useNotifications';
-import { NotificationBadge } from '../shared/NotificationBadge';
-import { getCurrentUser } from '../../api/userApi';
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Bell, Menu } from "lucide-react";
+import { useAuthStore } from "../../stores/authStore";
+import { useNotifications } from "../../hooks/useNotifications";
+import { NotificationBadge } from "../shared/NotificationBadge";
+import { getCurrentUser } from "../../api/userApi";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -16,24 +16,30 @@ export function Header({ onMenuClick }: HeaderProps) {
 
   // Only fetch current user when authenticated.
   const { data: currentUser } = useQuery({
-    queryKey: ['currentUser'],
+    queryKey: ["currentUser"],
     queryFn: getCurrentUser,
     enabled: !!token,
   });
 
-  const homeHref = token ? '/entries' : '/login';
+  const homeHref = token ? "/entries" : "/login";
 
   return (
-    <header className="h-14 bg-blue-700 text-white flex items-center justify-between px-4 shrink-0 z-10">
+    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4 shrink-0 z-10">
       {/* Brand / home link */}
-      <Link to={homeHref} className="font-semibold text-white no-underline hover:opacity-80">
+      <Link
+        to={homeHref}
+        className="font-semibold text-white no-underline hover:opacity-80"
+      >
         Fishing Report
       </Link>
 
       {/* Right-side controls */}
       <div className="flex items-center gap-4">
         {currentUser && (
-          <Link to="/my-entries" className="text-sm text-white no-underline hover:opacity-80">
+          <Link
+            to="/my-entries"
+            className="text-sm text-white no-underline hover:opacity-80"
+          >
             {currentUser.name}
           </Link>
         )}
