@@ -6,4 +6,5 @@ export interface INewLocation {
 
 export interface ILocation extends INewLocation {
   id: number;
+  usgsLocationId?: string | null;
 }

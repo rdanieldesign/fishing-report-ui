@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
-import { getEntry, deleteEntry } from '../api/entryApi';
-import { getCurrentUser } from '../api/userApi';
-import { useAuthStore } from '../stores/authStore';
-import { FooterBreadcrumb } from '../components/shared/FooterBreadcrumb';
-import { ConfirmModal } from '../components/shared/ConfirmModal';
+import { useState } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import { getEntry, deleteEntry } from "../api/entryApi";
+import { getCurrentUser } from "../api/userApi";
+import { useAuthStore } from "../stores/authStore";
+import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
+import { ConfirmModal } from "../components/shared/ConfirmModal";
 
 export function EntryDetailPage() {
   const { entryId } = useParams<{ entryId: string }>();
@@ -17,14 +17,14 @@ export function EntryDetailPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const { data: entry, isLoading } = useQuery({
-    queryKey: ['entry', entryId],
+    queryKey: ["entry", entryId],
     queryFn: () => getEntry(entryId!),
     enabled: !!entryId,
   });
 
   // Current user to gate edit/delete buttons
   const { data: currentUser } = useQuery({
-    queryKey: ['currentUser'],
+    queryKey: ["currentUser"],
     queryFn: getCurrentUser,
     enabled: !!token,
   });
@@ -32,8 +32,8 @@ export function EntryDetailPage() {
   const deleteMutation = useMutation({
     mutationFn: () => deleteEntry(entryId!),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['entries'] });
-      navigate('/entries');
+      queryClient.invalidateQueries({ queryKey: ["entries"] });
+      navigate("/entries");
     },
   });
 
@@ -53,25 +53,50 @@ export function EntryDetailPage() {
     <div className="flex flex-col min-h-full">
       <div className="flex-1 space-y-4 pb-4">
         {/* Narrative */}
-        <p className="text-base text-gray-800">{entry.notes || 'No notes available'}</p>
+        <p className="text-base text-gray-800">
+          {entry.notes || "No notes available"}
+        </p>
 
         {/* Meta info */}
         <section className="space-y-1 text-sm text-gray-600">
           <div>
-            Author:{' '}
-            <Link to={`/users/${entry.authorId}/entries`} className="text-blue-600 hover:underline">
+            Author:{" "}
+            <Link
+              to={`/users/${entry.authorId}/entries`}
+              className="text-blue-600 hover:underline"
+            >
               {entry.authorName}
             </Link>
           </div>
           <div>
-            Location:{' '}
-            <Link to={`/locations/${entry.locationId}/entries`} className="text-blue-600 hover:underline">
+            Location:{" "}
+            <Link
+              to={`/locations/${entry.locationId}/entries`}
+              className="text-blue-600 hover:underline"
+            >
               {entry.locationName}
             </Link>
           </div>
-          <div>Date: {dayjs(entry.date).format('MMM D, YYYY')}</div>
+          <div>Date: {dayjs(entry.date).format("MMM D, YYYY")}</div>
           <div>Catch Count: {entry.catchCount}</div>
         </section>
+
+        {/* USGS Readings */}
+        {entry.usgsReadings && entry.usgsReadings.length > 0 && (
+          <section aria-label="USGS stream readings" className="space-y-2">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              USGS Stream Data
+            </h2>
+            <ul className="space-y-1 text-sm text-gray-700">
+              {entry.usgsReadings.map((reading) => (
+                <li key={reading.id}>
+                  {reading.parameterName}: {reading.value}
+                  {reading.unit}
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Images */}
         {entry.images?.length > 0 && (
