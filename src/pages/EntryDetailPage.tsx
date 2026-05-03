@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { deleteEntry } from "../api/entryApi";
-import { getReportGql } from "../api/entryApi";
+import { deleteEntry, fetchUsgsReadings, getReportGql } from "../api/entryApi";
 import type { IUsgsReading, IReportImage } from "../types/entry.types";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
@@ -38,6 +37,18 @@ export function EntryDetailPage() {
       navigate("/entries");
     },
   });
+
+  const [usgsLoading, setUsgsLoading] = useState(false);
+
+  async function handleLoadUsgs() {
+    if (!entry?.usgsLocationId) return;
+    try {
+      await fetchUsgsReadings(entryId!, entry.usgsLocationId, entry.date);
+      setUsgsLoading(true);
+    } catch {
+      // leave button enabled so the user can retry
+    }
+  }
 
   if (isLoading) {
     return (
@@ -84,19 +95,30 @@ export function EntryDetailPage() {
         </section>
 
         {/* USGS Readings */}
-        {entry.usgsReadings && entry.usgsReadings.length > 0 && (
+        {entry.usgsLocationId && (
           <section aria-label="USGS stream readings" className="space-y-2">
             <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               USGS Stream Data
             </h2>
-            <ul className="space-y-1 text-sm text-gray-700">
-              {entry.usgsReadings.map((reading: IUsgsReading) => (
-                <li key={reading.id}>
-                  {reading.parameterName}: {reading.value}
-                  {reading.unit}
-                </li>
-              ))}
-            </ul>
+            {entry.usgsReadings && entry.usgsReadings.length > 0 ? (
+              <ul className="space-y-1 text-sm text-gray-700">
+                {entry.usgsReadings.map((reading: IUsgsReading) => (
+                  <li key={reading.id}>
+                    {reading.parameterName}: {reading.value}
+                    {reading.unit}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <button
+                type="button"
+                onClick={handleLoadUsgs}
+                disabled={usgsLoading}
+                className="px-3 py-1.5 text-sm border border-blue-600 text-blue-700 rounded hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {usgsLoading ? "Loading..." : "Load data"}
+              </button>
+            )}
           </section>
         )}
 

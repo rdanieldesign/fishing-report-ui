@@ -10,7 +10,7 @@ interface GqlReportResponse {
       date: string;
       notes: string;
       catchCount: number;
-      location: { id: number; name: string };
+      location: { id: number; name: string; usgsLocationId?: string };
       images: { imageURL: string; imageId: string }[];
       usgsReadings: {
         id: string;
@@ -33,6 +33,7 @@ const REPORT_QUERY = /* GraphQL */ `
       location {
         id
         name
+        usgsLocationId
       }
       images {
         imageURL
@@ -65,6 +66,7 @@ export async function getReportGql(reportId: number): Promise<IEntry> {
     catchCount: r.catchCount,
     locationId: r.location.id,
     locationName: r.location.name,
+    usgsLocationId: r.location.usgsLocationId,
     authorId: r.author.id,
     authorName: r.author.name,
     images: (r.images ?? []).map((img) => ({
@@ -122,4 +124,15 @@ export async function editEntry(
 export async function deleteEntry(entryId: string): Promise<null> {
   const response = await apiClient.delete<null>(`/api/reports/${entryId}`);
   return response.data;
+}
+
+export async function fetchUsgsReadings(
+  reportId: string,
+  usgsLocationId: string,
+  reportDate: string,
+): Promise<void> {
+  await apiClient.post(`/api/reports/${reportId}/usgs`, {
+    usgsLocationId,
+    reportDate,
+  });
 }
