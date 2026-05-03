@@ -67,11 +67,11 @@ export async function getReportGql(reportId: number): Promise<IEntry> {
     locationName: r.location.name,
     authorId: r.author.id,
     authorName: r.author.name,
-    images: r.images.map((img) => ({
+    images: (r.images ?? []).map((img) => ({
       imageURL: img.imageURL,
       imageId: img.imageId,
     })),
-    usgsReadings: r.usgsReadings.map((reading) => ({
+    usgsReadings: (r.usgsReadings ?? []).map((reading) => ({
       id: reading.id,
       parameterName: reading.parameterName,
       value: reading.value,
