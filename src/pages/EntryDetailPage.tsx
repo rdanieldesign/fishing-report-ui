@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { deleteEntry } from "../api/entryApi";
-import { getReportGql } from "../api/graphqlApi";
+import { getReportGql } from "../api/entryApi";
 import type { IUsgsReading, IReportImage } from "../types/entry.types";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
