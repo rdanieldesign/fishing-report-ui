@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { getEntry, deleteEntry } from "../api/entryApi";
+import { deleteEntry } from "../api/entryApi";
+import { getReportGql } from "../api/graphqlApi";
+import type { IUsgsReading, IReportImage } from "../types/entry.types";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
@@ -18,7 +20,7 @@ export function EntryDetailPage() {
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ["entry", entryId],
-    queryFn: () => getEntry(entryId!),
+    queryFn: () => getReportGql(Number(entryId)),
     enabled: !!entryId,
   });
 
@@ -88,7 +90,7 @@ export function EntryDetailPage() {
               USGS Stream Data
             </h2>
             <ul className="space-y-1 text-sm text-gray-700">
-              {entry.usgsReadings.map((reading) => (
+              {entry.usgsReadings.map((reading: IUsgsReading) => (
                 <li key={reading.id}>
                   {reading.parameterName}: {reading.value}
                   {reading.unit}
@@ -101,7 +103,7 @@ export function EntryDetailPage() {
         {/* Images */}
         {entry.images?.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {entry.images.map((img) => (
+            {entry.images.map((img: IReportImage) => (
               <img
                 key={img.imageId}
                 src={img.imageURL}

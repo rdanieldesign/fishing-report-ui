@@ -11,6 +11,10 @@ export default defineConfig(({ mode }) => ({
               target: 'https://api.fishing-report.site',
               changeOrigin: true,
             },
+            '/graphql': {
+              target: 'https://api.fishing-report.site',
+              changeOrigin: true,
+            },
           },
         }
       : undefined,
