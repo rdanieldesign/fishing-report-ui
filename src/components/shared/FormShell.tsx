@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 interface FormShellProps {
   children: ReactNode;
@@ -17,7 +17,13 @@ function Spinner() {
 
 // Wraps form content in a flex-column container with a scrollable body area
 // and bottom-aligned Cancel / Submit buttons.
-export function FormShell({ children, loading = false, submitDisabled = false, onSubmit, onCancel }: FormShellProps) {
+export function FormShell({
+  children,
+  loading = false,
+  submitDisabled = false,
+  onSubmit,
+  onCancel,
+}: FormShellProps) {
   if (loading) {
     return (
       <div className="flex flex-1 items-center justify-center p-8">
@@ -29,9 +35,7 @@ export function FormShell({ children, loading = false, submitDisabled = false, o
   return (
     <div className="flex flex-col flex-1">
       {/* Scrollable form body */}
-      <div className="flex-1 overflow-y-auto space-y-4">
-        {children}
-      </div>
+      <div className="flex-1 overflow-y-auto space-y-4">{children}</div>
 
       {/* Bottom-aligned action buttons */}
       <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
