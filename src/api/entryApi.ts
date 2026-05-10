@@ -30,6 +30,16 @@ interface ReportCreatePayload {
   notes: string;
   imageMetadata: ImageMetadata[];
 }
+
+interface ReportEditPayload {
+  locationId: number;
+  catchCount: number;
+  date: string;
+  notes: string;
+  newImageMetadata: ImageMetadata[];
+  imageIdsToKeep: string[]; // IDs of existing images to retain
+}
+
 interface GqlReportResponse {
   data: {
     report: {
@@ -163,13 +173,28 @@ export async function createEntry(data: EntryFormValues): Promise<string> {
 
 export async function editEntry(
   entryId: string,
-  formData: FormData,
-): Promise<string> {
-  const response = await apiClient.put<string>(
-    `/api/reports/${entryId}`,
-    formData,
-  );
-  return response.data;
+  data: ReportEditPayload,
+  newFiles: File[] = [],
+): Promise<null> {
+  const response = await apiClient.put<{
+    reportId: string;
+    signedImageUrls: ISignedImageURL[];
+  }>(`/api/reports/${entryId}`, data);
+  if (response.data.signedImageUrls?.length) {
+    await Promise.all(
+      response.data.signedImageUrls.map((url) => {
+        const matchingFile = newFiles.find((f) => f.name === url.filename);
+        return apiClient.put(url.uploadUrl, matchingFile, {
+          headers: {
+            Bucket: import.meta.env.VITE_AWS_ORIGINAL_BUCKET,
+            Key: url.key,
+            'Content-Type': matchingFile?.type,
+          },
+        });
+      }),
+    );
+  }
+  return null;
 }
 
 export async function deleteEntry(entryId: string): Promise<null> {
