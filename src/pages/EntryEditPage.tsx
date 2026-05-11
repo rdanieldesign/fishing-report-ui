@@ -8,15 +8,7 @@ import { getAllLocations } from "../api/locationApi";
 import { FormShell } from "../components/shared/FormShell";
 import { FileUpload } from "../components/shared/FileUpload";
 import { LocationCreateModal } from "../components/locations/LocationCreateModal";
-import type { IFileUpload } from "../types/fileUpload.types";
-
-interface EntryFormValues {
-  notes: string;
-  locationId: number | "";
-  date: string;
-  catchCount: number | "";
-  images: IFileUpload[];
-}
+import type { IEntryFormValues } from "../types/entry.types";
 
 export function EntryEditPage() {
   const { entryId } = useParams<{ entryId: string }>();
@@ -43,7 +35,7 @@ export function EntryEditPage() {
     control,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<EntryFormValues>({
+  } = useForm<IEntryFormValues>({
     // entry?.date comes as a full datetime string; slice to YYYY-MM-DD for <input type="date">
     defaultValues: entry
       ? {
@@ -74,7 +66,7 @@ export function EntryEditPage() {
   });
 
   const mutation = useMutation({
-    mutationFn: (data: EntryFormValues) => {
+    mutationFn: (data: IEntryFormValues) => {
       const images = data.images ?? [];
       const newFiles = images.flatMap((img) =>
         img.newFile ? [img.newFile] : [],
@@ -104,7 +96,7 @@ export function EntryEditPage() {
     },
   });
 
-  function onSubmit(data: EntryFormValues) {
+  function onSubmit(data: IEntryFormValues) {
     mutation.mutate(data);
   }
 

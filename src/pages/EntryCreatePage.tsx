@@ -7,43 +7,9 @@ import { getAllLocations } from "../api/locationApi";
 import { FormShell } from "../components/shared/FormShell";
 import { FileUpload } from "../components/shared/FileUpload";
 import { LocationCreateModal } from "../components/locations/LocationCreateModal";
-import type { IFileUpload } from "../types/fileUpload.types";
+import type { IEntryFormValues } from "../types/entry.types";
 
 const DRAFT_KEY = "fishing-report-draft";
-
-interface EntryFormValues {
-  notes: string;
-  locationId: number | "";
-  date: string;
-  catchCount: number | "";
-  images: IFileUpload[];
-}
-
-// Converts YYYY-MM-DD (from <input type="date">) to a midnight UTC datetime string.
-function toUtcDateString(dateStr: string): string {
-  return `${dateStr} 00:00:00`;
-}
-
-// Builds the multipart FormData payload.
-// New images: file appended as 'images', filename pushed to imageNames (used as imageIds).
-function buildFormData(values: EntryFormValues): FormData {
-  const fd = new FormData();
-  fd.append("notes", values.notes);
-  fd.append("locationId", String(values.locationId));
-  fd.append("date", toUtcDateString(values.date));
-  fd.append("catchCount", String(values.catchCount));
-
-  const imageNames: string[] = [];
-  (values.images ?? []).forEach((img) => {
-    if (img.newFile) {
-      fd.append("images", img.newFile);
-      imageNames.push(img.newFile.name);
-    }
-  });
-  fd.append("imageIds", JSON.stringify(imageNames));
-
-  return fd;
-}
 
 export function EntryCreatePage() {
   const navigate = useNavigate();
@@ -71,7 +37,7 @@ export function EntryCreatePage() {
     watch,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<EntryFormValues>({
+  } = useForm<IEntryFormValues>({
     defaultValues: savedDraft
       ? { ...savedDraft, images: [] }
       : { notes: "", locationId: "", date: "", catchCount: "", images: [] },
@@ -96,7 +62,7 @@ export function EntryCreatePage() {
     },
   });
 
-  function onSubmit(data: EntryFormValues) {
+  function onSubmit(data: IEntryFormValues) {
     mutation.mutate(data);
   }
 

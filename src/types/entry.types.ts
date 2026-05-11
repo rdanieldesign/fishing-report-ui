@@ -1,3 +1,5 @@
+import type { IFileUpload } from './fileUpload.types';
+
 // Copied verbatim from src/app/entries/interfaces/entry.interface.ts — do not modify
 export interface IUsgsReading {
   id: string;
@@ -30,4 +32,12 @@ export interface IEntry extends Omit<INewEntry, 'images'> {
 export interface IReportImage {
   imageURL: string;
   imageId: string;
+}
+
+export interface IEntryFormValues {
+  notes: string;
+  locationId: number | '';
+  date: string;
+  catchCount: number | '';
+  images: IFileUpload[];
 }
