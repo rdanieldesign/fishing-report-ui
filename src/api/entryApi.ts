@@ -1,7 +1,44 @@
+import { IFileUpload } from './../types/fileUpload.types';
 import { apiClient } from './apiClient';
 import type { IEntry } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 import { gqlRequest } from './graphQLClient';
+
+interface EntryFormValues {
+  notes: string;
+  locationId: number;
+  date: string;
+  catchCount: number;
+  images: IFileUpload[];
+}
+
+interface ImageMetadata {
+  filename: string;
+  mimetype: string;
+}
+
+interface ISignedImageURL {
+  uploadUrl: string;
+  key: string;
+  filename: string;
+}
+
+interface ReportCreatePayload {
+  locationId: number;
+  catchCount: number;
+  date: string;
+  notes: string;
+  imageMetadata: ImageMetadata[];
+}
+
+interface ReportEditPayload {
+  locationId: number;
+  catchCount: number;
+  date: string;
+  notes: string;
+  newImageMetadata: ImageMetadata[];
+  imageIdsToKeep: string[]; // IDs of existing images to retain
+}
 
 interface GqlReportResponse {
   data: {
@@ -103,22 +140,61 @@ export async function getEntry(entryId: string): Promise<IEntry> {
   return response.data;
 }
 
-// FormData is passed directly — Axios sets Content-Type multipart/form-data
-// with the correct boundary automatically; do NOT set it manually.
-export async function createEntry(formData: FormData): Promise<string> {
-  const response = await apiClient.post<string>('/api/reports', formData);
-  return response.data;
+export async function createEntry(data: EntryFormValues): Promise<string> {
+  const { images, ...report } = data;
+  const reportPayload: ReportCreatePayload = {
+    ...report,
+    imageMetadata: images.map((img) => ({
+      filename: img.newFile!.name,
+      mimetype: img.newFile!.type,
+    })),
+  };
+  const response = await apiClient.post<{
+    reportId: string;
+    signedImageUrls: ISignedImageURL[];
+  }>('/api/reports', reportPayload);
+  await Promise.all(
+    response.data.signedImageUrls.map((url) => {
+      // TODO: make sure we don't allow duplicate names
+      const matchingFile = images.find(
+        (img) => img.newFile?.name === url.filename,
+      );
+      return apiClient.put(url.uploadUrl, matchingFile?.newFile, {
+        headers: {
+          Bucket: import.meta.env.VITE_AWS_ORIGINAL_BUCKET,
+          Key: url.key,
+          'Content-Type': matchingFile?.newFile?.type,
+        },
+      });
+    }),
+  );
+  return response.data.reportId;
 }
 
 export async function editEntry(
   entryId: string,
-  formData: FormData,
-): Promise<string> {
-  const response = await apiClient.put<string>(
-    `/api/reports/${entryId}`,
-    formData,
-  );
-  return response.data;
+  data: ReportEditPayload,
+  newFiles: File[] = [],
+): Promise<null> {
+  const response = await apiClient.put<{
+    reportId: string;
+    signedImageUrls: ISignedImageURL[];
+  }>(`/api/reports/${entryId}`, data);
+  if (response.data.signedImageUrls?.length) {
+    await Promise.all(
+      response.data.signedImageUrls.map((url) => {
+        const matchingFile = newFiles.find((f) => f.name === url.filename);
+        return apiClient.put(url.uploadUrl, matchingFile, {
+          headers: {
+            Bucket: import.meta.env.VITE_AWS_ORIGINAL_BUCKET,
+            Key: url.key,
+            'Content-Type': matchingFile?.type,
+          },
+        });
+      }),
+    );
+  }
+  return null;
 }
 
 export async function deleteEntry(entryId: string): Promise<null> {
