@@ -1,16 +1,7 @@
-import { IFileUpload } from './../types/fileUpload.types';
 import { apiClient } from './apiClient';
-import type { IEntry } from '../types/entry.types';
+import type { IEntry, IEntryFormValues } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 import { gqlRequest } from './graphQLClient';
-
-interface EntryFormValues {
-  notes: string;
-  locationId: number;
-  date: string;
-  catchCount: number;
-  images: IFileUpload[];
-}
 
 interface ImageMetadata {
   filename: string;
@@ -140,11 +131,13 @@ export async function getEntry(entryId: string): Promise<IEntry> {
   return response.data;
 }
 
-export async function createEntry(data: EntryFormValues): Promise<string> {
-  const { images, ...report } = data;
+export async function createEntry(data: IEntryFormValues): Promise<string> {
   const reportPayload: ReportCreatePayload = {
-    ...report,
-    imageMetadata: images.map((img) => ({
+    locationId: data.locationId as number,
+    catchCount: data.catchCount as number,
+    date: data.date,
+    notes: data.notes,
+    imageMetadata: data.images.map((img) => ({
       filename: img.newFile!.name,
       mimetype: img.newFile!.type,
     })),
@@ -156,7 +149,7 @@ export async function createEntry(data: EntryFormValues): Promise<string> {
   await Promise.all(
     response.data.signedImageUrls.map((url) => {
       // TODO: make sure we don't allow duplicate names
-      const matchingFile = images.find(
+      const matchingFile = data.images.find(
         (img) => img.newFile?.name === url.filename,
       );
       return apiClient.put(url.uploadUrl, matchingFile?.newFile, {
