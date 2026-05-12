@@ -1,8 +1,8 @@
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate, Link } from 'react-router-dom';
-import { login } from '../api/authApi';
-import type { ICredentials } from '../types/auth.types';
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
+import { login } from "../api/authApi";
+import type { ICredentials } from "../types/auth.types";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -11,14 +11,15 @@ export function LoginPage() {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ICredentials>();
 
   // On success, authApi.login() persists the token via authStore before resolving
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: () => navigate('/entries'),
-    onError: () => reset(),
+    onSuccess: () => navigate("/entries"),
+    onError: () => reset({ email: getValues("email"), password: "" }),
   });
 
   function onSubmit(data: ICredentials) {
@@ -37,13 +38,15 @@ export function LoginPage() {
               Email
             </label>
             <input
-              {...register('email', { required: 'Email is required' })}
+              {...register("email", { required: "Email is required" })}
               type="email"
               autoComplete="email"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.email && (
-              <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -52,18 +55,22 @@ export function LoginPage() {
               Password
             </label>
             <input
-              {...register('password', { required: 'Password is required' })}
+              {...register("password", { required: "Password is required" })}
               type="password"
               autoComplete="current-password"
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.password && (
-              <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>
+              <p className="text-xs text-red-600 mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           {mutation.isError && (
-            <p className="text-xs text-red-600">Invalid credentials. Please try again.</p>
+            <p className="text-xs text-red-600">
+              Invalid credentials. Please try again.
+            </p>
           )}
 
           <button
@@ -71,12 +78,12 @@ export function LoginPage() {
             disabled={isSubmitting || mutation.isPending}
             className="w-full py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {mutation.isPending ? 'Signing in…' : 'Sign In'}
+            {mutation.isPending ? "Signing in…" : "Sign In"}
           </button>
         </form>
 
         <p className="text-sm text-gray-600 text-center">
-          No account?{' '}
+          No account?{" "}
           <Link to="/signup" className="text-blue-700 hover:underline">
             Sign up
           </Link>
