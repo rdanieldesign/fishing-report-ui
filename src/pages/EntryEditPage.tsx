@@ -17,7 +17,7 @@ export function EntryEditPage() {
   const [locationModalOpen, setLocationModalOpen] = useState(false);
 
   // Load locations and the existing entry in parallel
-  const { data: locations = [] } = useQuery({
+  const { data: locations = [], refetch: refetchLocations } = useQuery({
     queryKey: ["locations"],
     queryFn: getAllLocations,
   });
@@ -104,8 +104,8 @@ export function EntryEditPage() {
     navigate(`/entries/${entryId}`);
   }
 
-  function handleLocationCreated(locationId: number) {
-    queryClient.invalidateQueries({ queryKey: ["locations"] });
+  async function handleLocationCreated(locationId: number) {
+    await refetchLocations();
     setValue("locationId", locationId);
   }
 
