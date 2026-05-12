@@ -71,9 +71,8 @@ export function EntryCreatePage() {
     navigate("/entries");
   }
 
-  function handleLocationCreated(locationId: number) {
-    refetchLocations();
-    // Pre-select the newly created location in the form
+  async function handleLocationCreated(locationId: number) {
+    await refetchLocations();
     setValue("locationId", locationId);
   }
 
