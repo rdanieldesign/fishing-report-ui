@@ -156,7 +156,7 @@ export function EntryDetailPage() {
             <button
               type="button"
               onClick={() => setConfirmOpen(true)}
-              className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+              className="px-4 py-2 text-sm bg-danger text-white rounded hover:bg-danger-dark"
             >
               Delete Entry
             </button>

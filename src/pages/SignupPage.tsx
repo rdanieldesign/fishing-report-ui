@@ -50,7 +50,7 @@ export function SignupPage() {
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.name && (
-              <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>
+              <p className="text-xs text-danger mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -71,9 +71,7 @@ export function SignupPage() {
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.email && (
-              <p className="text-xs text-red-600 mt-1">
-                {errors.email.message}
-              </p>
+              <p className="text-xs text-danger mt-1">{errors.email.message}</p>
             )}
           </div>
 
@@ -88,7 +86,7 @@ export function SignupPage() {
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.password && (
-              <p className="text-xs text-red-600 mt-1">
+              <p className="text-xs text-danger mt-1">
                 {errors.password.message}
               </p>
             )}
@@ -109,14 +107,14 @@ export function SignupPage() {
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {errors.passwordAgain && (
-              <p className="text-xs text-red-600 mt-1">
+              <p className="text-xs text-danger mt-1">
                 {errors.passwordAgain.message}
               </p>
             )}
           </div>
 
           {mutation.isError && (
-            <p className="text-xs text-red-600">
+            <p className="text-xs text-danger">
               Signup failed. Please try again.
             </p>
           )}

@@ -1,24 +1,37 @@
 @import "tailwindcss";
 
 :root {
+  /* Color primitives */
   --orange-100: #ffdcbf;
   --orange-300: #e07925;
   --orange-500: #c5671b;
   --orange-700: #a65a1b;
 
+  /* Grayscale */
   --gray-900: #372827;
 
+  /* Primary */
   --primary-100: var(--orange-100);
+  --primary-300: var(--orange-300);
   --primary: var(--orange-500);
   --primary-700: var(--orange-700);
-  --primary-300: var(--orange-300);
+
+  /* Functional */
+  --danger: #dd4115df;
+  --danger-dark: #ae0309;
 }
 
 @theme {
+  /* Primary */
   --color-primary-100: var(--primary-100);
+  --color-primary-300: var(--primary-300);
   --color-primary-500: var(--primary);
   --color-primary-700: var(--primary-700);
-  --color-primary-300: var(--primary-300);
 
+  /* Grayscale */
   --color-gray-900: var(--gray-900);
+
+  /* Functional */
+  --color-danger: var(--danger);
+  --color-danger-dark: var(--danger-dark);
 }

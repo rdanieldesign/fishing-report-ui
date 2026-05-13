@@ -42,7 +42,7 @@ export function LocationCreateForm({
           placeholder="e.g. Lake Trout Pond"
         />
         {errors.name && (
-          <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>
+          <p className="text-xs text-danger mt-1">{errors.name.message}</p>
         )}
       </div>
 
@@ -59,14 +59,14 @@ export function LocationCreateForm({
           placeholder="https://maps.google.com/..."
         />
         {errors.googleMapsLink && (
-          <p className="text-xs text-red-600 mt-1">
+          <p className="text-xs text-danger mt-1">
             {errors.googleMapsLink.message}
           </p>
         )}
       </div>
 
       {mutation.isError && (
-        <p className="text-xs text-red-600">
+        <p className="text-xs text-danger">
           Failed to create location. Please try again.
         </p>
       )}

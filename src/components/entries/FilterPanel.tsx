@@ -190,7 +190,7 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
               <button
                 type="button"
                 onClick={() => handleRemove(i)}
-                className="hover:text-red-600 leading-none"
+                className="hover:text-danger leading-none"
                 aria-label={`Remove ${f.field.label}: ${f.value.label} filter`}
               >
                 ✕

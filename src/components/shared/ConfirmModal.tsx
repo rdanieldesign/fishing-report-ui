@@ -1,4 +1,4 @@
-import { Dialog } from '@headlessui/react';
+import { Dialog } from "@headlessui/react";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -9,7 +9,12 @@ interface ConfirmModalProps {
 
 // The parent owns open/close state and passes it as a prop;
 // the Dialog handles focus-trap and ARIA automatically.
-export function ConfirmModal({ isOpen, message, onConfirm, onCancel }: ConfirmModalProps) {
+export function ConfirmModal({
+  isOpen,
+  message,
+  onConfirm,
+  onCancel,
+}: ConfirmModalProps) {
   return (
     <Dialog open={isOpen} onClose={onCancel} className="relative z-50">
       <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
@@ -30,7 +35,7 @@ export function ConfirmModal({ isOpen, message, onConfirm, onCancel }: ConfirmMo
             <button
               type="button"
               onClick={onConfirm}
-              className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+              className="px-4 py-2 text-sm bg-danger text-white rounded hover:bg-danger-dark"
             >
               Confirm
             </button>

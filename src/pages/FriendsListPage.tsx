@@ -204,7 +204,7 @@ export function FriendsListPage() {
                                 tab.shouldConfirmDelete,
                               )
                             }
-                            className="text-red-500 hover:text-red-700"
+                            className="text-danger hover:text-danger-dark"
                             aria-label="Remove friend"
                           >
                             <XCircle size={20} />

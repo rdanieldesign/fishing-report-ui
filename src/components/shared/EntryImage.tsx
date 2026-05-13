@@ -15,7 +15,7 @@ export function EntryImage({ imageURL, status }: EntryImageProps) {
       className={`${base} bg-red-50 flex flex-col items-center justify-center gap-1`}
     >
       <AlertCircle className="w-6 h-6 text-red-400" aria-hidden="true" />
-      <span className="text-xs text-red-500">{message}</span>
+      <span className="text-xs text-danger">{message}</span>
     </div>
   );
 

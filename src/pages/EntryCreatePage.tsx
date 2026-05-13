@@ -95,7 +95,7 @@ export function EntryCreatePage() {
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
           />
           {errors.notes && (
-            <p className="text-xs text-red-600 mt-1">{errors.notes.message}</p>
+            <p className="text-xs text-danger mt-1">{errors.notes.message}</p>
           )}
         </div>
 
@@ -115,7 +115,7 @@ export function EntryCreatePage() {
             ))}
           </select>
           {errors.locationId && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger mt-1">
               {errors.locationId.message}
             </p>
           )}
@@ -142,7 +142,7 @@ export function EntryCreatePage() {
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           {errors.date && (
-            <p className="text-xs text-red-600 mt-1">{errors.date.message}</p>
+            <p className="text-xs text-danger mt-1">{errors.date.message}</p>
           )}
         </div>
 
@@ -161,7 +161,7 @@ export function EntryCreatePage() {
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           {errors.catchCount && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger mt-1">
               {errors.catchCount.message}
             </p>
           )}
@@ -180,7 +180,7 @@ export function EntryCreatePage() {
         </div>
 
         {mutation.isError && (
-          <p className="text-xs text-red-600">
+          <p className="text-xs text-danger">
             Failed to create entry. Please try again.
           </p>
         )}

@@ -235,7 +235,7 @@ export function EntryListPage() {
                 <button
                   type="button"
                   onClick={() => handleDeleteClick(entry.id)}
-                  className="ml-3 shrink-0 text-red-500 hover:text-red-700"
+                  className="ml-3 shrink-0 text-danger hover:text-danger-dark"
                   aria-label="Delete entry"
                 >
                   <Trash2 size={16} />

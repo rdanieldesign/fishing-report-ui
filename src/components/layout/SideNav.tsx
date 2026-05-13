@@ -88,7 +88,7 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
         <div className="p-4 border-t border-gray-200">
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm text-gray-700 hover:text-red-600 px-4 py-2 rounded hover:bg-gray-100"
+            className="w-full text-left text-sm text-gray-700 hover:text-danger px-4 py-2 rounded hover:bg-gray-100"
           >
             Log Out
           </button>
