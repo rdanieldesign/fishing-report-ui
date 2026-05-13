@@ -1,5 +1,9 @@
 import { apiClient } from './apiClient';
-import type { IEntry, IEntryFormValues } from '../types/entry.types';
+import type {
+  IEntry,
+  IEntryFormValues,
+  ImageUploadStatus,
+} from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 import { gqlRequest } from './graphQLClient';
 
@@ -43,7 +47,7 @@ interface GqlReportResponse {
         id: number;
         imageKey: string;
         imageURL: string;
-        status: 'uploading' | 'complete' | 'failed';
+        status: ImageUploadStatus;
       }[];
       usgsReadings: {
         id: string;
