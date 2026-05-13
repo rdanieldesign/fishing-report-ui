@@ -47,7 +47,7 @@ export function SignupPage() {
               {...register("name", { required: "Name is required" })}
               type="text"
               autoComplete="name"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.name && (
               <p className="text-xs text-danger mt-1">{errors.name.message}</p>
@@ -68,7 +68,7 @@ export function SignupPage() {
               })}
               type="email"
               autoComplete="email"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.email && (
               <p className="text-xs text-danger mt-1">{errors.email.message}</p>
@@ -83,7 +83,7 @@ export function SignupPage() {
               {...register("password", { required: "Password is required" })}
               type="password"
               autoComplete="new-password"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.password && (
               <p className="text-xs text-danger mt-1">
@@ -104,7 +104,7 @@ export function SignupPage() {
               })}
               type="password"
               autoComplete="new-password"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.passwordAgain && (
               <p className="text-xs text-danger mt-1">

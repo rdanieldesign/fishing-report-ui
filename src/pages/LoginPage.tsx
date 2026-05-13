@@ -41,7 +41,7 @@ export function LoginPage() {
               {...register("email", { required: "Email is required" })}
               type="email"
               autoComplete="email"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.email && (
               <p className="text-xs text-danger mt-1">{errors.email.message}</p>
@@ -56,7 +56,7 @@ export function LoginPage() {
               {...register("password", { required: "Password is required" })}
               type="password"
               autoComplete="current-password"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.password && (
               <p className="text-xs text-danger mt-1">

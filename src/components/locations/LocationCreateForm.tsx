@@ -38,7 +38,7 @@ export function LocationCreateForm({
         <input
           {...register("name", { required: "Name is required" })}
           type="text"
-          className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full"
           placeholder="e.g. Lake Trout Pond"
         />
         {errors.name && (
@@ -55,7 +55,7 @@ export function LocationCreateForm({
             required: "Google Maps link is required",
           })}
           type="url"
-          className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full"
           placeholder="https://maps.google.com/..."
         />
         {errors.googleMapsLink && (

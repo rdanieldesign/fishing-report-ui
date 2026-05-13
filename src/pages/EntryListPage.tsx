@@ -157,7 +157,7 @@ export function EntryListPage() {
 
       {/* Collapsible filter accordion */}
       {showFilters && (
-        <div className="border border-gray-200 rounded">
+        <div className="border border-gray-200 bg-white rounded">
           <button
             type="button"
             onClick={() => setFiltersOpen((o) => !o)}
@@ -190,7 +190,7 @@ export function EntryListPage() {
       ) : entries.length === 0 ? (
         <p className="text-sm text-gray-400">No Entries Available</p>
       ) : (
-        <ul className="divide-y divide-gray-200 border border-gray-200 rounded">
+        <ul className="divide-y divide-gray-200 border border-gray-200 bg-white rounded">
           {entries.map((entry) => (
             <li
               key={entry.id}
