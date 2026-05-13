@@ -45,6 +45,14 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
       >
         <ul className="flex-1 py-4 space-y-1">
           <li>
+            <NavLink to="/dashboard" className={navItemClass} onClick={onClose}>
+              Dashboard
+            </NavLink>
+          </li>
+
+          <li className="border-t border-gray-100" />
+
+          <li>
             <NavLink
               to="/my-entries"
               className={navItemClass}
