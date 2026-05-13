@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { deleteEntry, fetchUsgsReadings, getReportGql } from "../api/entryApi";
+import { deleteEntry, fetchUsgsReadings, getEntry } from "../api/entryApi";
 import type { IUsgsReading, IReportImage } from "../types/entry.types";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
+import { EntryImage } from "../components/shared/EntryImage";
 
 export function EntryDetailPage() {
   const { entryId } = useParams<{ entryId: string }>();
@@ -19,8 +20,15 @@ export function EntryDetailPage() {
 
   const { data: entry, isLoading } = useQuery({
     queryKey: ["entry", entryId],
-    queryFn: () => getReportGql(Number(entryId)),
+    queryFn: () => getEntry(Number(entryId)),
     enabled: !!entryId,
+    refetchInterval: (query) => {
+      const data = query.state.data;
+      if (data?.images?.some((img) => img.status === "uploading")) {
+        return 3000; // Refetch every 3 seconds while images are uploading
+      }
+      return false; // Don't refetch if no images are uploading
+    },
   });
 
   // Current user to gate edit/delete buttons
@@ -126,11 +134,10 @@ export function EntryDetailPage() {
         {entry.images?.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {entry.images.map((img: IReportImage) => (
-              <img
-                key={img.imageId}
-                src={img.imageURL}
-                alt="Entry"
-                className="w-40 h-40 object-cover rounded border border-gray-200"
+              <EntryImage
+                key={img.id}
+                imageURL={img.imageURL}
+                status={img.status}
               />
             ))}
           </div>

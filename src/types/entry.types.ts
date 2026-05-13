@@ -30,8 +30,10 @@ export interface IEntry extends Omit<INewEntry, 'images'> {
 }
 
 export interface IReportImage {
-  imageURL: string;
-  imageId: string;
+  id: number;
+  imageURL: string | null;
+  imageKey: string | null;
+  status: 'uploading' | 'complete' | 'failed';
 }
 
 export interface IEntryFormValues {

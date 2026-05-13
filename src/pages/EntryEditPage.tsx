@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { getEntry, editEntry } from "../api/entryApi";
+import { editEntry, getEntry } from "../api/entryApi";
 import { getAllLocations } from "../api/locationApi";
 import { FormShell } from "../components/shared/FormShell";
 import { FileUpload } from "../components/shared/FileUpload";
@@ -24,7 +24,7 @@ export function EntryEditPage() {
 
   const { data: entry, isLoading: entryLoading } = useQuery({
     queryKey: ["entry", entryId],
-    queryFn: () => getEntry(entryId!),
+    queryFn: () => getEntry(Number(entryId)),
     enabled: !!entryId,
   });
 
@@ -45,8 +45,9 @@ export function EntryEditPage() {
           catchCount: entry.catchCount,
           // Map IReportImage[] → IFileUpload[] so FileUpload can render existing images
           images: entry.images?.map((img) => ({
+            id: img.id,
             imageURL: img.imageURL,
-            imageId: img.imageId,
+            imageKey: img.imageKey,
           })),
         }
       : undefined,
@@ -58,8 +59,9 @@ export function EntryEditPage() {
           date: dayjs(entry.date).format("YYYY-MM-DD"),
           catchCount: entry.catchCount,
           images: entry.images?.map((img) => ({
+            id: img.id,
             imageURL: img.imageURL,
-            imageId: img.imageId,
+            imageKey: img.imageKey,
           })),
         }
       : undefined,
@@ -82,8 +84,8 @@ export function EntryEditPage() {
             filename: f.name,
             mimetype: f.type,
           })),
-          imageIdsToKeep: images.flatMap((img) =>
-            img.imageId ? [img.imageId] : [],
+          imageKeysToKeep: images.flatMap((img) =>
+            img.imageKey ? [img.imageKey] : [],
           ),
         },
         newFiles,
