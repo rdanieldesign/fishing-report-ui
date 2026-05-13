@@ -1,7 +1,7 @@
-import { useRef } from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import type { IFileUpload } from '../../types/fileUpload.types';
-import { useImageSrc } from '../../hooks/useImageSrc';
+import { useRef } from "react";
+import type { ControllerRenderProps } from "react-hook-form";
+import type { IFileUpload } from "../../types/fileUpload.types";
+import { useImageSrc } from "../../hooks/useImageSrc";
 
 // Props mirror a React Hook Form Controller render prop so the parent can wire this
 // directly: <Controller render={({ field }) => <FileUpload field={field} />} />
@@ -58,26 +58,29 @@ export function FileUpload({ field, disabled = false }: FileUploadProps) {
     const selected = e.target.files;
     if (!selected) return;
 
-    const newItems: IFileUpload[] = Array.from(selected).map((f) => ({ newFile: f }));
+    const newItems: IFileUpload[] = Array.from(selected).map((f) => ({
+      newFile: f,
+      id: Math.random(), // generate a temporary ID for React keying; real ID comes from backend after upload
+    }));
     field.onChange([...files, ...newItems]);
 
     // Reset input so the same file can be re-selected after deletion
-    e.target.value = '';
+    e.target.value = "";
   }
 
-  function handleDelete(index: number) {
-    field.onChange(files.filter((_, i) => i !== index));
+  function handleDelete(id: number) {
+    field.onChange(files.filter(({ id: fileId }) => fileId !== id));
   }
 
   return (
     <div>
       <ul className="flex flex-wrap p-0 m-0 list-none">
-        {files.map((file, i) => (
+        {files.map((file) => (
           <ImageItem
             // key uses index — stable for a small list of images on a single form
-            key={i}
+            key={file.id}
             file={file}
-            onDelete={() => handleDelete(i)}
+            onDelete={() => handleDelete(file.id)}
           />
         ))}
       </ul>

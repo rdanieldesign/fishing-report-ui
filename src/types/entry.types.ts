@@ -29,9 +29,13 @@ export interface IEntry extends Omit<INewEntry, 'images'> {
   usgsReadings?: IUsgsReading[];
 }
 
+export type ImageUploadStatus = 'uploading' | 'complete' | 'failed';
+
 export interface IReportImage {
-  imageURL: string;
-  imageId: string;
+  id: number;
+  imageURL: string | null;
+  imageKey: string | null;
+  status: ImageUploadStatus;
 }
 
 export interface IEntryFormValues {

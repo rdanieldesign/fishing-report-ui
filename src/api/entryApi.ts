@@ -1,5 +1,9 @@
 import { apiClient } from './apiClient';
-import type { IEntry, IEntryFormValues } from '../types/entry.types';
+import type {
+  IEntry,
+  IEntryFormValues,
+  ImageUploadStatus,
+} from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 import { gqlRequest } from './graphQLClient';
 
@@ -28,7 +32,7 @@ interface ReportEditPayload {
   date: string;
   notes: string;
   newImageMetadata: ImageMetadata[];
-  imageIdsToKeep: string[]; // IDs of existing images to retain
+  imageKeysToKeep: string[];
 }
 
 interface GqlReportResponse {
@@ -39,7 +43,12 @@ interface GqlReportResponse {
       notes: string;
       catchCount: number;
       location: { id: number; name: string; usgsLocationId?: string };
-      images: { imageURL: string; imageId: string }[];
+      images: {
+        id: number;
+        imageKey: string;
+        imageURL: string;
+        status: ImageUploadStatus;
+      }[];
       usgsReadings: {
         id: string;
         parameterName: string;
@@ -64,8 +73,10 @@ const REPORT_QUERY = /* GraphQL */ `
         usgsLocationId
       }
       images {
+        id
         imageURL
-        imageId
+        imageKey
+        status
       }
       usgsReadings {
         id
@@ -81,7 +92,7 @@ const REPORT_QUERY = /* GraphQL */ `
   }
 `;
 
-export async function getReportGql(reportId: number): Promise<IEntry> {
+export async function getEntry(reportId: number): Promise<IEntry> {
   const result = await gqlRequest<GqlReportResponse>(REPORT_QUERY, {
     reportId,
   });
@@ -98,8 +109,10 @@ export async function getReportGql(reportId: number): Promise<IEntry> {
     authorId: r.author.id,
     authorName: r.author.name,
     images: (r.images ?? []).map((img) => ({
+      id: img.id,
       imageURL: img.imageURL,
-      imageId: img.imageId,
+      imageKey: img.imageKey,
+      status: img.status,
     })),
     usgsReadings: (r.usgsReadings ?? []).map((reading) => ({
       id: reading.id,
@@ -123,11 +136,6 @@ export async function getMyEntries(params: IStringMap = {}): Promise<IEntry[]> {
   const response = await apiClient.get<IEntry[]>('/api/reports/my-reports', {
     params,
   });
-  return response.data;
-}
-
-export async function getEntry(entryId: string): Promise<IEntry> {
-  const response = await apiClient.get<IEntry>(`/api/reports/${entryId}`);
   return response.data;
 }
 
