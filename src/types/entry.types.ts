@@ -23,6 +23,7 @@ export interface IEntry extends Omit<INewEntry, 'images'> {
   locationName: string;
   authorId: number;
   authorName: string;
+  authorInitials?: string;
   locationId: number;
   usgsLocationId?: string;
   images: IReportImage[];

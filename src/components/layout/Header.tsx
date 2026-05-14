@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Bell, Menu, Plus } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useNotifications } from "../../hooks/useNotifications";
 import { NotificationBadge } from "../shared/NotificationBadge";

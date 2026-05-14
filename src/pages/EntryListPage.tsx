@@ -151,7 +151,7 @@ export function EntryListPage() {
               <button
                 type="button"
                 onClick={() => setFiltersOpen((o) => !o)}
-                className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 rounded-lg"
+                className="w-full flex items-center justify-between px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 rounded-lg"
               >
                 <h6 className="text-gray-100 mb-0 mr-auto">Filters</h6>
                 {!filtersOpen && appliedFilters.length > 0 && (
@@ -162,7 +162,9 @@ export function EntryListPage() {
                 <span className="text-gray-400">{filtersOpen ? "▲" : "▼"}</span>
               </button>
 
-              <div className={`px-4 py-3 ${filtersOpen ? "block" : "hidden"}`}>
+              <div
+                className={`px-6 pt-3 pb-6 ${filtersOpen ? "block" : "hidden"}`}
+              >
                 <FilterPanel
                   onApply={handleApplyFilters}
                   onClearAll={handleClearFilters}
