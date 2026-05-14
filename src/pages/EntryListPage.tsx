@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { useMatch } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
-import dayjs from "dayjs";
 import { getAllEntries, getMyEntries, deleteEntry } from "../api/entryApi";
 import { getUserById, getCurrentUser } from "../api/userApi";
 import { getLocationById } from "../api/locationApi";
 import { useAuthStore } from "../stores/authStore";
 import { FilterPanel } from "../components/entries/FilterPanel";
+import { ReportCard } from "../components/entries/ReportCard";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { formatFiltersAsText } from "../utils/filterUtils";
 import { FilterFieldParams, FilterFields } from "../types/filter.types";
@@ -33,7 +32,7 @@ export function EntryListPage() {
 
   // Applied filters from FilterPanel (only relevant for /entries and /my-entries)
   const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(true);
 
   // Confirm-delete modal state — lifted here so deleteEntry can trigger it imperatively
   const [confirmState, setConfirmState] = useState<{
@@ -120,12 +119,10 @@ export function EntryListPage() {
 
   function handleApplyFilters(filters: IFilter[]) {
     setAppliedFilters(filters);
-    setFiltersOpen(false);
   }
 
   function handleClearFilters() {
     setAppliedFilters([]);
-    setFiltersOpen(false);
   }
 
   function handleDeleteClick(id: string) {
@@ -145,96 +142,67 @@ export function EntryListPage() {
     <div className="space-y-4">
       <h1>{pageHeader}</h1>
 
-      {/* Collapsible filter accordion */}
-      {showFilters && (
-        <div className="border border-gray-200 bg-white rounded">
-          <button
-            type="button"
-            onClick={() => setFiltersOpen((o) => !o)}
-            className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            <span>Filters</span>
-            {/* Show applied filter summary when collapsed */}
-            {!filtersOpen && appliedFilters.length > 0 && (
-              <span className="text-xs text-gray-500 font-normal">
-                {formatFiltersAsText(appliedFilters)}
-              </span>
-            )}
-            <span className="text-gray-400">{filtersOpen ? "▲" : "▼"}</span>
-          </button>
-          {filtersOpen && (
-            <div className="px-4 py-3 border-t border-gray-200">
-              <FilterPanel
-                onApply={handleApplyFilters}
-                onClearAll={handleClearFilters}
-              />
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        {/* Filters — full width on mobile (top), right 4 cols on desktop */}
+        {showFilters && (
+          <aside className="md:col-start-9 md:col-span-4 md:row-start-1">
+            <div className="bg-gray-900 rounded-lg">
+              {/* Mobile filters */}
+              <button
+                type="button"
+                onClick={() => setFiltersOpen((o) => !o)}
+                className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 rounded-lg"
+              >
+                <h6 className="text-gray-100 mb-0 mr-auto">Filters</h6>
+                {!filtersOpen && appliedFilters.length > 0 && (
+                  <span className="text-xs text-gray-200 font-normal mr-4">
+                    {formatFiltersAsText(appliedFilters)}
+                  </span>
+                )}
+                <span className="text-gray-400">{filtersOpen ? "▲" : "▼"}</span>
+              </button>
+
+              <div className={`px-4 py-3 ${filtersOpen ? "block" : "hidden"}`}>
+                <FilterPanel
+                  onApply={handleApplyFilters}
+                  onClearAll={handleClearFilters}
+                />
+              </div>
             </div>
+          </aside>
+        )}
+
+        {/* Report list — full width on mobile, left 8 cols on desktop */}
+        <div
+          className={
+            showFilters
+              ? "md:col-start-1 md:col-span-8 md:row-start-1"
+              : "md:col-span-12"
+          }
+        >
+          {isLoading ? (
+            <div className="flex justify-center py-12">
+              <span className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : entries.length === 0 ? (
+            <p className="text-sm text-gray-400">No Entries Available</p>
+          ) : (
+            <ul className="space-y-4">
+              {entries.map((entry) => (
+                <ReportCard
+                  key={entry.id}
+                  report={entry}
+                  handleDelete={
+                    currentUser && currentUser.id === entry.authorId
+                      ? handleDeleteClick
+                      : undefined
+                  }
+                />
+              ))}
+            </ul>
           )}
         </div>
-      )}
-
-      {isLoading ? (
-        <div className="flex justify-center py-12">
-          <span className="inline-block w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
-        </div>
-      ) : entries.length === 0 ? (
-        <p className="text-sm text-gray-400">No Entries Available</p>
-      ) : (
-        <ul className="divide-y divide-gray-200 border border-gray-200 bg-white rounded">
-          {entries.map((entry) => (
-            <li
-              key={entry.id}
-              className="flex items-start justify-between px-4 py-3"
-            >
-              <div className="space-y-0.5 min-w-0">
-                {/* Clicking the notes/date navigates to the detail view */}
-                <Link
-                  to={`/entries/${entry.id}`}
-                  className="block text-sm font-medium text-primary-500 hover:underline truncate"
-                >
-                  {entry.notes || dayjs(entry.date).format("MMM D, YYYY")}
-                </Link>
-                <p className="text-xs text-gray-500">
-                  Author:{" "}
-                  <Link
-                    to={`/users/${entry.authorId}/entries`}
-                    className="text-primary-500 hover:underline"
-                  >
-                    {entry.authorName}
-                  </Link>
-                </p>
-                <p className="text-xs text-gray-500">
-                  Location:{" "}
-                  <Link
-                    to={`/locations/${entry.locationId}/entries`}
-                    className="text-primary-500 hover:underline"
-                  >
-                    {entry.locationName}
-                  </Link>
-                </p>
-                <p className="text-xs text-gray-500">
-                  Date: {dayjs(entry.date).format("MMM D, YYYY")}
-                </p>
-                <p className="text-xs text-gray-500">
-                  Catch Count: {entry.catchCount}
-                </p>
-              </div>
-
-              {/* Delete button is only visible to the entry's author */}
-              {currentUser && currentUser.id === entry.authorId && (
-                <button
-                  type="button"
-                  onClick={() => handleDeleteClick(entry.id)}
-                  className="ml-3 shrink-0 text-danger hover:text-danger-dark"
-                  aria-label="Delete entry"
-                >
-                  <Trash2 size={16} />
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      </div>
 
       <ConfirmModal
         isOpen={confirmState.open}
