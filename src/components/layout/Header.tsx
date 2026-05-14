@@ -44,9 +44,9 @@ export function Header({ onMenuClick }: HeaderProps) {
       {/* Right-side controls */}
       <div className="flex items-center gap-4">
         {currentUser && (
-          <Button link="/entries/create">
-            <Plus size={14} className="inline-block mr-1 -mt-0.5" />
-            New Report
+          <Button link="/entries/create" className="!py-1 !px-2 !md:px-4">
+            <Plus size={16} className="inline-block -mt-0.5" />
+            <span className="hidden md:inline ml-1">New Report</span>
           </Button>
         )}
 
@@ -59,19 +59,19 @@ export function Header({ onMenuClick }: HeaderProps) {
           </Link>
         )}
 
-        {/* Notification bell with badge overlay */}
-        <NotificationBadge hasNotifications={hasNotifications}>
-          <Bell size={20} />
-        </NotificationBadge>
-
         {/* Hamburger toggles sidenav — calls parent-provided handler */}
-        <button
-          onClick={onMenuClick}
-          className="text-white hover:opacity-80 focus:outline-none"
-          aria-label="Toggle navigation menu"
+        <NotificationBadge
+          hasNotifications={hasNotifications}
+          className="!flex align-items-center"
         >
-          <Menu size={24} />
-        </button>
+          <button
+            onClick={onMenuClick}
+            className="text-white hover:opacity-80 focus:outline-none"
+            aria-label="Toggle navigation menu"
+          >
+            <Menu size={24} />
+          </button>
+        </NotificationBadge>
       </div>
     </header>
   );
