@@ -159,7 +159,7 @@ export function EntryEditPage() {
             <button
               type="button"
               onClick={() => setLocationModalOpen(true)}
-              className="text-primary-500 hover:underline"
+              className="text-primary hover:underline"
             >
               add a new location
             </button>

@@ -12,7 +12,7 @@ interface FormShellProps {
 // Spinner using a CSS border-trick — avoids importing an icon library.
 function Spinner() {
   return (
-    <span className="inline-block w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+    <span className="inline-block w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
   );
 }
 

@@ -83,7 +83,7 @@ export function LoginPage() {
 
         <p className="text-sm text-gray-600 text-center">
           No account?{" "}
-          <Link to="/signup" className="text-primary-500 hover:underline">
+          <Link to="/signup" className="text-primary hover:underline">
             Sign up
           </Link>
         </p>

@@ -4,7 +4,7 @@ export function DashboardPage() {
   return (
     <div className="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-x-4 gap-y-8">
       {/* Row 1 — 4 equal widgets */}
-      <div className="col-span-4 lg:col-span-3 rounded-lg bg-primary-500 py-6 px-10">
+      <div className="col-span-4 lg:col-span-3 rounded-lg bg-primary py-6 px-10">
         <h2 className="text-[4rem] text-white">102</h2>
         <p className="text-white text-sm">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit.

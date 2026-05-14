@@ -11,7 +11,7 @@ interface SideNavProps {
 // Shared NavLink class helper — highlights the active route.
 // NavLink provides an isActive boolean via its className callback.
 function navItemClass({ isActive }: { isActive: boolean }) {
-  return `block px-4 py-2 text-sm cursor-pointer hover:bg-white rounded ${isActive ? "font-semibold text-primary-500" : "text-gray-700"}`;
+  return `block px-4 py-2 text-sm cursor-pointer hover:bg-white rounded ${isActive ? "font-semibold text-primary" : "text-gray-700"}`;
 }
 
 export function SideNav({ isOpen, onClose }: SideNavProps) {

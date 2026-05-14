@@ -62,7 +62,7 @@ export function EntryDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <span className="inline-block w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        <span className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -85,7 +85,7 @@ export function EntryDetailPage() {
             Author:{" "}
             <Link
               to={`/users/${entry.authorId}/entries`}
-              className="text-primary-500 hover:underline"
+              className="text-primary hover:underline"
             >
               {entry.authorName}
             </Link>
@@ -94,7 +94,7 @@ export function EntryDetailPage() {
             Location:{" "}
             <Link
               to={`/locations/${entry.locationId}/entries`}
-              className="text-primary-500 hover:underline"
+              className="text-primary hover:underline"
             >
               {entry.locationName}
             </Link>

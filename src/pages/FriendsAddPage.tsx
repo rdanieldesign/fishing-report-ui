@@ -26,7 +26,7 @@ export function FriendsAddPage() {
 
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <span className="inline-block w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <span className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         ) : options.length === 0 ? (
           <p className="text-sm text-gray-400">No users available to add.</p>
@@ -42,7 +42,7 @@ export function FriendsAddPage() {
                   type="button"
                   onClick={() => mutation.mutate(user.id)}
                   disabled={mutation.isPending}
-                  className="text-primary-500 hover:text-primary-700 disabled:opacity-40"
+                  className="text-primary hover:text-primary-700 disabled:opacity-40"
                   aria-label={`Add ${user.name} as a friend`}
                 >
                   <UserPlus size={18} />

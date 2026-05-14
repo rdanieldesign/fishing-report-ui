@@ -35,7 +35,7 @@ interface TabConfig {
 function Spinner() {
   return (
     <div className="flex justify-center py-8">
-      <span className="inline-block w-7 h-7 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+      <span className="inline-block w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin" />
     </div>
   );
 }
@@ -141,7 +141,7 @@ export function FriendsListPage() {
               className={({ selected }) =>
                 `px-4 py-2 text-sm font-medium focus:outline-none border-b-2 transition-colors ${
                   selected
-                    ? "border-primary-500 text-primary-500"
+                    ? "border-primary text-primary"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`
               }
@@ -171,7 +171,7 @@ export function FriendsListPage() {
                       {tab.canSeeEntries ? (
                         <Link
                           to={`/users/${item.friendId}/entries`}
-                          className="text-sm text-primary-500 hover:underline"
+                          className="text-sm text-primary hover:underline"
                         >
                           {item.friendName}
                         </Link>
@@ -188,7 +188,7 @@ export function FriendsListPage() {
                             onClick={() =>
                               confirmMutation.mutate(Number(item.friendId))
                             }
-                            className="text-primary-500 hover:text-primary-700"
+                            className="text-primary hover:text-primary-700"
                             aria-label="Approve friend request"
                           >
                             <CheckCircle size={20} />

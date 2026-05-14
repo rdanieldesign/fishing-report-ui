@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 
-type ButtonVariant = "primary" | "secondary" | "danger";
+type ButtonVariant = "primary" | "secondary" | "secondary-inverse" | "danger";
 
 interface ButtonProps {
   children: ReactNode;
@@ -15,8 +15,10 @@ interface ButtonProps {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-primary-500 text-white hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed",
+    "bg-primary text-white hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed",
   secondary: "border border-gray-400 hover:bg-gray-100",
+  "secondary-inverse":
+    "border border-gray-300 text-gray-300 hover:bg-gray-200 hover:text-gray-800",
   danger: "bg-danger text-white hover:bg-danger-dark",
 };
 
