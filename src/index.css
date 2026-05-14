@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 :root {
   /* Color primitives */
@@ -11,6 +12,10 @@
   --white: #fff;
   --gray-100: #f5f6f7;
   --gray-200: #e0e1e2;
+  --gray-300: #cecece;
+  --gray-500: #939393;
+  --gray-600: #6b6b6b;
+  --gray-800: #292d38;
   --gray-900: #1a1f2e;
 
   /* Primary */
@@ -35,21 +40,62 @@
   --color-white: var(--white);
   --color-gray-100: var(--gray-100);
   --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-500: var(--gray-500);
+  --color-gray-800: var(--gray-600);
+  --color-gray-800: var(--gray-800);
   --color-gray-900: var(--gray-900);
 
   /* Functional */
   --color-danger: var(--danger);
   --color-danger-dark: var(--danger-dark);
+
+  /* Typography */
+  --font-heading: "Staatliches", sans-serif;
 }
 
 @layer base {
+  html {
+    @apply text-gray-800;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading tracking-wider;
+  }
+
+  h1 {
+    @apply text-7xl mb-8;
+  }
+  h2 {
+    @apply text-7xl mb-3;
+  }
+  h3 {
+    @apply text-5xl mb-2 text-gray-600;
+  }
+  h4 {
+    @apply text-4xl mb-2 text-gray-600;
+  }
+  h5 {
+    @apply text-3xl mb-2 text-gray-600;
+  }
+  h6 {
+    @apply text-2xl mb-2 text-gray-600;
+  }
+}
+
+@layer components {
   input,
   select,
   textarea {
-    @apply bg-white border border-gray-300 rounded px-3 py-2 text-sm;
+    @apply bg-white border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500;
   }
 
-  input {
-    @apply focus:outline-none focus:ring-1 focus:ring-blue-500;
+  select {
+    @apply pr-8;
   }
 }
