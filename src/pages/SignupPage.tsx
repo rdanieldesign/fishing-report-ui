@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { signup } from "../api/authApi";
 import type { INewUser } from "../types/auth.types";
+import { Button } from "../components/shared/Button";
 
 // Extend the API type with a client-only field used for validation
 interface SignupFormValues extends INewUser {
@@ -119,13 +120,13 @@ export function SignupPage() {
             </p>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting || mutation.isPending}
-            className="w-full py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full"
           >
             {mutation.isPending ? "Creating account…" : "Create Account"}
-          </button>
+          </Button>
         </form>
 
         <p className="text-sm text-gray-600 text-center">

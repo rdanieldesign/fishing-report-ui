@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Button } from "./Button";
 
 interface FormShellProps {
   children: ReactNode;
@@ -39,21 +40,12 @@ export function FormShell({
 
       {/* Bottom-aligned action buttons */}
       <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 text-sm border border-gray-400 rounded hover:bg-gray-100"
-        >
+        <Button variant="secondary" onClick={onCancel}>
           Cancel
-        </button>
-        <button
-          type="button"
-          onClick={onSubmit}
-          disabled={submitDisabled}
-          className="px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        </Button>
+        <Button onClick={onSubmit} disabled={submitDisabled}>
           Submit
-        </button>
+        </Button>
       </div>
     </div>
   );

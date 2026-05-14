@@ -1,4 +1,5 @@
 import { Dialog } from "@headlessui/react";
+import { Button } from "./Button";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -25,20 +26,12 @@ export function ConfirmModal({
           </Dialog.Title>
           <p className="text-sm text-gray-700 mb-6">{message}</p>
           <div className="flex gap-3 justify-end">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-4 py-2 text-sm border border-gray-400 rounded hover:bg-gray-100"
-            >
+            <Button variant="secondary" onClick={onCancel}>
               Cancel
-            </button>
-            <button
-              type="button"
-              onClick={onConfirm}
-              className="px-4 py-2 text-sm bg-danger text-white rounded hover:bg-danger-dark"
-            >
+            </Button>
+            <Button variant="danger" onClick={onConfirm}>
               Confirm
-            </button>
+            </Button>
           </div>
         </Dialog.Panel>
       </div>

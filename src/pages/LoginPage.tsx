@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../api/authApi";
 import type { ICredentials } from "../types/auth.types";
+import { Button } from "../components/shared/Button";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -71,13 +72,13 @@ export function LoginPage() {
             </p>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting || mutation.isPending}
-            className="w-full py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full"
           >
             {mutation.isPending ? "Signing in…" : "Sign In"}
-          </button>
+          </Button>
         </form>
 
         <p className="text-sm text-gray-600 text-center">

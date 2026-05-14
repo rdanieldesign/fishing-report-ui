@@ -8,6 +8,7 @@ import { getUserById, getCurrentUser } from "../api/userApi";
 import { getLocationById } from "../api/locationApi";
 import { useAuthStore } from "../stores/authStore";
 import { FilterPanel } from "../components/entries/FilterPanel";
+import { Button } from "../components/shared/Button";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { formatFiltersAsText } from "../utils/filterUtils";
 import { FilterFieldParams, FilterFields } from "../types/filter.types";
@@ -147,12 +148,9 @@ export function EntryListPage() {
       <h1 className="text-2xl font-semibold text-gray-900">{pageHeader}</h1>
 
       {showCreate && (
-        <Link
-          to="/entries/create"
-          className="inline-block px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700"
-        >
+        <Button link="/entries/create" className="inline-block">
           Create New Entry
-        </Link>
+        </Button>
       )}
 
       {/* Collapsible filter accordion */}

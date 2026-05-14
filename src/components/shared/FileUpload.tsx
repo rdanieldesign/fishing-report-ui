@@ -2,6 +2,7 @@ import { useRef } from "react";
 import type { ControllerRenderProps } from "react-hook-form";
 import type { IFileUpload } from "../../types/fileUpload.types";
 import { useImageSrc } from "../../hooks/useImageSrc";
+import { Button } from "./Button";
 
 // Props mirror a React Hook Form Controller render prop so the parent can wire this
 // directly: <Controller render={({ field }) => <FileUpload field={field} />} />
@@ -96,14 +97,14 @@ export function FileUpload({ field, disabled = false }: FileUploadProps) {
         onChange={handleFileChange}
       />
 
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         onClick={() => inputRef.current?.click()}
         disabled={disabled}
-        className="mt-1 px-3 py-1.5 text-sm border border-primary-500 text-primary-500 rounded hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mt-1"
       >
         + Add Image
-      </button>
+      </Button>
     </div>
   );
 }

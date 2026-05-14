@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Button } from "../shared/Button";
 import { useMutation } from "@tanstack/react-query";
 import { createLocation } from "../../api/locationApi";
 import type { INewLocation } from "../../types/location.types";
@@ -72,20 +73,12 @@ export function LocationCreateForm({
       )}
 
       <div className="flex gap-3 pt-2">
-        <button
-          type="button"
-          onClick={onCancel}
-          className="px-4 py-2 text-sm border border-gray-400 rounded hover:bg-gray-100"
-        >
+        <Button variant="secondary" onClick={onCancel}>
           Cancel
-        </button>
-        <button
-          type="submit"
-          disabled={isSubmitting || mutation.isPending}
-          className="px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
+        </Button>
+        <Button type="submit" disabled={isSubmitting || mutation.isPending}>
           {mutation.isPending ? "Creating…" : "Create"}
-        </button>
+        </Button>
       </div>
     </form>
   );

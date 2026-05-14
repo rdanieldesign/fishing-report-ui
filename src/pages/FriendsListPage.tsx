@@ -10,6 +10,7 @@ import {
   confirmFriendship,
   deleteFriendship,
 } from "../api/friendApi";
+import { Button } from "../components/shared/Button";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import type { IFriendshipDetails } from "../types/friend.types";
 
@@ -125,12 +126,7 @@ export function FriendsListPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-900">Friends</h1>
-        <Link
-          to="/friends/add"
-          className="px-4 py-2 text-sm bg-primary-500 text-white rounded hover:bg-primary-700"
-        >
-          Add New Friend
-        </Link>
+        <Button link="/friends/add">Add New Friend</Button>
       </div>
 
       {/* Tab.Group manages keyboard navigation and ARIA tablist/tabpanel roles automatically. */}

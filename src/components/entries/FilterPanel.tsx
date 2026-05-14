@@ -6,6 +6,7 @@ import { getAllLocations } from "../../api/locationApi";
 import { getUsers } from "../../api/userApi";
 import { FilterFields } from "../../types/filter.types";
 import type { IFilter, IFilterOption } from "../../types/filter.types";
+import { Button } from "../shared/Button";
 
 interface FilterPanelProps {
   onApply: (filters: IFilter[]) => void;
@@ -166,14 +167,9 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
             disabled={!selectedField}
           />
         </div>
-        <button
-          type="button"
-          onClick={handleAdd}
-          disabled={!selectedField || !selectedValue}
-          className="px-3 py-1.5 text-sm bg-primary-500 text-white rounded hover:bg-primary-700 disabled:opacity-40 disabled:cursor-not-allowed"
-        >
+        <Button onClick={handleAdd} disabled={!selectedField || !selectedValue}>
           Add
-        </button>
+        </Button>
       </div>
 
       {/* Active filter chips — each removable */}
@@ -202,20 +198,10 @@ export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
 
       {/* Apply / Clear All */}
       <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={handleApply}
-          className="px-3 py-1.5 text-sm bg-primary-500 text-white rounded hover:bg-primary-700"
-        >
-          Apply
-        </button>
-        <button
-          type="button"
-          onClick={handleClearAll}
-          className="px-3 py-1.5 text-sm border border-gray-400 rounded hover:bg-gray-100"
-        >
+        <Button onClick={handleApply}>Apply</Button>
+        <Button variant="secondary" onClick={handleClearAll}>
           Clear All
-        </button>
+        </Button>
       </div>
     </div>
   );
