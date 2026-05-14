@@ -9,6 +9,7 @@ import { useAuthStore } from "../stores/authStore";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { EntryImage } from "../components/shared/EntryImage";
+import { Button } from "../components/shared/Button";
 
 export function EntryDetailPage() {
   const { entryId } = useParams<{ entryId: string }>();
@@ -61,7 +62,7 @@ export function EntryDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <span className="inline-block w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        <span className="inline-block w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -74,7 +75,7 @@ export function EntryDetailPage() {
     <div className="flex flex-col min-h-full">
       <div className="flex-1 space-y-4 pb-4">
         {/* Narrative */}
-        <p className="text-base text-gray-800">
+        <p className="text-500 text-gray-800">
           {entry.notes || "No notes available"}
         </p>
 
@@ -84,7 +85,7 @@ export function EntryDetailPage() {
             Author:{" "}
             <Link
               to={`/users/${entry.authorId}/entries`}
-              className="text-blue-600 hover:underline"
+              className="text-primary hover:underline"
             >
               {entry.authorName}
             </Link>
@@ -93,7 +94,7 @@ export function EntryDetailPage() {
             Location:{" "}
             <Link
               to={`/locations/${entry.locationId}/entries`}
-              className="text-blue-600 hover:underline"
+              className="text-primary hover:underline"
             >
               {entry.locationName}
             </Link>
@@ -105,9 +106,7 @@ export function EntryDetailPage() {
         {/* USGS Readings */}
         {entry.usgsLocationId && (
           <section aria-label="USGS stream readings" className="space-y-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              USGS Stream Data
-            </h2>
+            <h6>USGS Stream Data</h6>
             {entry.usgsReadings && entry.usgsReadings.length > 0 ? (
               <ul className="space-y-1 text-sm text-gray-700">
                 {entry.usgsReadings.map((reading: IUsgsReading) => (
@@ -118,14 +117,13 @@ export function EntryDetailPage() {
                 ))}
               </ul>
             ) : (
-              <button
-                type="button"
+              <Button
+                variant="secondary"
                 onClick={handleLoadUsgs}
                 disabled={usgsLoading}
-                className="px-3 py-1.5 text-sm border border-blue-600 text-blue-700 rounded hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {usgsLoading ? "Loading..." : "Load data"}
-              </button>
+              </Button>
             )}
           </section>
         )}
@@ -146,20 +144,12 @@ export function EntryDetailPage() {
         {/* Author-gated actions */}
         {isAuthor && (
           <div className="flex gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => navigate(`/entries/${entryId}/edit`)}
-              className="px-4 py-2 text-sm border border-blue-600 text-blue-700 rounded hover:bg-blue-50"
-            >
+            <Button variant="secondary" link={`/entries/${entryId}/edit`}>
               Edit Entry
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirmOpen(true)}
-              className="px-4 py-2 text-sm bg-red-600 text-white rounded hover:bg-red-700"
-            >
+            </Button>
+            <Button variant="danger" onClick={() => setConfirmOpen(true)}>
               Delete Entry
-            </button>
+            </Button>
           </div>
         )}
       </div>

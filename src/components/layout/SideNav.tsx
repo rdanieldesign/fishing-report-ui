@@ -1,7 +1,7 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../stores/authStore';
-import { useNotifications } from '../../hooks/useNotifications';
-import { NotificationBadge } from '../shared/NotificationBadge';
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../stores/authStore";
+import { useNotifications } from "../../hooks/useNotifications";
+import { NotificationBadge } from "../shared/NotificationBadge";
 
 interface SideNavProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface SideNavProps {
 // Shared NavLink class helper — highlights the active route.
 // NavLink provides an isActive boolean via its className callback.
 function navItemClass({ isActive }: { isActive: boolean }) {
-  return `block px-4 py-2 text-sm cursor-pointer hover:bg-gray-200 rounded ${isActive ? 'font-semibold text-blue-700' : 'text-gray-700'}`;
+  return `block px-4 py-2 text-sm cursor-pointer hover:bg-white rounded ${isActive ? "font-semibold text-primary" : "text-gray-700"}`;
 }
 
 export function SideNav({ isOpen, onClose }: SideNavProps) {
@@ -21,7 +21,7 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
 
   function handleLogout() {
     clearToken();
-    navigate('/login');
+    navigate("/login");
     onClose();
   }
 
@@ -39,13 +39,25 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
       {/* Drawer panel — slides in from the left */}
       <nav
         className={`fixed top-0 left-0 h-full w-56 bg-white border-r border-gray-200 flex flex-col z-30 transition-transform duration-200 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Main navigation"
       >
         <ul className="flex-1 py-4 space-y-1">
           <li>
-            <NavLink to="/my-entries" className={navItemClass} onClick={onClose}>
+            <NavLink to="/dashboard" className={navItemClass} onClick={onClose}>
+              Dashboard
+            </NavLink>
+          </li>
+
+          <li className="border-t border-gray-100" />
+
+          <li>
+            <NavLink
+              to="/my-entries"
+              className={navItemClass}
+              onClick={onClose}
+            >
               My Reports
             </NavLink>
           </li>
@@ -53,7 +65,12 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
           <li className="border-t border-gray-100" />
 
           <li>
-            <NavLink to="/entries" end className={navItemClass} onClick={onClose}>
+            <NavLink
+              to="/entries"
+              end
+              className={navItemClass}
+              onClick={onClose}
+            >
               All Reports
             </NavLink>
           </li>
@@ -61,7 +78,11 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
           <li className="border-t border-gray-100" />
 
           <li>
-            <NavLink to="/friends/list" className={navItemClass} onClick={onClose}>
+            <NavLink
+              to="/friends/list"
+              className={navItemClass}
+              onClick={onClose}
+            >
               <NotificationBadge hasNotifications={hasNotifications}>
                 <span className="pr-3">Friends</span>
               </NotificationBadge>
@@ -75,7 +96,7 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
         <div className="p-4 border-t border-gray-200">
           <button
             onClick={handleLogout}
-            className="w-full text-left text-sm text-gray-700 hover:text-red-600 px-4 py-2 rounded hover:bg-gray-100"
+            className="w-full text-left text-sm text-gray-700 hover:text-danger px-4 py-2 rounded hover:bg-gray-100"
           >
             Log Out
           </button>

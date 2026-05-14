@@ -1,8 +1,9 @@
-import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { useNavigate, Link } from 'react-router-dom';
-import { signup } from '../api/authApi';
-import type { INewUser } from '../types/auth.types';
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate, Link } from "react-router-dom";
+import { signup } from "../api/authApi";
+import type { INewUser } from "../types/auth.types";
+import { Button } from "../components/shared/Button";
 
 // Extend the API type with a client-only field used for validation
 interface SignupFormValues extends INewUser {
@@ -21,11 +22,11 @@ export function SignupPage() {
   } = useForm<SignupFormValues>();
 
   // watch('password') is used inside the validate function for the cross-field check.
-  const password = watch('password');
+  const password = watch("password");
 
   const mutation = useMutation({
     mutationFn: (data: INewUser) => signup(data),
-    onSuccess: () => navigate('/entries'),
+    onSuccess: () => navigate("/entries"),
     onError: () => reset(),
   });
 
@@ -36,7 +37,7 @@ export function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-8 space-y-5">
-        <h1 className="text-xl font-semibold text-gray-900">Create Account</h1>
+        <h1>Create Account</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
@@ -44,13 +45,13 @@ export function SignupPage() {
               Name
             </label>
             <input
-              {...register('name', { required: 'Name is required' })}
+              {...register("name", { required: "Name is required" })}
               type="text"
               autoComplete="name"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.name && (
-              <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>
+              <p className="text-xs text-danger mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -59,16 +60,19 @@ export function SignupPage() {
               Email
             </label>
             <input
-              {...register('email', {
-                required: 'Email is required',
-                pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email' },
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Enter a valid email",
+                },
               })}
               type="email"
               autoComplete="email"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.email && (
-              <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+              <p className="text-xs text-danger mt-1">{errors.email.message}</p>
             )}
           </div>
 
@@ -77,13 +81,15 @@ export function SignupPage() {
               Password
             </label>
             <input
-              {...register('password', { required: 'Password is required' })}
+              {...register("password", { required: "Password is required" })}
               type="password"
               autoComplete="new-password"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.password && (
-              <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>
+              <p className="text-xs text-danger mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -92,35 +98,40 @@ export function SignupPage() {
               Confirm Password
             </label>
             <input
-              {...register('passwordAgain', {
-                required: 'Please confirm your password',
-                validate: (value) => value === password || 'Passwords do not match',
+              {...register("passwordAgain", {
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
               })}
               type="password"
               autoComplete="new-password"
-              className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full"
             />
             {errors.passwordAgain && (
-              <p className="text-xs text-red-600 mt-1">{errors.passwordAgain.message}</p>
+              <p className="text-xs text-danger mt-1">
+                {errors.passwordAgain.message}
+              </p>
             )}
           </div>
 
           {mutation.isError && (
-            <p className="text-xs text-red-600">Signup failed. Please try again.</p>
+            <p className="text-xs text-danger">
+              Signup failed. Please try again.
+            </p>
           )}
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting || mutation.isPending}
-            className="w-full py-2 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full"
           >
-            {mutation.isPending ? 'Creating account…' : 'Create Account'}
-          </button>
+            {mutation.isPending ? "Creating account…" : "Create Account"}
+          </Button>
         </form>
 
         <p className="text-sm text-gray-600 text-center">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-700 hover:underline">
+          Already have an account?{" "}
+          <Link to="/login" className="text-primary hover:underline">
             Sign in
           </Link>
         </p>

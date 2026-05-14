@@ -127,10 +127,10 @@ export function EntryEditPage() {
             {...register("notes", { required: "Notes are required" })}
             rows={4}
             placeholder="Add Narrative Here"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
+            className="w-full"
           />
           {errors.notes && (
-            <p className="text-xs text-red-600 mt-1">{errors.notes.message}</p>
+            <p className="text-xs text-danger mt-1">{errors.notes.message}</p>
           )}
         </div>
 
@@ -140,7 +140,7 @@ export function EntryEditPage() {
           </label>
           <select
             {...register("locationId", { required: "Location is required" })}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+            className="w-full"
           >
             <option value="">Select a location</option>
             {locations.map((loc) => (
@@ -150,7 +150,7 @@ export function EntryEditPage() {
             ))}
           </select>
           {errors.locationId && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger mt-1">
               {errors.locationId.message}
             </p>
           )}
@@ -159,7 +159,7 @@ export function EntryEditPage() {
             <button
               type="button"
               onClick={() => setLocationModalOpen(true)}
-              className="text-blue-600 hover:underline"
+              className="text-primary hover:underline"
             >
               add a new location
             </button>
@@ -174,10 +174,10 @@ export function EntryEditPage() {
           <input
             {...register("date", { required: "Date is required" })}
             type="date"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full"
           />
           {errors.date && (
-            <p className="text-xs text-red-600 mt-1">{errors.date.message}</p>
+            <p className="text-xs text-danger mt-1">{errors.date.message}</p>
           )}
         </div>
 
@@ -193,10 +193,10 @@ export function EntryEditPage() {
             type="number"
             min={0}
             placeholder="How many fish did you catch?"
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full"
           />
           {errors.catchCount && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger mt-1">
               {errors.catchCount.message}
             </p>
           )}
@@ -214,7 +214,7 @@ export function EntryEditPage() {
         </div>
 
         {mutation.isError && (
-          <p className="text-xs text-red-600">
+          <p className="text-xs text-danger">
             Failed to save entry. Please try again.
           </p>
         )}

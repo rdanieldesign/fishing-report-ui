@@ -1,7 +1,9 @@
 import { useRef } from "react";
+import { Plus } from "lucide-react";
 import type { ControllerRenderProps } from "react-hook-form";
 import type { IFileUpload } from "../../types/fileUpload.types";
 import { useImageSrc } from "../../hooks/useImageSrc";
+import { Button } from "./Button";
 
 // Props mirror a React Hook Form Controller render prop so the parent can wire this
 // directly: <Controller render={({ field }) => <FileUpload field={field} />} />
@@ -96,14 +98,15 @@ export function FileUpload({ field, disabled = false }: FileUploadProps) {
         onChange={handleFileChange}
       />
 
-      <button
-        type="button"
+      <Button
+        variant="secondary"
         onClick={() => inputRef.current?.click()}
         disabled={disabled}
-        className="mt-1 px-3 py-1.5 text-sm border border-blue-600 text-blue-700 rounded hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="mt-1"
       >
-        + Add Image
-      </button>
+        <Plus size={14} className="inline-block mr-1 -mt-0.5" />
+        Add Image
+      </Button>
     </div>
   );
 }

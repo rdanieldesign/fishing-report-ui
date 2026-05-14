@@ -1,15 +1,20 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
 interface NotificationBadgeProps {
   hasNotifications: boolean;
   children: ReactNode;
+  className?: string;
 }
 
 // Wraps children in a relative container and absolutely-positions
 // an orange dot when hasNotifications is true.
-export function NotificationBadge({ hasNotifications, children }: NotificationBadgeProps) {
+export function NotificationBadge({
+  hasNotifications,
+  children,
+  className,
+}: NotificationBadgeProps) {
   return (
-    <span className="relative inline-block">
+    <span className={`relative inline-block ${className || ""}`}>
       {children}
       {hasNotifications && (
         <span

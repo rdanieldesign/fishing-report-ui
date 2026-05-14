@@ -1,209 +1,186 @@
-import { useState } from 'react';
-import { Combobox } from '@headlessui/react';
-import { ChevronDown } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { getAllLocations } from '../../api/locationApi';
-import { getUsers } from '../../api/userApi';
-import { FilterFields } from '../../types/filter.types';
-import type { IFilter, IFilterOption } from '../../types/filter.types';
+import { useState } from "react";
+import { Combobox } from "@headlessui/react";
+import { ChevronDown, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { getAllLocations } from "../../api/locationApi";
+import { getUsers } from "../../api/userApi";
+import { FilterFields } from "../../types/filter.types";
+import type { IFilter, IFilterOption } from "../../types/filter.types";
+import { Button } from "../shared/Button";
 
 interface FilterPanelProps {
   onApply: (filters: IFilter[]) => void;
   onClearAll: () => void;
 }
 
-// Static field options
-const FIELD_OPTIONS: IFilterOption[] = [
-  { label: 'Location', value: FilterFields.Location },
-  { label: 'Author', value: FilterFields.Author },
-];
+const LOCATION_FIELD: IFilterOption = {
+  label: "Location",
+  value: FilterFields.Location,
+};
+const AUTHOR_FIELD: IFilterOption = {
+  label: "Author",
+  value: FilterFields.Author,
+};
 
-// Shared Combobox dropdown used for both Field and Value selectors;
-// handles keyboard navigation, ARIA roles, and open/close state automatically.
-function FilterCombobox({
+function FilterDropdown({
+  label,
   options,
-  selected,
+  activePills,
   onSelect,
-  placeholder,
-  disabled = false,
+  onRemove,
 }: {
+  label: string;
   options: IFilterOption[];
-  selected: IFilterOption | null;
-  onSelect: (v: IFilterOption | null) => void;
-  placeholder: string;
-  disabled?: boolean;
+  activePills: IFilterOption[];
+  onSelect: (v: IFilterOption) => void;
+  onRemove: (value: number) => void;
 }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const filtered =
-    query === ''
+    query === ""
       ? options
-      : options.filter((o) => o.label.toLowerCase().includes(query.toLowerCase()));
+      : options.filter((o) =>
+          o.label.toLowerCase().includes(query.toLowerCase()),
+        );
 
-  return (
-    // `nullable` allows clearing the selection via keyboard/backspace
-    <Combobox value={selected} onChange={onSelect} disabled={disabled} nullable>
-      <div className="relative">
-        <Combobox.Input
-          className="w-full border border-gray-300 rounded px-3 py-1.5 pr-7 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-          displayValue={(o: IFilterOption | null) => o?.label ?? ''}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder}
-        />
-        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2 disabled:cursor-not-allowed">
-          <ChevronDown className="w-4 h-4 text-gray-400" aria-hidden="true" />
-        </Combobox.Button>
-        <Combobox.Options className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded shadow-lg max-h-48 overflow-auto text-sm">
-          {filtered.length === 0 ? (
-            <li className="px-3 py-2 text-gray-400">No options</li>
-          ) : (
-            filtered.map((o) => (
-              <Combobox.Option
-                key={o.value}
-                value={o}
-                className={({ active }) =>
-                  `px-3 py-2 cursor-pointer ${active ? 'bg-blue-600 text-white' : 'text-gray-700'}`
-                }
-              >
-                {o.label}
-              </Combobox.Option>
-            ))
-          )}
-        </Combobox.Options>
-      </div>
-    </Combobox>
-  );
-}
-
-export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
-  const [selectedField, setSelectedField] = useState<IFilterOption | null>(null);
-  const [selectedValue, setSelectedValue] = useState<IFilterOption | null>(null);
-  const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
-
-  const { data: locations = [] } = useQuery({
-    queryKey: ['locations'],
-    queryFn: getAllLocations,
-  });
-
-  const { data: users = [] } = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers,
-  });
-
-  // Cascading value options based on selected field.
-  const valueOptions: IFilterOption[] =
-    selectedField?.value === FilterFields.Location
-      ? locations.map((l) => ({ label: l.name, value: l.id }))
-      : selectedField?.value === FilterFields.Author
-      ? users.map((u) => ({ label: u.name, value: u.id }))
-      : [];
-
-  function handleFieldChange(field: IFilterOption | null) {
-    setSelectedField(field);
-    // Reset value when field changes
-    setSelectedValue(null);
-  }
-
-  function handleAdd() {
-    if (!selectedField || !selectedValue) return;
-
-    // Deduplication: skip if same field+value combination already exists
-    const isDuplicate = appliedFilters.some(
-      (f) => f.field.value === selectedField.value && f.value.value === selectedValue.value
-    );
-    if (isDuplicate) return;
-
-    const updated = [...appliedFilters, { field: selectedField, value: selectedValue }];
-    setAppliedFilters(updated);
-    setSelectedField(null);
-    setSelectedValue(null);
-  }
-
-  function handleRemove(index: number) {
-    setAppliedFilters((prev) => prev.filter((_, i) => i !== index));
-  }
-
-  function handleApply() {
-    onApply(appliedFilters);
-  }
-
-  function handleClearAll() {
-    setAppliedFilters([]);
-    setSelectedField(null);
-    setSelectedValue(null);
-    onClearAll();
+  function handleChange(v: IFilterOption | null) {
+    if (!v) return;
+    onSelect(v);
+    setQuery("");
   }
 
   return (
-    <div className="space-y-3">
-      {/* Cascading filter inputs */}
-      <div className="flex gap-2 flex-wrap">
-        <div className="w-36">
-          <FilterCombobox
-            options={FIELD_OPTIONS}
-            selected={selectedField}
-            onSelect={handleFieldChange}
-            placeholder="Filter by…"
-          />
-        </div>
-        <div className="w-48">
-          <FilterCombobox
-            options={valueOptions}
-            selected={selectedValue}
-            onSelect={setSelectedValue}
-            placeholder="Select value…"
-            disabled={!selectedField}
-          />
-        </div>
-        <button
-          type="button"
-          onClick={handleAdd}
-          disabled={!selectedField || !selectedValue}
-          className="px-3 py-1.5 text-sm bg-blue-700 text-white rounded hover:bg-blue-800 disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          Add
-        </button>
-      </div>
+    <div>
+      <label className="block text-xs font-medium text-gray-300 mb-1.5">
+        {label}
+      </label>
 
-      {/* Active filter chips — each removable */}
-      {appliedFilters.length > 0 && (
-        <ul className="flex flex-wrap gap-2">
-          {appliedFilters.map((f, i) => (
+      <Combobox value={null} onChange={handleChange} nullable>
+        <div className="relative mb-3">
+          <Combobox.Input
+            className="w-full border border-gray-300 bg-gray-800 text-white rounded px-3 py-1.5 pr-7 text-sm placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-primary"
+            displayValue={() => query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={`Filter by ${label.toLowerCase()}…`}
+          />
+          <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+            <ChevronDown className="w-4 h-4 text-gray-500" aria-hidden="true" />
+          </Combobox.Button>
+          <Combobox.Options className="absolute z-10 mt-1 w-full bg-gray-800 border border-gray-300 rounded shadow-lg max-h-48 overflow-auto text-sm">
+            {filtered.length === 0 ? (
+              <li className="px-3 py-2 text-gray-500">No options</li>
+            ) : (
+              filtered.map((o) => (
+                <Combobox.Option
+                  key={o.value}
+                  value={o}
+                  className={({ active }) =>
+                    `px-3 py-2 cursor-pointer ${active ? "bg-primary-600 text-white" : "text-gray-200"}`
+                  }
+                >
+                  {o.label}
+                </Combobox.Option>
+              ))
+            )}
+          </Combobox.Options>
+        </div>
+      </Combobox>
+
+      {activePills.length > 0 && (
+        <ul className="flex flex-wrap gap-1.5">
+          {activePills.map((pill) => (
             <li
-              key={i}
-              className="flex items-center gap-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+              key={pill.value}
+              className="flex items-center gap-1 bg-primary text-white text-xs px-3 py-1 rounded-full"
             >
-              <span>{f.field.label}: {f.value.label}</span>
+              <span>{pill.label}</span>
               <button
                 type="button"
-                onClick={() => handleRemove(i)}
-                className="hover:text-red-600 leading-none"
-                aria-label={`Remove ${f.field.label}: ${f.value.label} filter`}
+                onClick={() => onRemove(pill.value)}
+                aria-label={`Remove ${pill.label}`}
+                className="hover:text-primary-100 leading-none"
               >
-                ✕
+                <X className="w-3 h-3" />
               </button>
             </li>
           ))}
         </ul>
       )}
+    </div>
+  );
+}
 
-      {/* Apply / Clear All */}
-      <div className="flex gap-2">
-        <button
-          type="button"
-          onClick={handleApply}
-          className="px-3 py-1.5 text-sm bg-blue-700 text-white rounded hover:bg-blue-800"
-        >
-          Apply
-        </button>
-        <button
-          type="button"
-          onClick={handleClearAll}
-          className="px-3 py-1.5 text-sm border border-gray-400 rounded hover:bg-gray-100"
-        >
+export function FilterPanel({ onApply, onClearAll }: FilterPanelProps) {
+  const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
+
+  const { data: locations = [] } = useQuery({
+    queryKey: ["locations"],
+    queryFn: getAllLocations,
+  });
+
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+
+  const locationOptions: IFilterOption[] = locations.map((l) => ({
+    label: l.name,
+    value: l.id,
+  }));
+  const authorOptions: IFilterOption[] = users.map((u) => ({
+    label: u.name,
+    value: u.id,
+  }));
+
+  const activePillsFor = (field: FilterFields) =>
+    appliedFilters.filter((f) => f.field.value === field).map((f) => f.value);
+
+  const availableOptions = (field: FilterFields, all: IFilterOption[]) => {
+    const active = activePillsFor(field);
+    return all.filter((o) => !active.some((a) => a.value === o.value));
+  };
+
+  function handleSelect(field: IFilterOption, value: IFilterOption) {
+    const updated = [...appliedFilters, { field, value }];
+    setAppliedFilters(updated);
+    onApply(updated);
+  }
+
+  function handleRemove(fieldEnum: FilterFields, optionValue: number) {
+    const updated = appliedFilters.filter(
+      (f) => !(f.field.value === fieldEnum && f.value.value === optionValue),
+    );
+    setAppliedFilters(updated);
+    onApply(updated);
+  }
+
+  function handleClearAll() {
+    setAppliedFilters([]);
+    onClearAll();
+  }
+
+  return (
+    <div className="space-y-4">
+      <FilterDropdown
+        label="Location"
+        options={availableOptions(FilterFields.Location, locationOptions)}
+        activePills={activePillsFor(FilterFields.Location)}
+        onSelect={(v) => handleSelect(LOCATION_FIELD, v)}
+        onRemove={(v) => handleRemove(FilterFields.Location, v)}
+      />
+      <FilterDropdown
+        label="Author"
+        options={availableOptions(FilterFields.Author, authorOptions)}
+        activePills={activePillsFor(FilterFields.Author)}
+        onSelect={(v) => handleSelect(AUTHOR_FIELD, v)}
+        onRemove={(v) => handleRemove(FilterFields.Author, v)}
+      />
+      {appliedFilters.length > 0 && (
+        <Button variant="secondary-inverse" onClick={handleClearAll}>
           Clear All
-        </button>
-      </div>
+        </Button>
+      )}
     </div>
   );
 }

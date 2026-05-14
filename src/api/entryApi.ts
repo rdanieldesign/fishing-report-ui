@@ -129,14 +129,30 @@ export async function getAllEntries(
   params: IStringMap = {},
 ): Promise<IEntry[]> {
   const response = await apiClient.get<IEntry[]>('/api/reports', { params });
-  return response.data;
+  // TODO: handle this on the BE instead
+  return response.data.map((r) => ({
+    ...r,
+    authorInitials: r.authorName
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase(),
+  }));
 }
 
 export async function getMyEntries(params: IStringMap = {}): Promise<IEntry[]> {
   const response = await apiClient.get<IEntry[]>('/api/reports/my-reports', {
     params,
   });
-  return response.data;
+  // TODO: handle this on the BE instead
+  return response.data.map((r) => ({
+    ...r,
+    authorInitials: r.authorName
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase(),
+  }));
 }
 
 export async function createEntry(data: IEntryFormValues): Promise<string> {
