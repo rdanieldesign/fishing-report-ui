@@ -22,7 +22,7 @@ export function FriendsAddPage() {
   return (
     <div className="flex flex-col min-h-full">
       <div className="flex-1 space-y-4">
-        <h1 className="text-2xl font-semibold text-gray-900">Add Friends</h1>
+        <h1>Add Friends</h1>
 
         {isLoading ? (
           <div className="flex justify-center py-12">

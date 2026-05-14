@@ -1,5 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import { Button } from "./Button";
+import { DialogTitle } from "./dialog/DialogTitle";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -21,9 +22,7 @@ export function ConfirmModal({
       <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="bg-white rounded-lg shadow-xl w-full max-w-sm p-6">
-          <Dialog.Title className="text-sm font-semibold text-gray-900 mb-4">
-            Confirm
-          </Dialog.Title>
+          <DialogTitle>Confirm</DialogTitle>
           <p className="text-sm text-gray-700 mb-6">{message}</p>
           <div className="flex gap-3 justify-end">
             <Button variant="secondary" onClick={onCancel}>

@@ -106,9 +106,7 @@ export function EntryDetailPage() {
         {/* USGS Readings */}
         {entry.usgsLocationId && (
           <section aria-label="USGS stream readings" className="space-y-2">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              USGS Stream Data
-            </h2>
+            <h6>USGS Stream Data</h6>
             {entry.usgsReadings && entry.usgsReadings.length > 0 ? (
               <ul className="space-y-1 text-sm text-gray-700">
                 {entry.usgsReadings.map((reading: IUsgsReading) => (

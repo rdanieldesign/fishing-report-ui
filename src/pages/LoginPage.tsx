@@ -30,7 +30,7 @@ export function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-8 space-y-5">
-        <h1 className="text-xl font-semibold text-gray-900">Sign In</h1>
+        <h1>Sign In</h1>
 
         {/* handleSubmit validates then calls onSubmit; no separate disabled check needed */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

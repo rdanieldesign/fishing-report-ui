@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { Bell, Menu } from "lucide-react";
+import { Bell, Menu, Plus } from "lucide-react";
 import { useAuthStore } from "../../stores/authStore";
 import { useNotifications } from "../../hooks/useNotifications";
 import { NotificationBadge } from "../shared/NotificationBadge";
+import { Button } from "../shared/Button";
 import { getCurrentUser } from "../../api/userApi";
 
 interface HeaderProps {
@@ -20,27 +21,41 @@ export function Header({ onMenuClick }: HeaderProps) {
     queryFn: getCurrentUser,
     enabled: !!token,
   });
+  const userInitials = currentUser
+    ? currentUser.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+    : null;
 
   const homeHref = token ? "/entries" : "/login";
 
   return (
-    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4 shrink-0 z-10">
+    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-8 shrink-0 z-10">
       {/* Brand / home link */}
       <Link
         to={homeHref}
         className="font-semibold text-white no-underline hover:opacity-80"
       >
-        Fishing Report
+        <span className="font-heading tracking-wider text-2xl">Currents</span>
       </Link>
 
       {/* Right-side controls */}
       <div className="flex items-center gap-4">
         {currentUser && (
+          <Button link="/entries/create">
+            <Plus size={14} className="inline-block mr-1 -mt-0.5" />
+            New Report
+          </Button>
+        )}
+
+        {currentUser && (
           <Link
             to="/my-entries"
-            className="text-sm text-white no-underline hover:opacity-80"
+            className="text-sm text-white border-white border rounded-sm px-1 py-0.5 no-underline hover:opacity-80"
           >
-            {currentUser.name}
+            {userInitials}
           </Link>
         )}
 

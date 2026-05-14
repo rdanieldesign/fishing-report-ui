@@ -35,8 +35,7 @@ export function FormShell({
 
   return (
     <div className="flex flex-col flex-1">
-      {/* Scrollable form body */}
-      <div className="flex-1 overflow-y-auto space-y-4">{children}</div>
+      <div className="flex-1 space-y-4">{children}</div>
 
       {/* Bottom-aligned action buttons */}
       <div className="flex gap-3 mt-4 pt-4 border-t border-gray-200">

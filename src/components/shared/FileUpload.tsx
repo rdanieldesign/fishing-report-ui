@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { Plus } from "lucide-react";
 import type { ControllerRenderProps } from "react-hook-form";
 import type { IFileUpload } from "../../types/fileUpload.types";
 import { useImageSrc } from "../../hooks/useImageSrc";
@@ -103,7 +104,8 @@ export function FileUpload({ field, disabled = false }: FileUploadProps) {
         disabled={disabled}
         className="mt-1"
       >
-        + Add Image
+        <Plus size={14} className="inline-block mr-1 -mt-0.5" />
+        Add Image
       </Button>
     </div>
   );

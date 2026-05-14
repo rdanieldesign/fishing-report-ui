@@ -1,5 +1,6 @@
 import { Dialog } from "@headlessui/react";
 import { LocationCreateForm } from "./LocationCreateForm";
+import { DialogTitle } from "../shared/dialog/DialogTitle";
 
 interface LocationCreateModalProps {
   isOpen: boolean;
@@ -28,9 +29,7 @@ export function LocationCreateModal({
       {/* Centered panel */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-          <Dialog.Title className="text-500 font-semibold text-gray-900 mb-4">
-            Create New Location
-          </Dialog.Title>
+          <DialogTitle>Create New Location</DialogTitle>
 
           <LocationCreateForm onSuccess={handleSuccess} onCancel={onClose} />
         </Dialog.Panel>

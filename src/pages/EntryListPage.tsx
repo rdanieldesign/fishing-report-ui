@@ -8,7 +8,6 @@ import { getUserById, getCurrentUser } from "../api/userApi";
 import { getLocationById } from "../api/locationApi";
 import { useAuthStore } from "../stores/authStore";
 import { FilterPanel } from "../components/entries/FilterPanel";
-import { Button } from "../components/shared/Button";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { formatFiltersAsText } from "../utils/filterUtils";
 import { FilterFieldParams, FilterFields } from "../types/filter.types";
@@ -117,7 +116,6 @@ export function EntryListPage() {
         ? "My Reports"
         : "All Reports";
 
-  const showCreate = isMyEntries;
   const showFilters = !isUserView && !isLocationView;
 
   function handleApplyFilters(filters: IFilter[]) {
@@ -145,13 +143,7 @@ export function EntryListPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold text-gray-900">{pageHeader}</h1>
-
-      {showCreate && (
-        <Button link="/entries/create" className="inline-block">
-          Create New Entry
-        </Button>
-      )}
+      <h1>{pageHeader}</h1>
 
       {/* Collapsible filter accordion */}
       {showFilters && (

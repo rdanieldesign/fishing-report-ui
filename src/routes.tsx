@@ -25,7 +25,7 @@ function AppLayout() {
     <div className="min-h-screen flex flex-col bg-gray-100">
       <Header onMenuClick={() => setNavOpen((o) => !o)} />
       <SideNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
-      <main className="flex-1 p-6 overflow-auto">
+      <main className="flex-1 p-8 overflow-auto">
         {/* <Outlet> renders the currently matched child route */}
         <Outlet />
       </main>

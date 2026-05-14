@@ -37,7 +37,7 @@ export function SignupPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-8 space-y-5">
-        <h1 className="text-xl font-semibold text-gray-900">Create Account</h1>
+        <h1>Create Account</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>

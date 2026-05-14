@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Tab } from "@headlessui/react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, Plus, XCircle } from "lucide-react";
 import {
   getAllFriends,
   getFriendRequests,
@@ -125,8 +125,11 @@ export function FriendsListPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-gray-900">Friends</h1>
-        <Button link="/friends/add">Add New Friend</Button>
+        <h1>Friends</h1>
+        <Button link="/friends/add">
+          <Plus size={14} className="inline-block mr-1 -mt-0.5" />
+          Add Friend
+        </Button>
       </div>
 
       {/* Tab.Group manages keyboard navigation and ARIA tablist/tabpanel roles automatically. */}
