@@ -28,6 +28,7 @@ export interface IEntry extends Omit<INewEntry, 'images'> {
   usgsLocationId?: string;
   images: IReportImage[];
   usgsReadings?: IUsgsReading[];
+  thumbnailUrl?: string;
 }
 
 export type ImageUploadStatus = 'uploading' | 'complete' | 'failed';
