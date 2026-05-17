@@ -32,7 +32,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const homeHref = token ? "/entries" : "/login";
 
   return (
-    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-8 shrink-0 z-10">
+    <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4 md:px-8 shrink-0 z-10">
       {/* Brand / home link */}
       <Link
         to={homeHref}
