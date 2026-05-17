@@ -67,8 +67,14 @@ export function ReportCard({ report, handleDelete }: ReportCardProps) {
           <p className="text-xs text-gray-500">count</p>
         </div>
         {/* Image */}
-        <div className="min-h-24 bg-gray-500 md:order-3">
-          {/* TODO: add image */}
+        <div className="min-h-24 bg-gray-200 md:order-3">
+          {report.thumbnailUrl && (
+            <img
+              src={report.thumbnailUrl}
+              alt="Entry"
+              className="object-cover w-full h-full"
+            />
+          )}
         </div>
       </div>
     </li>
