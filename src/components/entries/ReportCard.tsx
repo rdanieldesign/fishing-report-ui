@@ -67,12 +67,12 @@ export function ReportCard({ report, handleDelete }: ReportCardProps) {
           <p className="text-xs text-gray-500">count</p>
         </div>
         {/* Image */}
-        <div className="min-h-24 bg-gray-200 md:order-3">
+        <div className="min-h-24 bg-gray-200 md:order-3 relative overflow-hidden">
           {report.thumbnailUrl && (
             <img
               src={report.thumbnailUrl}
               alt="Entry"
-              className="object-cover w-full h-full"
+              className="object-cover min-h-full min-w-full absolute -translate-y-1/2 top-1/2"
             />
           )}
         </div>
