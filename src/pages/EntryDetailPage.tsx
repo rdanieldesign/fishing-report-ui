@@ -10,6 +10,7 @@ import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { EntryImage } from "../components/shared/EntryImage";
 import { Button } from "../components/shared/Button";
+import { MapPin } from "lucide-react";
 
 export function EntryDetailPage() {
   const { entryId } = useParams<{ entryId: string }>();
@@ -72,17 +73,25 @@ export function EntryDetailPage() {
   const isAuthor = currentUser?.id === entry.authorId;
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col flex-1">
       <div className="flex-1 space-y-4 pb-4">
+        <h1 className="mb-2">{dayjs(entry.date).format("MMM D, YYYY")}</h1>
+        <Link
+          to={`/locations/${entry.locationId}/entries`}
+          className="text-primary hover:underline block"
+        >
+          <MapPin className="inline mx-1 ml-0 mb-0.5 text-primary" size={18} />
+          <span className="text-base">{entry.locationName}</span>
+        </Link>
         {/* Narrative */}
         <p className="text-500 text-gray-800">
           {entry.notes || "No notes available"}
         </p>
 
         {/* Meta info */}
-        <section className="space-y-1 text-sm text-gray-600">
+        <section className="space-y-1 text-gray-600">
           <div>
-            Author:{" "}
+            <label>Author: </label>
             <Link
               to={`/users/${entry.authorId}/entries`}
               className="text-primary hover:underline"
@@ -90,16 +99,6 @@ export function EntryDetailPage() {
               {entry.authorName}
             </Link>
           </div>
-          <div>
-            Location:{" "}
-            <Link
-              to={`/locations/${entry.locationId}/entries`}
-              className="text-primary hover:underline"
-            >
-              {entry.locationName}
-            </Link>
-          </div>
-          <div>Date: {dayjs(entry.date).format("MMM D, YYYY")}</div>
           <div>Catch Count: {entry.catchCount}</div>
         </section>
 
