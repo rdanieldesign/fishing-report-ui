@@ -28,7 +28,7 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="h-dvh px-4 md:px-8 flex items-center justify-center bg-gray-50 overflow-hidden">
       <div className="w-full max-w-sm bg-white rounded-lg shadow p-8 space-y-5">
         <h1>Sign In</h1>
 

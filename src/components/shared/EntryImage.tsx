@@ -5,10 +5,11 @@ export type ImageStatus = "uploading" | "failed" | "complete";
 interface EntryImageProps {
   imageURL: string | null;
   status: ImageStatus;
+  className?: string;
 }
 
-export function EntryImage({ imageURL, status }: EntryImageProps) {
-  const base = "w-40 h-40 rounded border border-gray-200";
+export function EntryImage({ imageURL, status, className }: EntryImageProps) {
+  const base = `w-full max-w-md rounded border border-gray-200${className ? ` ${className}` : ""}`;
 
   const getErrorTemplate = (message: string) => (
     <div
