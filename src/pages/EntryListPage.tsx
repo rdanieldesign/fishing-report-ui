@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMatch } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllEntries, getMyEntries, deleteEntry } from "../api/entryApi";
+import { getAllEntries, deleteEntry } from "../api/entryApi";
 import { getUserById, getCurrentUser } from "../api/userApi";
 import { getLocationById } from "../api/locationApi";
 import { useAuthStore } from "../stores/authStore";
@@ -71,8 +71,9 @@ export function EntryListPage() {
     {} as IStringMap,
   );
 
-  const urlParams: IStringMap =
-    isUserView && userId
+  const urlParams: IStringMap = isMyEntries
+    ? { authorId: String(currentUser!.id) }
+    : isUserView && userId
       ? { authorId: userId }
       : isLocationView && locationId
         ? { locationId }
@@ -94,8 +95,7 @@ export function EntryListPage() {
             : "all",
       queryParams,
     ],
-    queryFn: () =>
-      isMyEntries ? getMyEntries(queryParams) : getAllEntries(queryParams),
+    queryFn: () => getAllEntries(queryParams),
   });
 
   const deleteMutation = useMutation({

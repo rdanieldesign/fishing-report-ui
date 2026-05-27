@@ -2,65 +2,49 @@ import { apiClient } from './apiClient';
 import type {
   IEntry,
   IEntryFormValues,
+  IEntryListItem,
   ImageUploadStatus,
 } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
 import { gqlRequest } from './graphQLClient';
 
-interface ImageMetadata {
-  filename: string;
-  mimetype: string;
-}
-
-interface ISignedImageURL {
-  uploadUrl: string;
-  key: string;
-  filename: string;
-}
-
-interface ReportCreatePayload {
-  locationId: number;
-  catchCount: number;
+interface GqlReportBase {
+  id: number;
   date: string;
-  notes: string;
-  imageMetadata: ImageMetadata[];
+  catchCount: number;
+  location: { id: number; name: string; usgsLocationId?: string };
+  author: { id: number; name: string };
 }
 
-interface ReportEditPayload {
-  locationId: number;
-  catchCount: number;
-  date: string;
+interface GqlReport extends GqlReportBase {
   notes: string;
-  newImageMetadata: ImageMetadata[];
-  imageKeysToKeep: string[];
+  images: {
+    id: number;
+    imageKey: string;
+    imageURL: string;
+    status: ImageUploadStatus;
+  }[];
+  usgsReadings: {
+    id: string;
+    parameterName: string;
+    value: string;
+    unit: string;
+  }[];
+}
+
+interface GqlReportListItem extends GqlReportBase {
+  thumbnailUrl?: string;
 }
 
 interface GqlReportResponse {
-  data: {
-    report: {
-      id: number;
-      date: string;
-      notes: string;
-      catchCount: number;
-      location: { id: number; name: string; usgsLocationId?: string };
-      images: {
-        id: number;
-        imageKey: string;
-        imageURL: string;
-        status: ImageUploadStatus;
-      }[];
-      usgsReadings: {
-        id: string;
-        parameterName: string;
-        value: string;
-        unit: string;
-      }[];
-      author: { id: number; name: string };
-    };
-  };
+  data: { report: GqlReport };
 }
 
-const REPORT_QUERY = /* GraphQL */ `
+interface GqlReportListResponse {
+  data: { allReports: GqlReportListItem[] };
+}
+
+const REPORT_DETAIL_QUERY = /* GraphQL */ `
   query GetReport($reportId: Int!) {
     report(id: $reportId) {
       id
@@ -92,12 +76,26 @@ const REPORT_QUERY = /* GraphQL */ `
   }
 `;
 
-export async function getEntry(reportId: number): Promise<IEntry> {
-  const result = await gqlRequest<GqlReportResponse>(REPORT_QUERY, {
-    reportId,
-  });
-  const r = result.data.report;
+const REPORT_LIST_QUERY = /* GraphQL */ `
+  query GetReportList($locationId: Int, $authorId: Int) {
+    allReports(locationId: $locationId, authorId: $authorId) {
+      id
+      date
+      catchCount
+      thumbnailUrl
+      location {
+        id
+        name
+      }
+      author {
+        id
+        name
+      }
+    }
+  }
+`;
 
+function mapReport(r: GqlReport): IEntry {
   return {
     id: String(r.id),
     date: r.date,
@@ -125,34 +123,73 @@ export async function getEntry(reportId: number): Promise<IEntry> {
   };
 }
 
-export async function getAllEntries(
-  params: IStringMap = {},
-): Promise<IEntry[]> {
-  const response = await apiClient.get<IEntry[]>('/api/reports', { params });
-  // TODO: handle this on the BE instead
-  return response.data.map((r) => ({
-    ...r,
-    authorInitials: r.authorName
+function mapReportListItem(r: GqlReportListItem): IEntryListItem {
+  return {
+    id: String(r.id),
+    date: r.date,
+    catchCount: r.catchCount,
+    locationId: r.location.id,
+    locationName: r.location.name,
+    usgsLocationId: r.location.usgsLocationId,
+    authorId: r.author.id,
+    authorName: r.author.name,
+    thumbnailUrl: r.thumbnailUrl,
+    // TODO: handle this on the BE instead
+    authorInitials: r.author.name
       .split(' ')
       .map((n) => n[0])
       .join('')
       .toUpperCase(),
-  }));
+  };
 }
 
-export async function getMyEntries(params: IStringMap = {}): Promise<IEntry[]> {
-  const response = await apiClient.get<IEntry[]>('/api/reports/my-reports', {
-    params,
+export async function getEntry(reportId: number): Promise<IEntry> {
+  const result = await gqlRequest<GqlReportResponse>(REPORT_DETAIL_QUERY, {
+    reportId,
   });
-  // TODO: handle this on the BE instead
-  return response.data.map((r) => ({
-    ...r,
-    authorInitials: r.authorName
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase(),
-  }));
+  return mapReport(result.data.report);
+}
+
+export async function getAllEntries(
+  params: IStringMap = {},
+): Promise<IEntryListItem[]> {
+  const variables = {
+    locationId: params.locationId ? Number(params.locationId) : undefined,
+    authorId: params.authorId ? Number(params.authorId) : undefined,
+  };
+  const result = await gqlRequest<GqlReportListResponse>(
+    REPORT_LIST_QUERY,
+    variables,
+  );
+  return result.data.allReports.map(mapReportListItem);
+}
+
+interface ImageMetadata {
+  filename: string;
+  mimetype: string;
+}
+
+interface ISignedImageURL {
+  uploadUrl: string;
+  key: string;
+  filename: string;
+}
+
+interface ReportEditPayload {
+  locationId: number;
+  catchCount: number;
+  date: string;
+  notes: string;
+  newImageMetadata: ImageMetadata[];
+  imageKeysToKeep: string[];
+}
+
+interface ReportCreatePayload {
+  locationId: number;
+  catchCount: number;
+  date: string;
+  notes: string;
+  imageMetadata: ImageMetadata[];
 }
 
 export async function createEntry(data: IEntryFormValues): Promise<string> {

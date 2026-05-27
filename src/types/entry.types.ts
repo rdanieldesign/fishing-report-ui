@@ -18,17 +18,26 @@ export interface INewEntry {
   images: FileList;
 }
 
-export interface IEntry extends Omit<INewEntry, 'images'> {
+interface IEntryBase {
   id: string;
+  date: string;
+  locationId: number;
   locationName: string;
   authorId: number;
   authorName: string;
   authorInitials?: string;
-  locationId: number;
   usgsLocationId?: string;
+  catchCount: number;
+}
+
+export interface IEntryListItem extends IEntryBase {
+  thumbnailUrl?: string;
+}
+
+export interface IEntry extends IEntryBase {
+  notes: string;
   images: IReportImage[];
   usgsReadings?: IUsgsReading[];
-  thumbnailUrl?: string;
 }
 
 export type ImageUploadStatus = 'uploading' | 'complete' | 'failed';

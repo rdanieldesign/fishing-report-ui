@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { Trash2, MapPin, SquareArrowUpRight } from "lucide-react";
 import dayjs from "dayjs";
-import type { IEntry } from "../../types/entry.types";
+import type { IEntryListItem } from "../../types/entry.types";
 
 interface ReportCardProps {
-  report: IEntry;
+  report: IEntryListItem;
   handleDelete?: (id: string) => void;
 }
 
