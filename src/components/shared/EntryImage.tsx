@@ -30,7 +30,7 @@ export function EntryImage({ imageURL, status, className }: EntryImageProps) {
     return (
       <div className={`${base} bg-gray-100 flex items-center justify-center`}>
         <Loader2
-          className="w-6 h-6 text-gray-400 animate-spin"
+          className="w-6 h-60 text-gray-400 animate-spin"
           aria-label="Uploading image"
         />
       </div>

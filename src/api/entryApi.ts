@@ -170,7 +170,8 @@ export async function createEntry(data: IEntryFormValues): Promise<string> {
     reportId: string;
     signedImageUrls: ISignedImageURL[];
   }>('/api/reports', reportPayload);
-  await Promise.all(
+  // Don't await, allow image upload in background. FE handles async image upload.
+  Promise.all(
     response.data.signedImageUrls.map((url) => {
       // TODO: make sure we don't allow duplicate names
       const matchingFile = data.images.find(
