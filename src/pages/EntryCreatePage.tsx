@@ -43,16 +43,6 @@ export function EntryCreatePage() {
       : { notes: "", locationId: "", date: "", catchCount: "", images: [] },
   });
 
-  // Persist non-image fields to localStorage on every change
-  const watchedValues = watch(["notes", "locationId", "date", "catchCount"]);
-  useEffect(() => {
-    const [notes, locationId, date, catchCount] = watchedValues;
-    localStorage.setItem(
-      DRAFT_KEY,
-      JSON.stringify({ notes, locationId, date, catchCount }),
-    );
-  }, [watchedValues]);
-
   const mutation = useMutation({
     mutationFn: createEntry,
     onSuccess: (reportId) => {
@@ -61,6 +51,17 @@ export function EntryCreatePage() {
       navigate(`/entries/${reportId}`);
     },
   });
+
+  // Persist non-image fields to localStorage on every change
+  const watchedValues = watch(["notes", "locationId", "date", "catchCount"]);
+  useEffect(() => {
+    if (mutation.isSuccess) return;
+    const [notes, locationId, date, catchCount] = watchedValues;
+    localStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({ notes, locationId, date, catchCount }),
+    );
+  }, [watchedValues, mutation.isSuccess]);
 
   function onSubmit(data: IEntryFormValues) {
     mutation.mutate(data);
