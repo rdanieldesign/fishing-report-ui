@@ -6,6 +6,7 @@ import type {
   ImageUploadStatus,
 } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
+import type { ITopLocation } from '../components/widgets/topLocation.types';
 import { gqlRequest } from './graphQLClient';
 
 interface GqlReportBase {
@@ -40,8 +41,21 @@ interface GqlReportResponse {
   data: { report: GqlReport };
 }
 
+interface GqlTopLocation {
+  locationId: number;
+  locationName: string;
+}
+
 interface GqlReportListResponse {
-  data: { allReports: GqlReportListItem[] };
+  data: {
+    allReports: GqlReportListItem[];
+    topLocationByCurrentMonth: GqlTopLocation | null;
+  };
+}
+
+export interface IEntryListResponse {
+  entries: IEntryListItem[];
+  topLocation: ITopLocation | null;
 }
 
 const REPORT_DETAIL_QUERY = /* GraphQL */ `
@@ -91,6 +105,10 @@ const REPORT_LIST_QUERY = /* GraphQL */ `
         id
         name
       }
+    }
+    topLocationByCurrentMonth {
+      locationName
+      locationId
     }
   }
 `;
@@ -152,7 +170,7 @@ export async function getEntry(reportId: number): Promise<IEntry> {
 
 export async function getAllEntries(
   params: IStringMap = {},
-): Promise<IEntryListItem[]> {
+): Promise<IEntryListResponse> {
   const variables = {
     locationId: params.locationId ? Number(params.locationId) : undefined,
     authorId: params.authorId ? Number(params.authorId) : undefined,
@@ -161,7 +179,10 @@ export async function getAllEntries(
     REPORT_LIST_QUERY,
     variables,
   );
-  return result.data.allReports.map(mapReportListItem);
+  return {
+    entries: result.data.allReports.map(mapReportListItem),
+    topLocation: result.data.topLocationByCurrentMonth,
+  };
 }
 
 interface ImageMetadata {

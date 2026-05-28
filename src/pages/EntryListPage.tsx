@@ -7,6 +7,7 @@ import { getLocationById } from "../api/locationApi";
 import { useAuthStore } from "../stores/authStore";
 import { FilterPanel } from "../components/entries/FilterPanel";
 import { ReportCard } from "../components/entries/ReportCard";
+import { TopLocationWidget } from "../components/widgets/TopLocationWidget";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { formatFiltersAsText } from "../utils/filterUtils";
 import { FilterFieldParams, FilterFields } from "../types/filter.types";
@@ -83,20 +84,21 @@ export function EntryListPage() {
 
   // Single entries query; queryKey includes queryParams so React Query refetches
   // when filters or URL params change.
-  const { data: entries = [], isLoading } = useQuery({
-    queryKey: [
-      "entries",
-      isMyEntries
-        ? "mine"
-        : isUserView
-          ? "user"
-          : isLocationView
-            ? "location"
-            : "all",
-      queryParams,
-    ],
-    queryFn: () => getAllEntries(queryParams),
-  });
+  const { data: { entries = [], topLocation = null } = {}, isLoading } =
+    useQuery({
+      queryKey: [
+        "entries",
+        isMyEntries
+          ? "mine"
+          : isUserView
+            ? "user"
+            : isLocationView
+              ? "location"
+              : "all",
+        queryParams,
+      ],
+      queryFn: () => getAllEntries(queryParams),
+    });
 
   const deleteMutation = useMutation({
     mutationFn: deleteEntry,
@@ -170,6 +172,9 @@ export function EntryListPage() {
                   onClearAll={handleClearFilters}
                 />
               </div>
+            </div>
+            <div className="mt-4">
+              <TopLocationWidget topLocation={topLocation} />
             </div>
           </aside>
         )}
