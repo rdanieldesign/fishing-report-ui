@@ -1,36 +1,55 @@
 import { useForm } from "react-hook-form";
 import { Button } from "../shared/Button";
 import { useMutation } from "@tanstack/react-query";
-import { createLocation } from "../../api/locationApi";
-import type { INewLocation } from "../../types/location.types";
+import { createLocation, updateLocation } from "../../api/locationApi";
+import type { ILocation, INewLocation } from "../../types/location.types";
 
 interface LocationCreateFormProps {
   /** Called with the new location's id after successful creation */
   onSuccess: (locationId: number) => void;
   onCancel: () => void;
+  /** When provided, the form operates in edit mode */
+  location?: ILocation;
 }
 
 export function LocationCreateForm({
   onSuccess,
   onCancel,
+  location,
 }: LocationCreateFormProps) {
+  const isEditing = location !== undefined;
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<INewLocation>();
+  } = useForm<INewLocation>({
+    defaultValues: location
+      ? {
+          name: location.name,
+          googleMapsLink: location.googleMapsLink,
+          usgsLocationId: location.usgsLocationId ?? undefined,
+        }
+      : undefined,
+  });
 
-  const mutation = useMutation({
+  const createMutation = useMutation({
     mutationFn: createLocation,
     onSuccess: (id) => onSuccess(id),
   });
+
+  const updateMutation = useMutation({
+    mutationFn: (data: INewLocation) => updateLocation(location!.id, data),
+    onSuccess: () => onSuccess(location!.id),
+  });
+
+  const mutation = isEditing ? updateMutation : createMutation;
 
   function onSubmit(data: INewLocation) {
     mutation.mutate(data);
   }
 
   return (
-    // handleSubmit validates then calls onSubmit; no need for a separate button onClick
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -66,9 +85,24 @@ export function LocationCreateForm({
         )}
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          USGS Location ID{" "}
+          <span className="text-gray-400 font-normal">(optional)</span>
+        </label>
+        <input
+          {...register("usgsLocationId")}
+          type="text"
+          className="w-full"
+          placeholder="e.g. USGS-02335757"
+        />
+      </div>
+
       {mutation.isError && (
         <p className="text-xs text-danger">
-          Failed to create location. Please try again.
+          {isEditing
+            ? "Failed to update location. Please try again."
+            : "Failed to create location. Please try again."}
         </p>
       )}
 
@@ -77,7 +111,13 @@ export function LocationCreateForm({
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting || mutation.isPending}>
-          {mutation.isPending ? "Creating…" : "Create"}
+          {mutation.isPending
+            ? isEditing
+              ? "Saving…"
+              : "Creating…"
+            : isEditing
+              ? "Save"
+              : "Create"}
         </Button>
       </div>
     </form>
