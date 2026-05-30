@@ -20,3 +20,10 @@ export async function createLocation(
   const response = await apiClient.post<number>('/api/locations', newLocation);
   return response.data;
 }
+
+export async function updateLocation(
+  id: number,
+  data: INewLocation,
+): Promise<void> {
+  await apiClient.put(`/api/locations/${id}`, data);
+}

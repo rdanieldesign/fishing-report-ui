@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pencil } from "lucide-react";
 import { getAllLocations } from "../api/locationApi";
 import { LocationCreateModal } from "../components/locations/LocationCreateModal";
 import { Button } from "../components/shared/Button";
+import type { ILocation } from "../types/location.types";
 
 export function LocationListPage() {
   const queryClient = useQueryClient();
-  const [modalOpen, setModalOpen] = useState(false);
+  const [editingLocation, setEditingLocation] = useState<ILocation | null>(
+    null,
+  );
+  const [createOpen, setCreateOpen] = useState(false);
 
   const { data: locations, isLoading } = useQuery({
     queryKey: ["locations"],
@@ -23,22 +26,28 @@ export function LocationListPage() {
     return <p className="text-gray-500 text-sm">No locations found.</p>;
   }
 
-  function handleLocationCreated() {
+  function handleLocationSaved() {
     queryClient.invalidateQueries({ queryKey: ["locations"] });
-    setModalOpen(false);
   }
 
   return (
     <>
       <div className="flex items-center justify-between mb-4">
         <h1 className="mb-0">Locations</h1>
-        <Button onClick={() => setModalOpen(true)}>Add Location</Button>
+        <Button onClick={() => setCreateOpen(true)}>Add Location</Button>
       </div>
 
       <LocationCreateModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onLocationCreated={handleLocationCreated}
+        isOpen={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onLocationCreated={handleLocationSaved}
+      />
+
+      <LocationCreateModal
+        isOpen={editingLocation !== null}
+        onClose={() => setEditingLocation(null)}
+        onLocationCreated={handleLocationSaved}
+        location={editingLocation ?? undefined}
       />
 
       <ul className="space-y-2">
@@ -53,13 +62,13 @@ export function LocationListPage() {
               </span>
             </div>
             <div className="shrink-0 bg-gray-900 flex items-center justify-center px-4">
-              <Link
-                to={`/locations/${location.id}/edit`}
-                className="text-gray-300 hover:text-gray-100"
+              <button
+                onClick={() => setEditingLocation(location)}
+                className="text-gray-300 hover:text-gray-100 cursor-pointer"
                 aria-label={`Edit ${location.name}`}
               >
                 <Pencil size={18} />
-              </Link>
+              </button>
             </div>
           </li>
         ))}

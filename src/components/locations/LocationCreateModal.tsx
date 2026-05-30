@@ -1,12 +1,15 @@
 import { Dialog } from "@headlessui/react";
 import { LocationCreateForm } from "./LocationCreateForm";
 import { DialogTitle } from "../shared/dialog/DialogTitle";
+import type { ILocation } from "../../types/location.types";
 
 interface LocationCreateModalProps {
   isOpen: boolean;
   onClose: () => void;
-  /** Called with the new location's id so the parent can select it in the entry form */
+  /** Called with the location's id after create or edit */
   onLocationCreated: (locationId: number) => void;
+  /** When provided, the modal operates in edit mode */
+  location?: ILocation;
 }
 
 // The parent controls open/close state and passes it as a prop; the Dialog
@@ -15,6 +18,7 @@ export function LocationCreateModal({
   isOpen,
   onClose,
   onLocationCreated,
+  location,
 }: LocationCreateModalProps) {
   function handleSuccess(locationId: number) {
     onLocationCreated(locationId);
@@ -29,9 +33,15 @@ export function LocationCreateModal({
       {/* Centered panel */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-          <DialogTitle>Create New Location</DialogTitle>
+          <DialogTitle>
+            {location ? "Edit Location" : "Create New Location"}
+          </DialogTitle>
 
-          <LocationCreateForm onSuccess={handleSuccess} onCancel={onClose} />
+          <LocationCreateForm
+            onSuccess={handleSuccess}
+            onCancel={onClose}
+            location={location}
+          />
         </Dialog.Panel>
       </div>
     </Dialog>
