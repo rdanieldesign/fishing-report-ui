@@ -13,6 +13,7 @@ import { EntryDetailPage } from "./pages/EntryDetailPage";
 import { FriendsListPage } from "./pages/FriendsListPage";
 import { FriendsAddPage } from "./pages/FriendsAddPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { LocationListPage } from "./pages/LocationListPage";
 
 // Layout route: renders Header + SideNav shell, then the matched child via <Outlet>.
 // Login and Signup sit outside this so they render without the shell.
@@ -64,6 +65,9 @@ export function AppRoutes() {
 
           {/* Dashboard */}
           <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* Locations */}
+          <Route path="/locations" element={<LocationListPage />} />
 
           {/* Friends routes */}
           <Route

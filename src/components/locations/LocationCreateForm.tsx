@@ -66,6 +66,19 @@ export function LocationCreateForm({
         )}
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          USGS Location ID{" "}
+          <span className="text-gray-400 font-normal">(optional)</span>
+        </label>
+        <input
+          {...register("usgsLocationId")}
+          type="text"
+          className="w-full"
+          placeholder="e.g. USGS-02335757"
+        />
+      </div>
+
       {mutation.isError && (
         <p className="text-xs text-danger">
           Failed to create location. Please try again.

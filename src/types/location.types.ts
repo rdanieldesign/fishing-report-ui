@@ -2,6 +2,7 @@
 export interface INewLocation {
   name: string;
   googleMapsLink: string;
+  usgsLocationId?: string | null;
 }
 
 export interface ILocation extends INewLocation {

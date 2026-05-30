@@ -78,6 +78,14 @@ export function SideNav({ isOpen, onClose }: SideNavProps) {
           <li className="border-t border-gray-100" />
 
           <li>
+            <NavLink to="/locations" className={navItemClass} onClick={onClose}>
+              Locations
+            </NavLink>
+          </li>
+
+          <li className="border-t border-gray-100" />
+
+          <li>
             <NavLink
               to="/friends/list"
               className={navItemClass}
