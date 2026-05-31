@@ -127,6 +127,12 @@ interface GqlPaginatedReportsResponse {
   };
 }
 
+interface GqlTopLocationResponse {
+  data: {
+    topLocationByCurrentMonth: GqlTopLocation | null;
+  };
+}
+
 const PAGINATED_REPORTS_QUERY = /* GraphQL */ `
   query PaginatedReports(
     $cursor: String
@@ -159,6 +165,15 @@ const PAGINATED_REPORTS_QUERY = /* GraphQL */ `
   }
 `;
 
+const TOP_LOCATION_QUERY = /* GraphQL */ `
+  query GetTopLocation {
+    topLocationByCurrentMonth {
+      locationName
+      locationId
+    }
+  }
+`;
+
 export async function getPaginatedReports(
   cursor: string | null,
   params: { locationId?: number; authorId?: number; limit?: number } = {},
@@ -178,6 +193,14 @@ export async function getPaginatedReports(
     reports: reports.map(mapReportListItem),
     nextCursor,
   };
+}
+
+export async function getTopLocation(): Promise<ITopLocation | null> {
+  const result = await gqlRequest<GqlTopLocationResponse>(
+    TOP_LOCATION_QUERY,
+    {},
+  );
+  return result.data.topLocationByCurrentMonth;
 }
 
 function mapReport(r: GqlReport): IEntry {

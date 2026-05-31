@@ -9,6 +9,7 @@ import {
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import {
   getPaginatedReports,
+  getTopLocation,
   deleteEntry,
   type IPaginatedReportsResponse,
 } from "../api/entryApi";
@@ -124,6 +125,11 @@ export function EntryListPage() {
 
   const allEntries = data?.pages.flatMap((page) => page.reports) ?? [];
 
+  const { data: topLocation } = useQuery({
+    queryKey: ["topLocation"],
+    queryFn: getTopLocation,
+  });
+
   const deleteMutation = useMutation({
     mutationFn: deleteEntry,
     onSuccess: () => {
@@ -218,7 +224,7 @@ export function EntryListPage() {
               </div>
             </div>
             <div className="mt-4">
-              <TopLocationWidget topLocation={null} />
+              <TopLocationWidget topLocation={topLocation ?? null} />
             </div>
           </aside>
         )}
