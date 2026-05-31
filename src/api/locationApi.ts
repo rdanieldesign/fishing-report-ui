@@ -27,3 +27,7 @@ export async function updateLocation(
 ): Promise<void> {
   await apiClient.put(`/api/locations/${id}`, data);
 }
+
+export async function deleteLocation(id: number): Promise<void> {
+  await apiClient.delete(`/api/locations/${id}`);
+}
