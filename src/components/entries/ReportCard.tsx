@@ -10,7 +10,7 @@ interface ReportCardProps {
 
 export function ReportCard({ report, handleDelete }: ReportCardProps) {
   return (
-    <li className="border border-gray-200 border-l-primary border-l-6 bg-white rounded-lg overflow-hidden flex">
+    <div className="border border-gray-200 border-l-primary border-l-6 bg-white rounded-lg overflow-hidden flex">
       <div className="flex-1 min-w-0 px-4 py-3 flex flex-col justify-center">
         <Link to={`/entries/${report.id}`} className="hover:underline">
           <h5 className="inline-block mb-0">
@@ -77,6 +77,6 @@ export function ReportCard({ report, handleDelete }: ReportCardProps) {
           )}
         </div>
       </div>
-    </li>
+    </div>
   );
 }

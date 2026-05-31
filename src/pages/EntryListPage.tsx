@@ -84,13 +84,14 @@ export function EntryListPage() {
     {} as IStringMap,
   );
 
-  const urlParams: IStringMap = isMyEntries
-    ? { authorId: String(currentUser!.id) }
-    : isUserView && userId
-      ? { authorId: userId }
-      : isLocationView && locationId
-        ? { locationId }
-        : {};
+  const urlParams: IStringMap =
+    isMyEntries && currentUser
+      ? { authorId: String(currentUser.id) }
+      : isUserView && userId
+        ? { authorId: userId }
+        : isLocationView && locationId
+          ? { locationId }
+          : {};
 
   const queryParams = { ...urlParams, ...filterParams };
 
@@ -118,6 +119,7 @@ export function EntryListPage() {
       initialPageParam: null as string | null,
       getNextPageParam: (lastPage: IPaginatedReportsResponse) =>
         lastPage.nextCursor ?? undefined,
+      enabled: !isMyEntries || !!currentUser,
     });
 
   const allEntries = data?.pages.flatMap((page) => page.reports) ?? [];
