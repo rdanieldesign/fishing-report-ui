@@ -58,6 +58,11 @@ export interface IEntryListResponse {
   topLocation: ITopLocation | null;
 }
 
+export interface IPaginatedReportsResponse {
+  reports: IEntryListItem[];
+  nextCursor: string | null;
+}
+
 const REPORT_DETAIL_QUERY = /* GraphQL */ `
   query GetReport($reportId: Int!) {
     report(id: $reportId) {
@@ -112,6 +117,68 @@ const REPORT_LIST_QUERY = /* GraphQL */ `
     }
   }
 `;
+
+interface GqlPaginatedReportsResponse {
+  data: {
+    paginatedReports: {
+      reports: GqlReportListItem[];
+      nextCursor: string | null;
+    };
+  };
+}
+
+const PAGINATED_REPORTS_QUERY = /* GraphQL */ `
+  query PaginatedReports(
+    $cursor: String
+    $locationId: Int
+    $authorId: Int
+    $limit: Int
+  ) {
+    paginatedReports(
+      cursor: $cursor
+      locationId: $locationId
+      authorId: $authorId
+      limit: $limit
+    ) {
+      reports {
+        id
+        date
+        catchCount
+        thumbnailUrl
+        location {
+          id
+          name
+        }
+        author {
+          id
+          name
+        }
+      }
+      nextCursor
+    }
+  }
+`;
+
+export async function getPaginatedReports(
+  cursor: string | null,
+  params: { locationId?: number; authorId?: number; limit?: number } = {},
+): Promise<IPaginatedReportsResponse> {
+  const variables = {
+    cursor: cursor ?? undefined,
+    locationId: params.locationId,
+    authorId: params.authorId,
+    limit: params.limit,
+  };
+  const result = await gqlRequest<GqlPaginatedReportsResponse>(
+    PAGINATED_REPORTS_QUERY,
+    variables,
+  );
+  const { reports, nextCursor } = result.data.paginatedReports;
+  return {
+    reports: reports.map(mapReportListItem),
+    nextCursor,
+  };
+}
 
 function mapReport(r: GqlReport): IEntry {
   return {
