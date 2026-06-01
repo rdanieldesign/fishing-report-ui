@@ -4,6 +4,13 @@ import { useMutation } from "@tanstack/react-query";
 import { createLocation, updateLocation } from "../../api/locationApi";
 import type { ILocation, INewLocation } from "../../types/location.types";
 
+interface LocationFormValues {
+  name: string;
+  latitude: string;
+  longitude: string;
+  usgsLocationId?: string;
+}
+
 interface LocationCreateFormProps {
   /** Called with the new location's id after successful creation */
   onSuccess: (locationId: number) => void;
@@ -23,11 +30,16 @@ export function LocationCreateForm({
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<INewLocation>({
+  } = useForm<LocationFormValues>({
     defaultValues: location
       ? {
           name: location.name,
-          googleMapsLink: location.googleMapsLink,
+          latitude: location.coordinates
+            ? String(location.coordinates?.latitude)
+            : "",
+          longitude: location.coordinates
+            ? String(location.coordinates?.longitude)
+            : "",
           usgsLocationId: location.usgsLocationId ?? undefined,
         }
       : undefined,
@@ -45,8 +57,16 @@ export function LocationCreateForm({
 
   const mutation = isEditing ? updateMutation : createMutation;
 
-  function onSubmit(data: INewLocation) {
-    mutation.mutate(data);
+  function onSubmit(values: LocationFormValues) {
+    const payload: INewLocation = {
+      name: values.name,
+      coordinates: {
+        latitude: parseFloat(values.latitude),
+        longitude: parseFloat(values.longitude),
+      },
+      usgsLocationId: values.usgsLocationId || null,
+    };
+    mutation.mutate(payload);
   }
 
   return (
@@ -66,23 +86,52 @@ export function LocationCreateForm({
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Google Maps Link
-        </label>
-        <input
-          {...register("googleMapsLink", {
-            required: "Google Maps link is required",
-          })}
-          type="url"
-          className="w-full"
-          placeholder="https://maps.google.com/..."
-        />
-        {errors.googleMapsLink && (
-          <p className="text-xs text-danger mt-1">
-            {errors.googleMapsLink.message}
-          </p>
-        )}
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Latitude
+          </label>
+          <input
+            {...register("latitude", {
+              required: "Latitude is required",
+              validate: (v) =>
+                (!isNaN(parseFloat(v)) && isFinite(Number(v))) ||
+                "Enter a valid number",
+            })}
+            type="text"
+            inputMode="decimal"
+            className="w-full"
+            placeholder="e.g. 34.0194"
+          />
+          {errors.latitude && (
+            <p className="text-xs text-danger mt-1">
+              {errors.latitude.message}
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Longitude
+          </label>
+          <input
+            {...register("longitude", {
+              required: "Longitude is required",
+              validate: (v) =>
+                (!isNaN(parseFloat(v)) && isFinite(Number(v))) ||
+                "Enter a valid number",
+            })}
+            type="text"
+            inputMode="decimal"
+            className="w-full"
+            placeholder="e.g. -84.3725"
+          />
+          {errors.longitude && (
+            <p className="text-xs text-danger mt-1">
+              {errors.longitude.message}
+            </p>
+          )}
+        </div>
       </div>
 
       <div>

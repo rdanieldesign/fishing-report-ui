@@ -1,7 +1,11 @@
-// Copied verbatim from src/app/locations/interfaces/location.interface.ts — do not modify
+export interface ICoordinates {
+  latitude: number;
+  longitude: number;
+}
+
 export interface INewLocation {
   name: string;
-  googleMapsLink: string;
+  coordinates: ICoordinates;
   usgsLocationId?: string | null;
 }
 
