@@ -3,6 +3,7 @@ import type {
   IEntry,
   IEntryFormValues,
   IEntryListItem,
+  IWeatherConditions,
   ImageUploadStatus,
 } from '../types/entry.types';
 import type { IStringMap } from '../types/generic.types';
@@ -31,6 +32,18 @@ interface GqlReport extends GqlReportBase {
     value: string;
     unit: string;
   }[];
+  weatherConditions?: {
+    tempMax: number;
+    tempMin: number;
+    tempMean: number;
+    precipitationSum: number;
+    priorRainfall: number;
+    weatherCode: number;
+    windSpeedMax: number;
+    cloudCoverMin: number;
+    cloudCoverMax: number;
+    cloudCoverMean: number;
+  };
 }
 
 interface GqlReportListItem extends GqlReportBase {
@@ -86,6 +99,18 @@ const REPORT_DETAIL_QUERY = /* GraphQL */ `
         parameterName
         value
         unit
+      }
+      weatherConditions {
+        tempMax
+        tempMin
+        tempMean
+        precipitationSum
+        weatherCode
+        windSpeedMax
+        cloudCoverMin
+        cloudCoverMax
+        cloudCoverMean
+        priorRainfall
       }
       author {
         id
@@ -228,6 +253,9 @@ function mapReport(r: GqlReport): IEntry {
       parameterCode: '',
       computationIdentifier: '',
     })),
+    weatherConditions: r.weatherConditions
+      ? (r.weatherConditions as IWeatherConditions)
+      : undefined,
   };
 }
 

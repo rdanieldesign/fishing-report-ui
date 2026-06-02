@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { deleteEntry, fetchUsgsReadings, getEntry } from "../api/entryApi";
 import type { IUsgsReading, IReportImage } from "../types/entry.types";
+import { WEATHER_LABELS } from "../utils/weatherConditions";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
@@ -124,6 +125,28 @@ export function EntryDetailPage() {
                 {usgsLoading ? "Loading..." : "Load data"}
               </Button>
             )}
+          </section>
+        )}
+
+        {/* Weather Conditions */}
+        {entry.weatherConditions && (
+          <section aria-label="Weather conditions" className="space-y-2">
+            <h6>Weather Conditions</h6>
+            <ul className="space-y-1 text-sm text-gray-700">
+              {(
+                Object.keys(entry.weatherConditions) as Array<
+                  keyof typeof entry.weatherConditions
+                >
+              ).map((key) => {
+                const { label, unit } = WEATHER_LABELS[key];
+                return (
+                  <li key={key}>
+                    {label}: {entry.weatherConditions![key]}
+                    {unit}
+                  </li>
+                );
+              })}
+            </ul>
           </section>
         )}
 
