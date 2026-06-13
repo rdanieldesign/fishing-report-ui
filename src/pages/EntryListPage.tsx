@@ -20,6 +20,7 @@ import { FilterPanel } from "../components/entries/FilterPanel";
 import { ReportCard } from "../components/entries/ReportCard";
 import { TopLocationWidget } from "../components/widgets/TopLocationWidget";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
+import { CollapsiblePanel } from "../components/shared/CollapsiblePanel";
 import { formatFiltersAsText } from "../utils/filterUtils";
 import { FilterFieldParams, FilterFields } from "../types/filter.types";
 import type { IFilter } from "../types/filter.types";
@@ -46,7 +47,6 @@ export function EntryListPage() {
 
   // Applied filters from FilterPanel (only relevant for /entries and /my-entries)
   const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
-  const [filtersOpen, setFiltersOpen] = useState(true);
 
   // Confirm-delete modal state — lifted here so deleteEntry can trigger it imperatively
   const [confirmState, setConfirmState] = useState<{
@@ -198,31 +198,22 @@ export function EntryListPage() {
         {/* Filters — full width on mobile (top), right 4 cols on desktop */}
         {showFilters && (
           <aside className="md:col-start-9 md:col-span-4 md:row-start-1">
-            <div className="bg-gray-900 rounded-lg">
-              {/* Mobile filters */}
-              <button
-                type="button"
-                onClick={() => setFiltersOpen((o) => !o)}
-                className="w-full flex items-center justify-between px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 rounded-lg"
-              >
-                <h6 className="text-gray-100 mb-0 mr-auto">Filters</h6>
-                {!filtersOpen && appliedFilters.length > 0 && (
+            <CollapsiblePanel
+              title="Filters"
+              theme="black"
+              summary={
+                appliedFilters.length > 0 ? (
                   <span className="text-xs text-gray-200 font-normal mr-4">
                     {formatFiltersAsText(appliedFilters)}
                   </span>
-                )}
-                <span className="text-gray-400">{filtersOpen ? "▲" : "▼"}</span>
-              </button>
-
-              <div
-                className={`px-6 pt-3 pb-6 ${filtersOpen ? "block" : "hidden"}`}
-              >
-                <FilterPanel
-                  onApply={handleApplyFilters}
-                  onClearAll={handleClearFilters}
-                />
-              </div>
-            </div>
+                ) : undefined
+              }
+            >
+              <FilterPanel
+                onApply={handleApplyFilters}
+                onClearAll={handleClearFilters}
+              />
+            </CollapsiblePanel>
             <div className="mt-4">
               <TopLocationWidget topLocation={topLocation ?? null} />
             </div>

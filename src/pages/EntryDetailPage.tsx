@@ -5,9 +5,10 @@ import dayjs from "dayjs";
 import { deleteEntry, getEntry } from "../api/entryApi";
 import type { IReportImage } from "../types/entry.types";
 import { UsgsReadingsSection } from "../components/charts/UsgsReadingsSection";
-import { WEATHER_LABELS } from "../utils/weatherConditions";
+import { WeatherConditionsSection } from "../components/charts/WeatherConditionsSection";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
+import { CollapsiblePanel } from "../components/shared/CollapsiblePanel";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
 import { EntryImage } from "../components/shared/EntryImage";
@@ -64,22 +65,25 @@ export function EntryDetailPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <div className="flex-1 space-y-4 pb-4">
-        <h1 className="mb-2">{dayjs(entry.date).format("MMM D, YYYY")}</h1>
+      <div className="flex-1 grid grid-cols-12 gap-4 pb-4 content-start">
+        <h1 className="col-span-12 mb-2">
+          {dayjs(entry.date).format("MMM D, YYYY")}
+        </h1>
         <Link
           to={`/locations/${entry.locationId}/entries`}
-          className="text-primary hover:underline block"
+          className="col-span-12 text-primary hover:underline block"
         >
           <MapPin className="inline mx-1 ml-0 mb-0.5 text-primary" size={18} />
           <span className="text-base">{entry.locationName}</span>
         </Link>
+
         {/* Narrative */}
-        <p className="text-500 text-gray-800">
+        <p className="col-span-12 text-500 text-gray-800">
           {entry.notes || "No notes available"}
         </p>
 
         {/* Meta info */}
-        <section className="space-y-1 text-gray-600">
+        <section className="col-span-12 space-y-1 text-gray-600">
           <div>
             <label>Author: </label>
             <Link
@@ -92,36 +96,9 @@ export function EntryDetailPage() {
           <div>Catch Count: {entry.catchCount}</div>
         </section>
 
-        {/* USGS Readings */}
-        {entry.usgsReadings && entry.usgsReadings.length > 0 && (
-          <UsgsReadingsSection readings={entry.usgsReadings} />
-        )}
-
-        {/* Weather Conditions */}
-        {entry.weatherConditions && (
-          <section aria-label="Weather conditions" className="space-y-2">
-            <h6>Weather Conditions</h6>
-            <ul className="space-y-1 text-sm text-gray-700">
-              {(
-                Object.keys(entry.weatherConditions) as Array<
-                  keyof typeof entry.weatherConditions
-                >
-              ).map((key) => {
-                const { label, unit } = WEATHER_LABELS[key];
-                return (
-                  <li key={key}>
-                    {label}: {entry.weatherConditions![key]}
-                    {unit}
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        )}
-
         {/* Images */}
         {entry.images?.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="col-span-12 flex flex-wrap gap-2">
             {entry.images.map((img: IReportImage) => (
               <EntryImage
                 key={img.id}
@@ -132,9 +109,27 @@ export function EntryDetailPage() {
           </div>
         )}
 
+        {/* USGS Readings */}
+        {entry.usgsReadings && entry.usgsReadings.length > 0 && (
+          <div className="col-span-12 md:col-span-6">
+            <CollapsiblePanel title="USGS Stream Data" theme="white">
+              <UsgsReadingsSection readings={entry.usgsReadings} />
+            </CollapsiblePanel>
+          </div>
+        )}
+
+        {/* Weather Conditions */}
+        {entry.weatherConditions && (
+          <div className="col-span-12 md:col-span-6">
+            <CollapsiblePanel title="Weather Conditions" theme="white">
+              <WeatherConditionsSection conditions={entry.weatherConditions} />
+            </CollapsiblePanel>
+          </div>
+        )}
+
         {/* Author-gated actions */}
         {isAuthor && (
-          <div className="flex gap-3 pt-2">
+          <div className="col-span-12 flex gap-3 pt-2">
             <Button variant="secondary" link={`/entries/${entryId}/edit`}>
               Edit Entry
             </Button>

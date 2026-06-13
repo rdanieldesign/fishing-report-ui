@@ -11,7 +11,6 @@ export function UsgsReadingsSection({ readings }: Props) {
 
   return (
     <section aria-label="USGS stream readings" className="space-y-4">
-      <h6>USGS Stream Data</h6>
       {groups.map((group, i) => (
         <UsgsParameterChart
           key={group.parameterName}
