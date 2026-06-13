@@ -27,10 +27,17 @@ interface GqlReport extends GqlReportBase {
     status: ImageUploadStatus;
   }[];
   usgsReadings: {
-    id: string;
     parameterName: string;
     value: string;
     unit: string;
+    recordedAt: string;
+    timeSlot:
+      | 'midnight'
+      | 'early_morning'
+      | 'morning'
+      | 'noon'
+      | 'afternoon'
+      | 'evening';
   }[];
   weatherConditions?: {
     tempMax: number;
@@ -95,10 +102,11 @@ const REPORT_DETAIL_QUERY = /* GraphQL */ `
         status
       }
       usgsReadings {
-        id
         parameterName
         value
         unit
+        recordedAt
+        timeSlot
       }
       weatherConditions {
         tempMax
@@ -246,12 +254,12 @@ function mapReport(r: GqlReport): IEntry {
       status: img.status,
     })),
     usgsReadings: (r.usgsReadings ?? []).map((reading) => ({
-      id: reading.id,
       parameterName: reading.parameterName,
       value: reading.value,
       unit: reading.unit,
-      parameterCode: '',
       computationIdentifier: '',
+      recordedAt: reading.recordedAt,
+      timeSlot: reading.timeSlot,
     })),
     weatherConditions: r.weatherConditions
       ? (r.weatherConditions as IWeatherConditions)
@@ -394,15 +402,4 @@ export async function editEntry(
 export async function deleteEntry(entryId: string): Promise<null> {
   const response = await apiClient.delete<null>(`/api/reports/${entryId}`);
   return response.data;
-}
-
-export async function fetchUsgsReadings(
-  reportId: string,
-  usgsLocationId: string,
-  reportDate: string,
-): Promise<void> {
-  await apiClient.post(`/api/reports/${reportId}/usgs`, {
-    usgsLocationId,
-    reportDate,
-  });
 }

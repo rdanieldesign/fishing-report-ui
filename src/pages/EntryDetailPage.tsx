@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { deleteEntry, fetchUsgsReadings, getEntry } from "../api/entryApi";
-import type { IUsgsReading, IReportImage } from "../types/entry.types";
+import { deleteEntry, getEntry } from "../api/entryApi";
+import type { IReportImage } from "../types/entry.types";
+import { UsgsReadingsSection } from "../components/charts/UsgsReadingsSection";
 import { WEATHER_LABELS } from "../utils/weatherConditions";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
@@ -49,18 +50,6 @@ export function EntryDetailPage() {
     },
   });
 
-  const [usgsLoading, setUsgsLoading] = useState(false);
-
-  async function handleLoadUsgs() {
-    if (!entry?.usgsLocationId) return;
-    try {
-      await fetchUsgsReadings(entryId!, entry.usgsLocationId, entry.date);
-      setUsgsLoading(true);
-    } catch {
-      // leave button enabled so the user can retry
-    }
-  }
-
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
@@ -104,28 +93,8 @@ export function EntryDetailPage() {
         </section>
 
         {/* USGS Readings */}
-        {entry.usgsLocationId && (
-          <section aria-label="USGS stream readings" className="space-y-2">
-            <h6>USGS Stream Data</h6>
-            {entry.usgsReadings && entry.usgsReadings.length > 0 ? (
-              <ul className="space-y-1 text-sm text-gray-700">
-                {entry.usgsReadings.map((reading: IUsgsReading) => (
-                  <li key={reading.id}>
-                    {reading.parameterName}: {reading.value}
-                    {reading.unit}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <Button
-                variant="secondary"
-                onClick={handleLoadUsgs}
-                disabled={usgsLoading}
-              >
-                {usgsLoading ? "Loading..." : "Load data"}
-              </Button>
-            )}
-          </section>
+        {entry.usgsReadings && entry.usgsReadings.length > 0 && (
+          <UsgsReadingsSection readings={entry.usgsReadings} />
         )}
 
         {/* Weather Conditions */}

@@ -2,12 +2,18 @@ import type { IFileUpload } from './fileUpload.types';
 
 // Copied verbatim from src/app/entries/interfaces/entry.interface.ts — do not modify
 export interface IUsgsReading {
-  id: string;
-  parameterCode: string;
   parameterName: string;
   computationIdentifier: string;
   unit: string;
   value: string;
+  recordedAt: string;
+  timeSlot:
+    | 'midnight'
+    | 'early_morning'
+    | 'morning'
+    | 'noon'
+    | 'afternoon'
+    | 'evening';
 }
 
 export interface IWeatherConditions {
