@@ -17,7 +17,7 @@ export function TemperatureWidget({ conditions }: Props) {
       <div className="flex justify-between items-baseline">
         <span className="text-xs font-medium text-gray-600">Temperature</span>
         <span className="text-xs text-gray-500">
-          {tempMin}° – {tempMax}°F &middot; mean {tempMean}°F
+          low {tempMin}° &middot; high {tempMax}°F &middot; average {tempMean}°F
         </span>
       </div>
       <WeatherThermometerBar
@@ -28,7 +28,7 @@ export function TemperatureWidget({ conditions }: Props) {
         domain={DOMAIN}
         leftLabel="-20°F"
         rightLabel="120°F"
-        markerValue={tempMean}
+        markerValue={tempMean - DOMAIN[0]}
       />
     </div>
   );
