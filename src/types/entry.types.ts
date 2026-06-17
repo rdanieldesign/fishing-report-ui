@@ -1,5 +1,8 @@
 import type { IFileUpload } from './fileUpload.types';
 
+import type { IWeatherConditions } from '../features/weather/weather.types';
+export type { IWeatherConditions };
+
 // Copied verbatim from src/app/entries/interfaces/entry.interface.ts — do not modify
 export interface IUsgsReading {
   parameterName: string;
@@ -14,19 +17,6 @@ export interface IUsgsReading {
     | 'noon'
     | 'afternoon'
     | 'evening';
-}
-
-export interface IWeatherConditions {
-  tempMax: number;
-  tempMin: number;
-  tempMean: number;
-  precipitationSum: number;
-  priorRainfall: number;
-  weatherCode: number;
-  windSpeedMax: number;
-  cloudCoverMin: number;
-  cloudCoverMax: number;
-  cloudCoverMean: number;
 }
 
 export interface INewEntry {

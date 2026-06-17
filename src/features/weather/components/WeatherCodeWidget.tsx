@@ -9,7 +9,7 @@ import {
   Snowflake,
   type LucideIcon,
 } from "lucide-react";
-import type { IWeatherConditions } from "../../types/entry.types";
+import type { IWeatherConditions } from "../weather.types";
 
 interface CodeInfo {
   label: string;

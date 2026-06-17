@@ -1,4 +1,4 @@
-import type { IWeatherConditions } from "../../types/entry.types";
+import type { IWeatherConditions } from "../weather.types";
 import { WeatherThermometerBar } from "./WeatherThermometerBar";
 
 const SCALE_MAX = 10;

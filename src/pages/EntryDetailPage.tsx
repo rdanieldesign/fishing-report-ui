@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { deleteEntry, getEntry } from "../api/entryApi";
 import type { IReportImage } from "../types/entry.types";
 import { UsgsReadingsSection } from "../components/charts/UsgsReadingsSection";
-import { WeatherConditionsSection } from "../components/charts/WeatherConditionsSection";
+import { WeatherConditionsSection } from "../features/weather/components/WeatherConditionsSection";
 import { getCurrentUser } from "../api/userApi";
 import { useAuthStore } from "../stores/authStore";
 import { CollapsiblePanel } from "../components/shared/CollapsiblePanel";

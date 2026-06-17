@@ -3,9 +3,9 @@ import type {
   IEntry,
   IEntryFormValues,
   IEntryListItem,
-  IWeatherConditions,
   ImageUploadStatus,
 } from '../types/entry.types';
+import { adaptWeatherConditions } from '../features/weather/weatherAdapter';
 import type { IStringMap } from '../types/generic.types';
 import type { ITopLocation } from '../components/widgets/topLocation.types';
 import { gqlRequest } from './graphQLClient';
@@ -262,7 +262,7 @@ function mapReport(r: GqlReport): IEntry {
       timeSlot: reading.timeSlot,
     })),
     weatherConditions: r.weatherConditions
-      ? (r.weatherConditions as IWeatherConditions)
+      ? adaptWeatherConditions(r.weatherConditions)
       : undefined,
   };
 }

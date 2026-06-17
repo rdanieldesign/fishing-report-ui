@@ -1,4 +1,4 @@
-import type { IWeatherConditions } from "../../types/entry.types";
+import type { IWeatherConditions } from "../weather.types";
 import { TemperatureWidget } from "./TemperatureWidget";
 import { CloudCoverWidget } from "./CloudCoverWidget";
 import { PrecipitationWidget } from "./PrecipitationWidget";

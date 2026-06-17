@@ -1,4 +1,4 @@
-import type { IWeatherConditions } from "../../types/entry.types";
+import type { IWeatherConditions } from "../weather.types";
 import { WeatherThermometerBar } from "./WeatherThermometerBar";
 
 const DOMAIN: [number, number] = [0, 100];
@@ -20,7 +20,7 @@ export function CloudCoverWidget({ conditions }: Props) {
       <div className="flex justify-between items-baseline">
         <span className="text-xs font-medium text-gray-600">Cloud Cover</span>
         <span className="text-xs text-gray-500">
-          {cloudCoverMin}% – {cloudCoverMax}% &middot; mean {cloudCoverMean}%
+          {cloudCoverMin}% – {cloudCoverMax}% &middot; average {cloudCoverMean}%
         </span>
       </div>
       <WeatherThermometerBar

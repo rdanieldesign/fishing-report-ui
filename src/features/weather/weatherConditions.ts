@@ -1,4 +1,4 @@
-import type { IWeatherConditions } from '../types/entry.types';
+import type { IWeatherConditions } from './weather.types';
 
 export const WEATHER_LABELS: Record<
   keyof IWeatherConditions,

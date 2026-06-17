@@ -1,4 +1,4 @@
-import type { IWeatherConditions } from "../../types/entry.types";
+import type { IWeatherConditions } from "../weather.types";
 import { WeatherThermometerBar } from "./WeatherThermometerBar";
 
 const DOMAIN: [number, number] = [-20, 120];
