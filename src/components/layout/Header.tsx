@@ -1,35 +1,27 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { Menu, Plus } from "lucide-react";
-import { useAuthStore } from "../../stores/authStore";
 import { useNotifications } from "../../hooks/useNotifications";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { NotificationBadge } from "../shared/NotificationBadge";
 import { Button } from "../shared/Button";
-import { getCurrentUser } from "../../api/userApi";
 
 interface HeaderProps {
   onMenuClick: () => void;
 }
 
 export function Header({ onMenuClick }: HeaderProps) {
-  const token = useAuthStore((state) => state.token);
   const { hasNotifications } = useNotifications();
+  const { data: currentUser } = useCurrentUser();
 
-  // Only fetch current user when authenticated.
-  const { data: currentUser } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
-    enabled: !!token,
-  });
   const userInitials = currentUser
     ? currentUser.name
         .split(" ")
-        .map((n) => n[0])
+        .map((n: string) => n[0])
         .join("")
         .toUpperCase()
     : null;
 
-  const homeHref = token ? "/entries" : "/login";
+  const homeHref = currentUser ? "/entries" : "/login";
 
   return (
     <header className="h-14 bg-gray-900 text-white flex items-center justify-between px-4 md:px-8 shrink-0 z-10">

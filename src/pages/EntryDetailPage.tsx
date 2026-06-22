@@ -6,8 +6,7 @@ import { deleteEntry, getEntry } from "../api/entryApi";
 import type { IReportImage } from "../types/entry.types";
 import { UsgsReadingsSection } from "../components/charts/UsgsReadingsSection";
 import { WeatherConditionsSection } from "../features/weather/components/WeatherConditionsSection";
-import { getCurrentUser } from "../api/userApi";
-import { useAuthStore } from "../stores/authStore";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 import { CollapsiblePanel } from "../components/shared/CollapsiblePanel";
 import { FooterBreadcrumb } from "../components/shared/FooterBreadcrumb";
 import { ConfirmModal } from "../components/shared/ConfirmModal";
@@ -19,8 +18,6 @@ export function EntryDetailPage() {
   const { entryId } = useParams<{ entryId: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const token = useAuthStore((s) => s.token);
-
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const { data: entry, isLoading } = useQuery({
@@ -30,18 +27,13 @@ export function EntryDetailPage() {
     refetchInterval: (query) => {
       const data = query.state.data;
       if (data?.images?.some((img) => img.status === "uploading")) {
-        return 3000; // Refetch every 3 seconds while images are uploading
+        return 3000;
       }
-      return false; // Don't refetch if no images are uploading
+      return false;
     },
   });
 
-  // Current user to gate edit/delete buttons
-  const { data: currentUser } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
-    enabled: !!token,
-  });
+  const { data: currentUser } = useCurrentUser();
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteEntry(entryId!),

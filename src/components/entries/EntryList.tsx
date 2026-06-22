@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import { useMatch } from "react-router-dom";
 import {
   useInfiniteQuery,
   useQuery,
@@ -12,70 +11,36 @@ import {
   getTopLocation,
   deleteEntry,
   type IPaginatedReportsResponse,
-} from "../api/entryApi";
-import { getUserById, getCurrentUser } from "../api/userApi";
-import { getLocationById } from "../api/locationApi";
-import { useAuthStore } from "../stores/authStore";
-import { FilterPanel } from "../components/entries/FilterPanel";
-import { ReportCard } from "../components/entries/ReportCard";
-import { TopLocationWidget } from "../components/widgets/TopLocationWidget";
-import { ConfirmModal } from "../components/shared/ConfirmModal";
-import { CollapsiblePanel } from "../components/shared/CollapsiblePanel";
-import { formatFiltersAsText } from "../utils/filterUtils";
-import { FilterFieldParams, FilterFields } from "../types/filter.types";
-import type { IFilter } from "../types/filter.types";
-import type { IStringMap } from "../types/generic.types";
+} from "../../api/entryApi";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
+import { FilterPanel } from "./FilterPanel";
+import { ReportCard } from "./ReportCard";
+import { TopLocationWidget } from "../widgets/TopLocationWidget";
+import { ConfirmModal } from "../shared/ConfirmModal";
+import { CollapsiblePanel } from "../shared/CollapsiblePanel";
+import { formatFiltersAsText } from "../../utils/filterUtils";
+import { FilterFieldParams, FilterFields } from "../../types/filter.types";
+import type { IFilter } from "../../types/filter.types";
+import type { IStringMap } from "../../types/generic.types";
 
 const PAGE_LIMIT = 20;
 
-// This component serves four routes by detecting which URL pattern is active.
-export function EntryListPage() {
-  const token = useAuthStore((s) => s.token);
+interface EntryListProps {
+  title: string;
+  showFilters: boolean;
+  fixedParams: { authorId?: number; locationId?: number };
+}
+
+export function EntryList({ title, showFilters, fixedParams }: EntryListProps) {
   const queryClient = useQueryClient();
+  const { data: currentUser } = useCurrentUser();
 
-  // Detect which route variant is active
-  const userMatch = useMatch("/users/:userId/entries");
-  const locationMatch = useMatch("/locations/:locationId/entries");
-  const myEntriesMatch = useMatch("/my-entries");
-
-  const isUserView = !!userMatch;
-  const isLocationView = !!locationMatch;
-  const isMyEntries = !!myEntriesMatch;
-
-  const userId = userMatch?.params.userId;
-  const locationId = locationMatch?.params.locationId;
-
-  // Applied filters from FilterPanel (only relevant for /entries and /my-entries)
   const [appliedFilters, setAppliedFilters] = useState<IFilter[]>([]);
-
-  // Confirm-delete modal state — lifted here so deleteEntry can trigger it imperatively
   const [confirmState, setConfirmState] = useState<{
     open: boolean;
     entryId: string;
   }>({ open: false, entryId: "" });
 
-  // Optional header-data queries — enabled only for the relevant route
-  const { data: headerUser } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: () => getUserById(Number(userId)),
-    enabled: isUserView && !!userId,
-  });
-
-  const { data: headerLocation } = useQuery({
-    queryKey: ["location", locationId],
-    queryFn: () => getLocationById(Number(locationId)),
-    enabled: isLocationView && !!locationId,
-  });
-
-  // Current user — needed to gate the delete button on authorId
-  const { data: currentUser } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: getCurrentUser,
-    enabled: !!token,
-  });
-
-  // Build the params object that goes to the API
-  // Cast field.value to FilterFields so TypeScript can index the const record
   const filterParams: IStringMap = appliedFilters.reduce(
     (acc, f) => ({
       ...acc,
@@ -85,42 +50,24 @@ export function EntryListPage() {
     {} as IStringMap,
   );
 
-  const urlParams: IStringMap =
-    isMyEntries && currentUser
-      ? { authorId: String(currentUser.id) }
-      : isUserView && userId
-        ? { authorId: userId }
-        : isLocationView && locationId
-          ? { locationId }
-          : {};
-
-  const queryParams = { ...urlParams, ...filterParams };
-
-  const variantKey = isMyEntries
-    ? "mine"
-    : isUserView
-      ? "user"
-      : isLocationView
-        ? "location"
-        : "all";
-
   const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useInfiniteQuery({
-      queryKey: ["entries", variantKey, queryParams],
+      queryKey: ["entries", fixedParams, filterParams],
       queryFn: ({ pageParam }) =>
         getPaginatedReports(pageParam, {
-          locationId: queryParams.locationId
-            ? Number(queryParams.locationId)
-            : undefined,
-          authorId: queryParams.authorId
-            ? Number(queryParams.authorId)
-            : undefined,
+          locationId:
+            fixedParams.locationId ??
+            (filterParams.locationId
+              ? Number(filterParams.locationId)
+              : undefined),
+          authorId:
+            fixedParams.authorId ??
+            (filterParams.authorId ? Number(filterParams.authorId) : undefined),
           limit: PAGE_LIMIT,
         }),
       initialPageParam: null as string | null,
       getNextPageParam: (lastPage: IPaginatedReportsResponse) =>
         lastPage.nextCursor ?? undefined,
-      enabled: !isMyEntries || !!currentUser,
     });
 
   const allEntries = data?.pages.flatMap((page) => page.reports) ?? [];
@@ -158,17 +105,6 @@ export function EntryListPage() {
     },
   });
 
-  // Determine display config from route
-  const pageHeader = isUserView
-    ? (headerUser?.name ?? "…")
-    : isLocationView
-      ? (headerLocation?.name ?? "…")
-      : isMyEntries
-        ? "My Reports"
-        : "All Reports";
-
-  const showFilters = !isUserView && !isLocationView;
-
   function handleApplyFilters(filters: IFilter[]) {
     setAppliedFilters(filters);
   }
@@ -192,10 +128,9 @@ export function EntryListPage() {
 
   return (
     <div className="space-y-4">
-      <h1>{pageHeader}</h1>
+      <h1>{title}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        {/* Filters — full width on mobile (top), right 4 cols on desktop */}
         {showFilters && (
           <aside className="md:col-start-9 md:col-span-4 md:row-start-1">
             <CollapsiblePanel
@@ -220,7 +155,6 @@ export function EntryListPage() {
           </aside>
         )}
 
-        {/* Report list — full width on mobile, left 8 cols on desktop */}
         <div
           className={
             showFilters

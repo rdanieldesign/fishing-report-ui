@@ -6,7 +6,10 @@ import { RequireAuth } from "./components/auth/RequireAuth";
 import { RedirectIfAuth } from "./components/auth/RedirectIfAuth";
 import { LoginPage } from "./pages/LoginPage";
 import { SignupPage } from "./pages/SignupPage";
-import { EntryListPage } from "./pages/EntryListPage";
+import { AllEntriesPage } from "./pages/AllEntriesPage";
+import { MyEntriesPage } from "./pages/MyEntriesPage";
+import { UserEntriesPage } from "./pages/UserEntriesPage";
+import { LocationEntriesPage } from "./pages/LocationEntriesPage";
 import { EntryCreatePage } from "./pages/EntryCreatePage";
 import { EntryEditPage } from "./pages/EntryEditPage";
 import { EntryDetailPage } from "./pages/EntryDetailPage";
@@ -50,17 +53,16 @@ export function AppRoutes() {
       <Route element={<RequireAuth />}>
         <Route element={<AppLayout />}>
           {/* Entry routes */}
-          <Route path="/entries" element={<EntryListPage />} />
+          <Route path="/entries" element={<AllEntriesPage />} />
           <Route path="/entries/create" element={<EntryCreatePage />} />
           <Route path="/entries/:entryId" element={<EntryDetailPage />} />
           <Route path="/entries/:entryId/edit" element={<EntryEditPage />} />
 
-          {/* Polymorphic entry list variants — same component, different data source */}
-          <Route path="/my-entries" element={<EntryListPage />} />
-          <Route path="/users/:userId/entries" element={<EntryListPage />} />
+          <Route path="/my-entries" element={<MyEntriesPage />} />
+          <Route path="/users/:userId/entries" element={<UserEntriesPage />} />
           <Route
             path="/locations/:locationId/entries"
-            element={<EntryListPage />}
+            element={<LocationEntriesPage />}
           />
 
           {/* Dashboard */}
