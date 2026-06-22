@@ -35,7 +35,7 @@ export function WeatherThermometerBar({
   return (
     <div>
       <div className="bg-gray-100 rounded h-3 overflow-hidden">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height={12}>
           <BarChart
             layout="vertical"
             data={[dataObj]}
